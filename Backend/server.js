@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 const PORT = process.env.PORT || 5000;
 
+app.use('/', require('./Routes/CredentialRoutes/CredentialRoutes'));
 // app.use('/student', require('./Routes/StudentRoutes'));
 // app.use('/employer', require('./Routes/EmployerRoutes'));
 // app.use('/admin', require('./Routes/AdminRoutes'));
