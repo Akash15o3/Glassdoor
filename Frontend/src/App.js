@@ -3,7 +3,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 import './Static/Styles/App.css'
 import Navbar from './Components/Navbar';
 import Login from './Components/Credentials/Login';
-import Student from './Components/Student/Student'
+import Student from './Components/Student/Profile'
 import Employer from './Components/Employer/Employer'
 import Admin from './Components/Admin/Admin'
 
