@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Student extends Component {
+export default class Profile extends Component {
     render() {
         return (
             <div>
-                <h1>Student Page</h1>
+                
             </div>
         )
     }
