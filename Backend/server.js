@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 
-const { frontendURI } = require('./config/keys');
+const { frontendURI } = require('./Config/keys');
 
 app.use(cors({ origin: frontendURI, credentials: true }));
 
