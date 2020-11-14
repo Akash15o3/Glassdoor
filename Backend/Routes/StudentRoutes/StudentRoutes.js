@@ -23,6 +23,48 @@ mongoose.connect(mongoDB, options, (err, res) => {
   }
 });
 
+// Get all students
+Router.get('/', (request, response) => {
+  console.log('\nEndpoint GET: get all students');
+  console.log('Req Body: ', request.body);
+  Students.find({}, (error, students) => {
+    if (error) {
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      console.log('Error fetching students');
+      response.end('Error fetching students');
+    } else {
+      response.writeHead(200, {
+        'Content-Type': 'application/json',
+      });
+      console.log('Sending 200');
+      response.end(JSON.stringify(students));
+    }
+  });
+});
 
+// Get student by ID
+Router.get('/:id', (request, response) => {
+  console.log('\nEndpoint GET: get student');
+  console.log('Req Body: ', request.body);
+  Students.findById(request.params.id, (error, student) => {
+    if (error) {
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      console.log('Error fetching student');
+      response.end('Error fetching student');
+    } else {
+      response.writeHead(200, {
+        'Content-Type': 'application/json',
+      });
+      console.log('Sending 200');
+      response.end(JSON.stringify(student));
+    }
+  });
+});
+
+// Get count of ratings
 
 module.exports = Router;

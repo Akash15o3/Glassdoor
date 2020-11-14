@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const studentsRouter = require('./Routes/StudentRoutes/StudentRoutes');
+const companiesRouter = require('./Routes/CompanyRoutes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ const PORT = process.env.PORT || 5000;
 app.use('/', require('./Routes/CredentialRoutes/CredentialRoutes'));
 
 app.use('/students', studentsRouter);
+app.use('/companies', companiesRouter);
 // app.use('/student', require('./Routes/StudentRoutes'));
 // app.use('/employer', require('./Routes/EmployerRoutes'));
 // app.use('/admin', require('./Routes/AdminRoutes'));
