@@ -9,30 +9,12 @@ const employerSchema = new Schema({
   elocation: String,
   elatitude: Number,
   elongitude: Number,
-  cname: String,
-  clocation: String,
-  clatitude: String,
-  clongitude: String,
-  cwebsite: String,
-  csize: String,
-  ctype: String,
-  cheadquarters: String,
-  cfounded: String,
-  cdescription: String,
-  cmission: String,
-  // Average rating overall/recommended/ceo approval will be deduced from reviews
-  // review ids that are featured will be stored here
-  cfeatured: [],
-
-  cid: { type: String },
-  latest: { type: Date },
-  // flow true: restaurant -> customer
-  // flow false: customer -> restaurant
-  messages: [{ text: String, date: Date, flow: Boolean }],
+  // Link to company name
+  ecompany: String,
 },
 {
   versionKey: false,
 });
 
-const employerModel = mongoose.model('company', employerSchema);
+const employerModel = mongoose.model('employer', employerSchema);
 module.exports = employerModel;

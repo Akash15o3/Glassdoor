@@ -8,13 +8,13 @@ const salarySchema = new Schema({
   jtitle: String,
   // cname will be matched with company.cname on search
   cname: String,
-  sbase: Number,
+  salbase: Number,
   // number in years
-  sexperience: Number,
-  slocation: String,
-  sbonus: Number,
-  sprofit: Number,
-  scommission: Number,
+  salexperience: Number,
+  sallocation: String,
+  salbonus: Number,
+  salprofit: Number,
+  salcommission: Number,
   // range will be returned from api call for a title
   // user id will be stored if submitted publicly, '' for privately
 },
@@ -22,5 +22,5 @@ const salarySchema = new Schema({
   versionKey: false,
 });
 
-const salaryModel = mongoose.model('job', salarySchema);
+const salaryModel = mongoose.model('salary', salarySchema);
 module.exports = salaryModel;

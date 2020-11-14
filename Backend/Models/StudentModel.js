@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 // Can add non-essential fields to meta: {} later on
 const studentSchema = new Schema({
-  stname: { type: String, unique: true, DropDups: true },
+  stname: String,
   stemail: String,
   stpassword: String,
   stphoto: String,
@@ -74,5 +74,5 @@ const studentSchema = new Schema({
   versionKey: false,
 });
 
-const studentModel = mongoose.model('company', studentSchema);
+const studentModel = mongoose.model('student', studentSchema);
 module.exports = studentModel;

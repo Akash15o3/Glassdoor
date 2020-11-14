@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 const companySchema = new Schema({
   cname: { type: String, unique: true, DropDups: true },
   cemail: String,
+  cpassword: String,
   clocation: String,
   clatitude: String,
   clongitude: String,

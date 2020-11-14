@@ -20,5 +20,5 @@ const applicationSchema = new Schema({
   versionKey: false,
 });
 
-const applicationModel = mongoose.model('job', applicationSchema);
+const applicationModel = mongoose.model('application', applicationSchema);
 module.exports = applicationModel;
