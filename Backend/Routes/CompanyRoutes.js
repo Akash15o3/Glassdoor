@@ -54,7 +54,7 @@ Router.get('/', (request, response) => {
 Router.get('/:id', (request, response) => {
   console.log('\nEndpoint GET: get company');
   console.log('Req Body: ', request.body);
-  Companies.findbyId({}, (error, company) => {
+  Companies.findById({}, (error, company) => {
     if (error) {
       response.writeHead(401, {
         'Content-Type': 'text/plain',
@@ -73,7 +73,7 @@ Router.get('/:id', (request, response) => {
 
 // Update company's profile details
 // please refer model: clocation-cceo can be updated here
-/*
+
 Router.put('/profile/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Update company profile');
   console.log('Req Body: ', request.body);
@@ -109,7 +109,7 @@ Router.put('/profile/:cid', (request, response) => {
     }
   });
 });
-*/
+
 
 // Update company--Add review to featured
 Router.put('/profile/addFtReview/:cid', (request, response) => {
@@ -151,7 +151,6 @@ Router.put('/profile/addFtReview/:cid', (request, response) => {
 });
 
 // Delete review from featured
-/*
 Router.put('/profile/delFtReview/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Delete featured review');
   console.log('Req Body: ', request.body);
@@ -164,7 +163,8 @@ Router.put('/profile/delFtReview/:cid', (request, response) => {
       console.log('Error fetching company');
       response.end('Error fetching company');
     } else if (company.cfeatured.length > 0) {
-      company.cfeatured.filter((item) => item !== request.body.reviewid);
+      console.log('=> ', request.body.reviewid);
+      company.cfeatured = company.cfeatured.filter((item) => item !== request.body.reviewid);
       // company.cfeatured = [];
       console.log('fil:', company.cfeatured);
       company.save((err, companyUpdated) => {
@@ -186,12 +186,11 @@ Router.put('/profile/delFtReview/:cid', (request, response) => {
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Please delete from existing featured reviews first');
-      response.end('Please delete from existing featured reviews first');
+      console.log('Nothing to delete');
+      response.end('Nothing to delete');
     }
   });
 });
-*/
 
 // Update company-- Add photos
 
