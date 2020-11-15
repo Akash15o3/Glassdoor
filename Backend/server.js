@@ -4,6 +4,7 @@ const cors = require('cors');
 const studentsRouter = require('./Routes/StudentRoutes/StudentRoutes');
 const companiesRouter = require('./Routes/CompanyRoutes');
 const credentialsRouter = require('./Routes/CredentialRoutes/CredentialRoutes');
+const jobRouter = require('./Routes/JobRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ const PORT = process.env.PORT || 5000;
 app.use('/', credentialsRouter);
 app.use('/students', studentsRouter);
 app.use('/companies', companiesRouter);
+app.use('/jobs', jobRouter);
 // app.use('/student', require('./Routes/StudentRoutes'));
 // app.use('/employer', require('./Routes/EmployerRoutes'));
 // app.use('/admin', require('./Routes/AdminRoutes'));

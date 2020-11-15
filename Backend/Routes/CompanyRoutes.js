@@ -54,7 +54,7 @@ Router.get('/', (request, response) => {
 Router.get('/:id', (request, response) => {
   console.log('\nEndpoint GET: get company');
   console.log('Req Body: ', request.body);
-  Companies.findById({}, (error, company) => {
+  Companies.findById(request.params.id, (error, company) => {
     if (error) {
       response.writeHead(401, {
         'Content-Type': 'text/plain',
@@ -109,7 +109,6 @@ Router.put('/profile/:cid', (request, response) => {
     }
   });
 });
-
 
 // Update company--Add review to featured
 Router.put('/profile/addFtReview/:cid', (request, response) => {

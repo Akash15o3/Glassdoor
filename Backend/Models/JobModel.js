@@ -20,8 +20,9 @@ const jobSchema = new Schema({
     enum: ['Remote', 'In-person'],
     default: 'Remote',
   },
-
   jposted: Date,
+  // Employer name posting the job
+  jpostedBy: String,
   jdescription: String,
   jresponsibilities: String,
   jqualifications: String,

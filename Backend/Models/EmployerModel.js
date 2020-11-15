@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 // Can add non-essential fields to meta: {} later on
 const employerSchema = new Schema({
-  ename: String,
+  ename: { type: String, unique: true, DropDups: true },
   epassword: String,
   elocation: String,
   elatitude: Number,
