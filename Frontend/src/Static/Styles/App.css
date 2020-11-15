@@ -44,6 +44,7 @@
 }
 #studentTabs{
   display: flex;
+  width: 100%;
   justify-content: space-around;
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
@@ -52,4 +53,58 @@
 .studentTab{
   position: relative;
   top: 1vh;
+}
+#studentProfile{
+  display: flex;
+}
+#profileTabs{
+  flex: 3;
+  margin-left: 10vw;
+  border-right: 1px solid grey;
+}
+#profileView{
+  display: flex;
+  flex-direction: column;
+  flex: 7;
+}
+#studentTabList{
+  list-style: none;
+  width: 95%;
+}
+#studentTabList li{
+  font-family: "system-ui";
+  border-bottom: 2px solid lightgray;
+}
+#studentTabList li:hover{
+  cursor: pointer;
+}
+#addStudentPicture{
+  position: relative;
+  left: 1.5vw;
+  margin-bottom: 3vh;
+}
+.prof-btn {
+border: none;
+background-color: inherit;
+padding: 14px 28px;
+font-size: 16px;
+cursor: pointer;
+display: inline-block;
+}
+
+
+.prof-btn:hover {color: yellow;}
+
+.profileField{
+border-bottom: 1px solid grey;
+padding: 3vw;
+}
+
+#navbar{
+  display: flex;
+width: 100%;
+border-top: 1px solid gray;
+border-bottom: 1px solid gray;
+background-color: white;
+height: 100px;
 }

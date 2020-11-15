@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 // import jwt_decode from 'jwt-decode';
-import '../../Static/Styles/Credentials.css'
+import '../../Static/Styles/Credentials.css';
 import { BACK_SERVER_URL } from '../Config';
 import { login } from '../../Actions/credentialActions';
 
@@ -47,6 +47,7 @@ class Login extends Component {
       password: '',
     });
   }
+
   render() {
     return (
       <div>
@@ -70,7 +71,7 @@ class Login extends Component {
             </label>
           </div>
           <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-          <a className="btn btn-lg btn-success btn-block" href="/signup">Sign up</a>
+          <a style={{ color: 'white' }} className="btn btn-lg btn-success btn-block" href="/signup">Sign up</a>
         </form>
       </div>
     );
