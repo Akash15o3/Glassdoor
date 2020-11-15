@@ -193,8 +193,54 @@ Router.put('/profile/delFtReview/:cid', (request, response) => {
 });
 
 // Update company-- Add photos
+Router.put('/profile/addPhoto/:cid', (request, response) => {
+  console.log('\nEndpoint PUT: Add photo');
+  console.log('Req Body: ', request.body);
+
+  Companies.findById(request.params.cid, (error, company) => {
+    if (error) {
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      console.log('Error fetching company');
+      response.end('Error fetching company');
+    } else if (company) {
+      console.log('=> ', request.body.reviewid);
+      let photoObj = {
+        // URL will be provided by AWS-SDK
+        url: request.body.url,
+        stname: request.body.stname,
+        stid: request.body.stid,
+      };
+      company.cphotos.push(photoObj);
+      console.log('new cphotos:', company.cphotos);
+      company.save((err, companyUpdated) => {
+        if (err) {
+          response.writeHead(401, {
+            'Content-Type': 'text/plain',
+          });
+          console.log('Error adding photo');
+          response.end('Error adding photo');
+        } else {
+          response.writeHead(200, {
+            'Content-Type': 'application/json',
+          });
+          console.log('Sending 200');
+          response.end(JSON.stringify(companyUpdated));
+        }
+      });
+    } else {
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      console.log('Error adding photo');
+      response.end('Error adding photo');
+    }
+  });
+});
 
 // Search company by name
+// Maybe separate to a another route
 Router.post('/search', (request, response) => {
   console.log('\nEndpoint POST: search by company name');
   console.log('Req Body: ', request.body);
@@ -204,9 +250,9 @@ Router.post('/search', (request, response) => {
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching company');
-      response.end('Error fetching company');
-    } else if (company.length === 1) {
+      console.log('Error fetching companies');
+      response.end('Error fetching companies');
+    } else if (company) {
       response.writeHead(200, {
         'Content-Type': 'application/json',
       });
@@ -216,8 +262,8 @@ Router.post('/search', (request, response) => {
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching company');
-      response.end('Error fetching company');
+      console.log('Error fetching companies');
+      response.end('Error fetching companies');
     }
   });
 });
