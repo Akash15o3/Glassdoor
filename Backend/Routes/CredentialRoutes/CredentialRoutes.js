@@ -39,13 +39,14 @@ Router.post('/login', (request, response) => {
   if (request.body.role === 'Student') {
     Students.findOne({ stemail: request.body.email }, (error, student) => {
       if (error) {
+        console.log(error);
         response.writeHead(401, {
           'Content-Type': 'text/plain',
         });
         console.log('Incorrect credentials');
         response.end('Incorrect credentials');
       } else {
-        bcrypt.compare(student.stpassword, request.body.password, (err, matched) => {
+        bcrypt.compare(request.body.password, student.stpassword, (err, matched) => {
           if (matched) {
             response.writeHead(200, {
               'Content-Type': 'application/json',

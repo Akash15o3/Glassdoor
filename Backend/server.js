@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const studentsRouter = require('./Routes/StudentRoutes/StudentRoutes');
 const companiesRouter = require('./Routes/CompanyRoutes');
+const credentialsRouter = require('./Routes/CredentialRoutes/CredentialRoutes');
 
 const app = express();
 
@@ -21,8 +22,7 @@ app.use((req, res, next) => {
 });
 const PORT = process.env.PORT || 5000;
 
-app.use('/', require('./Routes/CredentialRoutes/CredentialRoutes'));
-
+app.use('/', credentialsRouter);
 app.use('/students', studentsRouter);
 app.use('/companies', companiesRouter);
 // app.use('/student', require('./Routes/StudentRoutes'));

@@ -77,15 +77,11 @@ class Login extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    isAuth: state.credentials.isAuth,
-  };
-};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (user, id, role) => dispatch(login(user, id, role)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
