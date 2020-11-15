@@ -6,7 +6,9 @@ import Login from './Components/Credentials/Login';
 import Signup from './Components/Credentials/Signup';
 import Student from './Components/Student/Profile';
 import Employer from './Components/Employer/Employer';
+import EmpProfile from './Components/Employer/Profile';
 import Admin from './Components/Admin/Admin';
+import Jobs from './Components/Employer/jobs';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/student" component={Student} />
         <Route path="/employer" component={Employer} />
         <Route path="/admin" component={Admin} />
+        <Route path="/employer/jobs" component={Jobs} />
+        <Route path="/employer/landing" component={EmpProfile} />
       </div>
     </BrowserRouter>
   );
