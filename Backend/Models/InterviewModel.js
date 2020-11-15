@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 // Can add non-essential fields to meta: {} later on
 const interviewSchema = new Schema({
-  employername: String,
+  // Company name
+  cname: String,
   overallexp: {
     type: String,
     enum: ['Positive', 'Negative', 'Neutral'],

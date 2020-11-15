@@ -238,6 +238,8 @@ Router.put('/profile/addPhoto/:cid', (request, response) => {
   });
 });
 
+
+
 // Search company by name
 // Maybe separate to a another route
 Router.post('/search', (request, response) => {
