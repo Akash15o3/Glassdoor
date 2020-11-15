@@ -72,7 +72,7 @@ Router.post('/login', (request, response) => {
         console.log('Incorrect credentials');
         response.end('Incorrect credentials');
       } else {
-        bcrypt.compare(admin.stpassword, request.body.password, (err, matched) => {
+        bcrypt.compare(request.body.password, admin.adpassword, (err, matched) => {
           if (matched) {
             response.writeHead(200, {
               'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ Router.post('/login', (request, response) => {
         });
       }
     });
-  } else if (request.body.role === 'Company') {
+  } else if (request.body.role === 'Employer') {
     Companies.findOne({ cemail: request.body.email }, (error, company) => {
       if (error) {
         response.writeHead(401, {
@@ -98,7 +98,7 @@ Router.post('/login', (request, response) => {
         console.log('Incorrect credentials');
         response.end('Incorrect credentials');
       } else {
-        bcrypt.compare(company.stpassword, request.body.password, (err, matched) => {
+        bcrypt.compare(request.body.password, company.cpassword, (err, matched) => {
           if (matched) {
             response.writeHead(200, {
               'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ Router.post('/signup', (request, response) => {
         }
       });
     });
-  } else if (request.body.role === 'Company') {
+  } else if (request.body.role === 'Employer') {
     bcrypt.hash(request.body.password, 10, (errHash, hash) => {
       Companies.findOne({ cemail: request.body.email }, (error, company) => {
         if (error) {
