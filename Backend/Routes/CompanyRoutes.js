@@ -238,7 +238,22 @@ Router.put('/profile/addPhoto/:cid', (request, response) => {
   });
 });
 
+/*
+// Get number of reviews
+Router.get('/numReviews', (request, response) => {
 
+});
+
+// Get number of salary reviews
+Router.get('/numSalReviews', (request, response) => {
+
+});
+
+// Get number of interview reviewss
+Router.get('/numIntReviews', (request, response) => {
+
+});
+*/
 
 // Search company by name
 // Maybe separate to a another route

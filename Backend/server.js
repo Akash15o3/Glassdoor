@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const studentsRouter = require('./Routes/StudentRoutes/StudentRoutes');
+const studentsRouter = require('./Routes/StudentRoutes');
 const companiesRouter = require('./Routes/CompanyRoutes');
-const credentialsRouter = require('./Routes/CredentialRoutes/CredentialRoutes');
+const credentialsRouter = require('./Routes/CredentialRoutes');
 const jobRouter = require('./Routes/JobRoutes');
 
 const app = express();

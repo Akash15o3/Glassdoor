@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { mongoDB } = require('../../Config/keys');
-const Students = require('../../Models/StudentModel');
+const { mongoDB } = require('../Config/keys');
+const Students = require('../Models/StudentModel');
 
 const Router = express.Router();
 
