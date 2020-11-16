@@ -19,6 +19,12 @@ class Login extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     const { role, email, password } = this.state;
+
+    // Please do an axios call on this url (refer Frontend/.env)
+    // REACT_APP_BACKEND="http://localhost:5000"
+    let url = `${process.env.REACT_APP_BACKEND/login}`
+    // axios.post(url, { role, email, password })
+
     axios.post(`${BACK_SERVER_URL}/login`, { role, email, password })
       .then((response) => {
         if (response.data) {
