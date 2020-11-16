@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Student extends Component {
   render() {
     return (
       <div id="studentTabs">
-        <a
-          className="studentTab"
-          type="button"
-          href="/student/jobs"
-          target="_top"
-          data-ga-lbl="null"
+
+        <Link
+          to="/employerJobs"
         >
-          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
+          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#DFF7E7"
@@ -24,16 +22,11 @@ export default class Student extends Component {
             </g>
           </svg>
           <h3 className="studentTabTitle">Jobs</h3>
-        </a>
-        <a
-          className="studentTab"
-          type="button"
-          data-test="site-header-companies"
-          href="/student/companies"
-          target="_top"
-          data-ga-lbl="null"
+        </Link>
+        <Link
+          to="/employerReviews"
         >
-          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
+          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#0CAA41"
@@ -63,16 +56,11 @@ export default class Student extends Component {
             </g>
           </svg>
           <h3 className="studentTabTitle">Reviews</h3>
-        </a>
-        <a
-          className="studentTab"
-          type="button"
-          data-test="site-header-companies"
-          href="/student/salaries"
-          target="_top"
-          data-ga-lbl="null"
+        </Link>
+        <Link
+          to="/employerDemographics"
         >
-          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
+          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#0CAA41"
@@ -85,7 +73,7 @@ export default class Student extends Component {
             </g>
           </svg>
           <h3 className="studentTabTitle">Demographics</h3>
-        </a>
+        </Link>
       </div>
     );
   }

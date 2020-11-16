@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 // import { Link } from 'react-router-dom';
 // import { logout } from '../Actions/credentialActions';
-import SearchBar from "./Student/SearchBar";
-import StudentTabs from "./Student/StudentTabs";
-import logo from "../Static/Images/navbarLogo.PNG";
-import EmployerTabs from "./Employer/EmployerTab";
+import SearchBar from './Student/SearchBar';
+import StudentTabs from './Student/StudentTabs';
+import logo from '../Static/Images/navbarLogo.PNG';
+import EmployerTabs from './Employer/EmployerTab';
 
 class Navbar extends Component {
   render() {
     const { isAuth, role } = this.props;
-    const searchBar = role === "student" ? <SearchBar /> : null;
-    const studentTabs = role === "student" ? <StudentTabs /> : null;
-    const employerTabs = role === "employer" ? <EmployerTabs /> : null;
-    const searchBar1 = role === "employer" ? <SearchBar /> : null;
+    const searchBar = role === 'student' ? <SearchBar /> : null;
+    const studentTabs = role === 'student' ? <StudentTabs /> : null;
+    const employerTabs = role === 'employer' ? <EmployerTabs /> : null;
+    const searchBar1 = role === 'employer' ? <SearchBar /> : null;
     return (
       <div>
         {isAuth ? (
@@ -22,7 +22,7 @@ class Navbar extends Component {
         ) : (
           <nav
             className="navbar navbar-inverse"
-            style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: 'white' }}
           >
             <img id="logo" src={logo} />
           </nav>

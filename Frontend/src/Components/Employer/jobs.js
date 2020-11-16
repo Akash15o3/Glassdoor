@@ -1,53 +1,50 @@
 import React, { Component } from 'react';
 import { Col, Card, FormGroup, Form } from 'react-bootstrap';
-import Navbar from '../Navbar.js';
+import { connect } from 'react-redux';
+// import Navbar from '../Navbar.js';
 // import DatePicker from 'react-bootstrap-date-picker';
 // import Dropdown from 'react-dropdown';
-import { connect } from 'react-redux';
 
 class Jobs extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      postingDate: new Date(),
+      deadline: new Date(),
+      city: '',
+      cstate: '',
+      country: '',
+      salary: '',
+      description: '',
+    };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          title: '',
-          postingDate: new Date(),
-          deadline: new Date(),
-          city: '',
-          cstate: '',
-          country: '',
-          salary: '',
-          description: '',
-         };
+    this.onChangePostingDateHandler = this.onChangePostingDateHandler.bind(this);
+    // this.onPostSubmit = this.onPostSubmit.bind(this);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+  }
 
-        this.onChangePostingDateHandler = this.onChangePostingDateHandler.bind(this);
-        // this.onPostSubmit = this.onPostSubmit.bind(this);
-        this.onChangeHandler = this.onChangeHandler.bind(this);
+  componentWillMount() {
+    document.title = 'Jobs Page';
+  }
 
-    }
+  onChangeHandler(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
 
-    componentWillMount(){
-        document.title = "Jobs Page";
-    }
+  onChangePostingDateHandler(date) {
+    this.setState({
+      postingDate: date,
+    });
+  }
 
-    onChangeHandler(e) {
-        this.setState({
-            [e.target.name] : e.target.value
-        });
-    }
-
-    onChangePostingDateHandler(date) {
-        this.setState({
-          postingDate: date,
-        });
-    }
-    
-    render() {
-
-        return(
+  render() {
+    return (
+      <div>
         <div>
-        <div>
-          <Navbar />
+          {/* <Navbar /> */}
         </div>
         <div className="container">
           <div>
@@ -171,8 +168,7 @@ class Jobs extends Component {
         </div>
       </div>
     );
-    }
-
+  }
 }
 
 export default Jobs;
