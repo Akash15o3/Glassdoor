@@ -7,7 +7,6 @@ const credentialsRouter = require('./Routes/CredentialRoutes');
 const jobRouter = require('./Routes/JobRoutes');
 const searchRouter = require('./Routes/SearchRoutes');
 const reviewRouter = require('./Routes/ReviewRoutes');
-require('dotenv').config();
 
 const app = express();
 

@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const config = {
   secret: 'cmpe273_secret_key',
   frontendURI: process.env.REACT_APP_FRONTEND,
