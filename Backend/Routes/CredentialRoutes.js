@@ -104,7 +104,7 @@ Router.post('/login', (request, response) => {
         response.end('Incorrect credentials');
       }
     });
-  } else if (request.body.role === 'Company') {
+  } else if (request.body.role === 'Employer') {
     Companies.findOne({ cemail: request.body.email }, (error, company) => {
       if (error) {
         response.writeHead(401, {
