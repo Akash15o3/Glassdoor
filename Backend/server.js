@@ -6,6 +6,8 @@ const companiesRouter = require('./Routes/CompanyRoutes');
 const credentialsRouter = require('./Routes/CredentialRoutes');
 const jobRouter = require('./Routes/JobRoutes');
 const searchRouter = require('./Routes/SearchRoutes');
+const reviewRouter = require('./Routes/ReviewRoutes');
+require('dotenv').config();
 
 const app = express();
 
@@ -29,6 +31,7 @@ app.use('/students', studentsRouter);
 app.use('/companies', companiesRouter);
 app.use('/jobs', jobRouter);
 app.use('/search', searchRouter);
+app.use('/reviews', reviewRouter);
 // app.use('/student', require('./Routes/StudentRoutes'));
 // app.use('/employer', require('./Routes/EmployerRoutes'));
 // app.use('/admin', require('./Routes/AdminRoutes'));
