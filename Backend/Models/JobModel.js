@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 // Can add non-essential fields to meta: {} later on
 const jobSchema = new Schema({
-  // Embedded company id
+  // Embedded company name
   cname: String,
   jtitle: String,
   jindustry: String,
