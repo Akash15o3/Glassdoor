@@ -255,34 +255,7 @@ Router.get('/numIntReviews', (request, response) => {
 });
 */
 
-// Search company by name
-// Maybe separate to a another route
-Router.post('/search', (request, response) => {
-  console.log('\nEndpoint POST: search by company name');
-  console.log('Req Body: ', request.body);
-  const regex = new RegExp(escapeRegex(request.body.cname), 'gi');
-  Companies.find({ cname: regex }, (error, company) => {
-    if (error) {
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
-      });
-      console.log('Error fetching companies');
-      response.end('Error fetching companies');
-    } else if (company) {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
-      });
-      console.log('Sending 200');
-      response.end(JSON.stringify(company));
-    } else {
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
-      });
-      console.log('Error fetching companies');
-      response.end('Error fetching companies');
-    }
-  });
-});
+
 
 // get average rating
 
