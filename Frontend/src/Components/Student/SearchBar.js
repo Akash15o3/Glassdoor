@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../Actions/credentialActions';
+import { search } from '../../Actions/studentActions';
 
 class SearchBar extends Component {
+  handleClick = () => {
+    const searchText = document.getElementById('searchBox').value;
+    this.props.search(searchText);
+    document.getElementById('searchBox').value = '';
+  }
+
   render() {
     return (
       <nav id="navbar">
@@ -16,14 +23,14 @@ class SearchBar extends Component {
             </svg>
           </span>
         </a>
-        <input type="text" placeholder="Job Title, Keywords, or Company" name="search" style={{ position: 'relative', left: '40px', top: '25px', height: '40px', width: '400px' }} />
+        <input id="searchBox" type="text" placeholder="Job Title, Keywords, or Company" name="search" style={{ position: 'relative', left: '40px', top: '25px', height: '40px', width: '400px' }} />
         <select id="options" style={{ position: 'relative', left: '55px', top: '25px' }}>
           <option value="Jobs">Jobs</option>
           <option value="Companies">Companies</option>
           <option value="Salaries">Salaries</option>
           <option value="Interviews">Interviews</option>
         </select>
-        <div><a className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</a></div>
+        <div><Link to="/student/searchresults" onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</Link></div>
         {this.props.isAuth ? (
           <Link style={{ marginLeft: 'auto' }} to="/" onClick={this.props.logout}>
             <span className="glyphicon glyphicon-user" />
@@ -44,6 +51,7 @@ const mapStateToProps = (state) => {
 const mapDisptachToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout()),
+    search: (searchQuery) => dispatch(search(searchQuery))
   };
 };
 export default connect(mapStateToProps, mapDisptachToProps)(SearchBar);
