@@ -1,7 +1,8 @@
-const crypto = require("crypto");
-const conn = require("./Connection");
+/* eslint-disable */
+let crypto = require('crypto');
+let conn = require('./Connection');
 
-const TIMEOUT = 8000; // time to wait for response in ms
+let TIMEOUT = 8000; // time to wait for response in ms
 let self;
 
 exports = module.exports = KafkaRPC;
@@ -14,82 +15,77 @@ function KafkaRPC() {
   this.producer = this.connection.getProducer();
 }
 
-KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
+KafkaRPC.prototype.makeRequest = function(topic_name, subTopic, content, callback) {
   self = this;
   // generate a unique correlation id for this call
-  const correlationId = crypto.randomBytes(16).toString("hex");
+  var correlationId = crypto.randomBytes(16).toString('hex');
 
   // create a timeout for what should happen if we don't get a response
-  const tId = setTimeout(
-    (corr_id) => {
-      // if this ever gets called we didn't get a response in a
-      // timely fashion
-      console.log("timeout");
-      callback(new Error(`timeout ${corr_id}`));
-      // delete the entry from hash
-      delete self.requests[corr_id];
-    },
-    TIMEOUT,
-    correlationId
-  );
+  var tId = setTimeout(function(corr_id) {
+    // if this ever gets called we didn't get a response in a
+    // timely fashion
+    console.log('timeout');
+    callback(new Error("timeout " + corr_id));
+    // delete the entry from hash
+    delete self.requests[corr_id];
+  }, 8000, correlationId);
 
   // create a request entry to store in a hash
-  const entry = {
-    callback,
-    timeout: tId, // the id for the timeout so we can clear it
+  var entry = {
+      callback:callback,
+      timeout: tId //the id for the timeout so we can clear it
   };
 
   // put the entry in the hash so we can match the response later
-  self.requests[correlationId] = entry;
+  self.requests[correlationId]=entry;
 
   // make sure we have a response topic
-  self.setupResponseQueue(self.producer, topic_name, () => {
-    console.log("in response");
+  self.setupResponseQueue(self.producer,topic_name,function(){
+    console.log('in response');
     // put the request on a topic
 
-    const payloads = [
-      {
+    var payload = [
+      {   
         topic: topic_name,
         messages: JSON.stringify({
-          correlationId,
-          replyTo: "response_topic_glassdoor",
-          data: content,
+          correlationId:correlationId,
+          replyTo:'response_topic',
+          data:content,
+          subTopic,
         }),
-        partition: 0,
-      },
+        partition:0
+      }
     ];
-    console.log("in response1");
+    console.log('rpc payload: ', payload);
     console.log(self.producer.ready);
-    console.log("checkpoint");
-    self.producer.send(payloads, (err, data) => {
-      console.log("data and paylod in rpc producer.send", payloads, data);
-      console.log("in response2");
-      if (err) console.log("Error in rpc", err);
-      console.log("is it data", data);
+    self.producer.send(payload, function(err, data){
+      console.log('in response2');
+      if(err)
+          console.log(err);
+      console.log(data);
     });
   });
 };
 
-KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
+KafkaRPC.prototype.setupResponseQueue = function(producer,topic_name, next){
   // don't mess around if we have a queue
-  if (this.response_queue) return next();
+  if(this.response_queue) return next();
 
-  console.log("1");
+  console.log('1');
 
   self = this;
-  // console.log("in rpc producer,topicname,", producer, topic_name);
+
   // subscribe to messages
-  const consumer = self.connection.getConsumer("response_topic_glassdoor");
-  // console.log("Consumer nodejs", consumer);
-  consumer.on("message", (message) => {
-    console.log("msg received");
-    const data = JSON.parse(message.value);
+  var consumer = self.connection.getConsumer('response_topic');
+  consumer.on('message', function (message) {
+    console.log('msg received');
+    var data = JSON.parse(message.value);
     // get the correlationId
-    const { correlationId } = data;
+    var correlationId = data.correlationId;
     // is it a response to a pending request
-    if (correlationId in self.requests) {
+    if(correlationId in self.requests){
       // retrieve the request entry
-      const entry = self.requests[correlationId];
+      var entry = self.requests[correlationId];
       // make sure we don't timeout by clearing it
       clearTimeout(entry.timeout);
       // delete the entry from hash
@@ -99,6 +95,6 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
     }
   });
   self.response_queue = true;
-  console.log("returning next");
+  console.log('returning next');
   return next();
 };

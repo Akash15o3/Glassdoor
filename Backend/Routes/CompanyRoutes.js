@@ -1,51 +1,26 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const { mongoDB } = require('../Config/keys');
-const Companies = require('../Models/CompanyModel');
+const kafka = require('../kafka/client');
 
 const Router = express.Router();
-
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  poolSize: 500,
-  bufferMaxEntries: 0,
-};
-
-// eslint-disable-next-line no-unused-vars
-mongoose.connect(mongoDB, options, (err, res) => {
-  if (err) {
-    console.log(err);
-    console.log('MongoDB Connection Failed');
-  } else {
-    console.log('MongoDB Connected');
-  }
-});
-
-function escapeRegex(text) {
-  if (text !== undefined) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-  }
-  return;
-}
 
 // Get all companies
 Router.get('/', (request, response) => {
   console.log('\nEndpoint GET: get all companies');
   console.log('Req Body: ', request.body);
-  Companies.find({}, (error, companies) => {
-    if (error) {
+  kafka.make_request('companiesTopic', 'GETALL', request.body, (err, result) => {
+    console.log('Get all result ', result);
+    if (err) {
+      console.log('Companies getall Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching companies');
-      response.end('Error fetching companies');
+      response.end('Companies getall Kafka error');
     } else {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Sending 200');
-      response.end(JSON.stringify(companies));
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -54,58 +29,47 @@ Router.get('/', (request, response) => {
 Router.get('/:id', (request, response) => {
   console.log('\nEndpoint GET: get company');
   console.log('Req Body: ', request.body);
-  Companies.findById(request.params.id, (error, company) => {
-    if (error) {
-      response.writeHead(401, {
+  const data = { ...request.params };
+
+  kafka.make_request('companiesTopic', 'GETONE', data, (err, result) => {
+    console.log('Get one company result ', result);
+    if (err) {
+      console.log('Companies getone Kafka error');
+      response.writeHead(500, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching company');
-      response.end('Error fetching company');
+      response.end('Companies getone Kafka error');
     } else {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Sending 200');
-      response.end(JSON.stringify(company));
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
 
 // Update company's profile details
 // please refer model: clocation-cceo can be updated here
-
 Router.put('/profile/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Update company profile');
   console.log('Req Body: ', request.body);
-  const data = {
-    clocation: request.body.clocation,
-    clatitude: request.body.clatitude,
-    clongitude: request.body.clongitude,
-    cwebsite: request.body.cwebsite,
-    csize: request.body.csize,
-    ctype: request.body.ctype,
-    crevenue: request.body.crevenue,
-    cindustry: request.body.cindustry,
-    cheadquarters: request.body.cheadquarters,
-    cfounded: request.body.cfounded,
-    cdescription: request.body.cdescription,
-    cmission: request.body.cmission,
-    cceo: request.body.cceo,
-  };
+  const data = { ...request.params, ...request.body };
 
-  Companies.findByIdAndUpdate(request.params.cid, data, { new: true }, (error, companyUpdated) => {
-    if (error) {
+  kafka.make_request('companiesTopic', 'UPDATEPROFILE', data, (err, result) => {
+    console.log('Update company profile result ', result);
+    if (err) {
+      console.log('Update company profile Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error updating company profile');
-      response.end('Error updating company profile');
+      response.end('Update company profile Kafka error');
     } else {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Sending 200');
-      response.end(JSON.stringify(companyUpdated));
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -114,37 +78,22 @@ Router.put('/profile/:cid', (request, response) => {
 Router.put('/profile/addFtReview/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Add featured review');
   console.log('Req Body: ', request.body);
+  const data = { ...request.params, ...request.body };
 
-  Companies.findById(request.params.cid, (error, company) => {
-    if (error) {
+  kafka.make_request('companiesTopic', 'ADDFTREVIEW', data, (err, result) => {
+    console.log('Add featured review result ', result);
+    if (err) {
+      console.log('Add featured review Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error updating company profile');
-      response.end('Error updating company profile');
-    } else if (company.cfeatured.length < 2) {
-      company.cfeatured.push(request.body.reviewid);
-      company.save((err, companyUpdated) => {
-        if (err) {
-          response.writeHead(401, {
-            'Content-Type': 'text/plain',
-          });
-          console.log('Error adding review to featured');
-          response.end('Error adding review to featured');
-        } else {
-          response.writeHead(200, {
-            'Content-Type': 'application/json',
-          });
-          console.log('Sending 200');
-          response.end(JSON.stringify(companyUpdated));
-        }
-      });
+      response.end('Add featured review Kafka error');
     } else {
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Please delete from existing featured reviews first');
-      response.end('Please delete from existing featured reviews first');
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -153,40 +102,22 @@ Router.put('/profile/addFtReview/:cid', (request, response) => {
 Router.put('/profile/delFtReview/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Delete featured review');
   console.log('Req Body: ', request.body);
+  const data = { ...request.params, ...request.body };
 
-  Companies.findById(request.params.cid, (error, company) => {
-    if (error) {
+  kafka.make_request('companiesTopic', 'DELFTREVIEW', data, (err, result) => {
+    console.log('Delete featured review result ', result);
+    if (err) {
+      console.log('Delete featured review Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching company');
-      response.end('Error fetching company');
-    } else if (company.cfeatured.length > 0) {
-      console.log('=> ', request.body.reviewid);
-      company.cfeatured = company.cfeatured.filter((item) => item !== request.body.reviewid);
-      // company.cfeatured = [];
-      console.log('fil:', company.cfeatured);
-      company.save((err, companyUpdated) => {
-        if (err) {
-          response.writeHead(401, {
-            'Content-Type': 'text/plain',
-          });
-          console.log('Error deleting review from featured');
-          response.end('Error deleting review from featured');
-        } else {
-          response.writeHead(200, {
-            'Content-Type': 'application/json',
-          });
-          console.log('Sending 200');
-          response.end(JSON.stringify(companyUpdated));
-        }
-      });
+      response.end('Delete featured review Kafka error');
     } else {
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Nothing to delete');
-      response.end('Nothing to delete');
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -195,45 +126,22 @@ Router.put('/profile/delFtReview/:cid', (request, response) => {
 Router.put('/profile/addPhoto/:cid', (request, response) => {
   console.log('\nEndpoint PUT: Add photo');
   console.log('Req Body: ', request.body);
+  const data = { ...request.params, ...request.body };
 
-  Companies.findById(request.params.cid, (error, company) => {
-    if (error) {
+  kafka.make_request('companiesTopic', 'ADDPHOTO', data, (err, result) => {
+    console.log('Company add photo result ', result);
+    if (err) {
+      console.log('Company add photo Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching company');
-      response.end('Error fetching company');
-    } else if (company) {
-      console.log('=> ', request.body.reviewid);
-      let photoObj = {
-        // URL will be provided by AWS-SDK
-        url: request.body.url,
-        stname: request.body.stname,
-        stid: request.body.stid,
-      };
-      company.cphotos.push(photoObj);
-      console.log('new cphotos:', company.cphotos);
-      company.save((err, companyUpdated) => {
-        if (err) {
-          response.writeHead(401, {
-            'Content-Type': 'text/plain',
-          });
-          console.log('Error adding photo');
-          response.end('Error adding photo');
-        } else {
-          response.writeHead(200, {
-            'Content-Type': 'application/json',
-          });
-          console.log('Sending 200');
-          response.end(JSON.stringify(companyUpdated));
-        }
-      });
+      response.end('Company add photo Kafka error');
     } else {
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Error adding photo');
-      response.end('Error adding photo');
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -254,8 +162,6 @@ Router.get('/numIntReviews', (request, response) => {
 
 });
 */
-
-
 
 // get average rating
 

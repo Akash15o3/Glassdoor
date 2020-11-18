@@ -80,7 +80,7 @@ Router.post('/cname', (request, response) => {
   // }
   request.body.limit = 10;
   console.log('Req Body: ', request.body);
-  const redisKey = `${request.body.cname}_${request.body.skip}`;
+  const redisKey = `${request.body.cname}_Reviews_${request.body.skip}`;
 
   client.get(redisKey, (err, reply) => {
     if (err) {

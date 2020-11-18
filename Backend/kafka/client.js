@@ -1,18 +1,15 @@
-const rpc = new (require("./kafkarpc"))();
+/* eslint-disable */
+var rpc = new (require('./kafkarpc'))();
 
-// make request to kafka
-function make_request(queue_name, msg_payload, callback) {
-  console.log("in make request");
+//make request to kafka
+// eslint-disable-next-line camelcase
+function make_request(queue_name, subTopic, msg_payload, callback) {
+  console.log('in make request');
   console.log(msg_payload);
-  rpc.makeRequest(queue_name, msg_payload, (err, response) => {
-    console.log(
-      "msg payload n queue name and response",
-      msg_payload,
-      queue_name,
-      response
-    );
-    if (err) console.error("error in client", err);
-    else {
+  rpc.makeRequest(queue_name, subTopic, msg_payload, function(err, response) {
+    if (err) {
+      console.error(err);
+    } else {
       console.log("response", response);
       callback(null, response);
     }
