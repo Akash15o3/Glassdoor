@@ -16,7 +16,7 @@ const interviewSchema = new Schema({
   difficulty: {
     type: String,
     enum: ['Easy', 'Average', 'Difficult'],
-    default: 'Neutral',
+    default: 'Easy',
   },
   offerstatus: {
     type: String,
