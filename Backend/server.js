@@ -7,6 +7,7 @@ const credentialsRouter = require('./Routes/CredentialRoutes');
 const jobRouter = require('./Routes/JobRoutes');
 const searchRouter = require('./Routes/SearchRoutes');
 const reviewRouter = require('./Routes/ReviewRoutes');
+const interviewRouter = require('./Routes/InterviewRoutes');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/companies', companiesRouter);
 app.use('/jobs', jobRouter);
 app.use('/search', searchRouter);
 app.use('/reviews', reviewRouter);
+app.use('/interviews', interviewRouter);
 // app.use('/student', require('./Routes/StudentRoutes'));
 // app.use('/employer', require('./Routes/EmployerRoutes'));
 // app.use('/admin', require('./Routes/AdminRoutes'));
