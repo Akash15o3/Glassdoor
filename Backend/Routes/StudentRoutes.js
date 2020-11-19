@@ -1,45 +1,26 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const { mongoDB } = require('../Config/keys');
-const Students = require('../Models/StudentModel');
+const kafka = require('../kafka/client');
 
 const Router = express.Router();
-
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  poolSize: 500,
-  bufferMaxEntries: 0,
-};
-
-// eslint-disable-next-line no-unused-vars
-mongoose.connect(mongoDB, options, (err, res) => {
-  if (err) {
-    console.log(err);
-    console.log('MongoDB Connection Failed');
-  } else {
-    console.log('MongoDB Connected');
-  }
-});
 
 // Get all students
 Router.get('/', (request, response) => {
   console.log('\nEndpoint GET: get all students');
   console.log('Req Body: ', request.body);
-  Students.find({}, (error, students) => {
-    if (error) {
+  kafka.make_request('studentsTopic', 'GETALL', request.body, (err, result) => {
+    console.log('Get all students result', result);
+    if (err) {
+      console.log('Get all students Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching students');
-      response.end('Error fetching students');
+      response.end('Get all students Kafka error');
     } else {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Sending 200');
-      response.end(JSON.stringify(students));
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });
@@ -48,19 +29,21 @@ Router.get('/', (request, response) => {
 Router.get('/:id', (request, response) => {
   console.log('\nEndpoint GET: get student');
   console.log('Req Body: ', request.body);
-  Students.findById(request.params.id, (error, student) => {
-    if (error) {
+  const data = { ...request.params };
+  kafka.make_request('studentsTopic', 'GETONE', data, (err, result) => {
+    console.log('Get student by id result', result);
+    if (err) {
+      console.log('Get student by id Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
-      console.log('Error fetching student');
-      response.end('Error fetching student');
+      response.end('Get student by id Kafka error');
     } else {
-      response.writeHead(200, {
-        'Content-Type': 'application/json',
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
-      console.log('Sending 200');
-      response.end(JSON.stringify(student));
+      console.log(result.content);
+      response.end(result.content);
     }
   });
 });

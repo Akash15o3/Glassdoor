@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const Companies = require('./Services/companies');
 const Credentials = require('./Services/credentials');
 const Jobs = require('./Services/jobs');
+const Searches = require('./Services/searches');
+const Students = require('./Services/students');
 
 const mongoDB = process.env.REACT_APP_MONGODB;
 
@@ -60,3 +62,5 @@ function handleTopicRequest(topic_name, fname) {
 handleTopicRequest('companiesTopic', Companies);
 handleTopicRequest('credentialsTopic', Credentials);
 handleTopicRequest('jobsTopic', Jobs);
+handleTopicRequest('searchesTopic', Searches);
+handleTopicRequest('studentsTopic', Students);

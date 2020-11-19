@@ -35,7 +35,7 @@ Router.get('/:id', (request, response) => {
     console.log('Get one company result ', result);
     if (err) {
       console.log('Companies getone Kafka error');
-      response.writeHead(500, {
+      response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
       response.end('Companies getone Kafka error');
