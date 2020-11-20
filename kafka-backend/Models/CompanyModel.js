@@ -31,6 +31,11 @@ const companySchema = new Schema({
     // user/student name added here
     stname: String,
     stid: String,
+    approval: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected'],
+      default: 'Pending',
+    },
   }],
 },
 {

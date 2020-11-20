@@ -28,6 +28,11 @@ const reviewSchema = new Schema({
   },
   // Incremented with every vote
   rhelpful: Number,
+  rapproval: {
+    type: String,
+    enum: ['Pending', 'Approved', 'Rejected'],
+    default: 'Pending',
+  },
 },
 {
   versionKey: false,

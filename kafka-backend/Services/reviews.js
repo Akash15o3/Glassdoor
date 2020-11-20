@@ -49,7 +49,7 @@ function getByCompnayName(data, callback) {
   // if (data.limit === undefined) {
   //   data.limit = 10;
   // }
-  data.limit = 10;
+  data.limit = 5;
   console.log('Req Body: ', data);
   const redisKey = `${data.cname}_Reviews_${data.skip}`;
 
@@ -69,8 +69,8 @@ function getByCompnayName(data, callback) {
     } else {
       // Response not in cache--fetch from mongo
       Reviews.find({ cname: data.cname })
-        .skip(0)
-        .limit(100)
+        .skip(data.skip * data.limit)
+        .limit(data.limit)
         .exec((error, reviews) => {
           if (error) {
             const response = {

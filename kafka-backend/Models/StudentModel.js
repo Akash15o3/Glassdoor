@@ -14,6 +14,11 @@ const studentSchema = new Schema({
     // user/student name added here
     cname: String,
     cid: String,
+    approval: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected'],
+      default: 'Pending',
+    },
   }],
   stresumes: [{
     stresume: String,
