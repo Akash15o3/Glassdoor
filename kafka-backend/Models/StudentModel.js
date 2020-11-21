@@ -44,6 +44,8 @@ const studentSchema = new Schema({
     },
     industry: String,
   },
+  // If reviews > 0, only then show more than 5 reviews on fronntend
+  streviews: [],
   stdemographics: {
     race: {
       type: String,

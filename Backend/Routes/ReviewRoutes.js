@@ -52,7 +52,7 @@ Router.post('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
+      // console.log(result.content);
       response.end(result.content);
     }
   });
@@ -61,7 +61,7 @@ Router.post('/', (request, response) => {
 // Get reviews for company cname--paginated, cached (page size set to 10)
 Router.post('/cname', (request, response) => {
   console.log('\nEndpoint POST: get all reviews for a company');
-  console.log('Req Body: ', request.body);
+  // console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'GETREVIEWBYCNAME', request.body, (err, result) => {
     if (err) {
       console.log('Reviews getreviewbycname Kafka error');
@@ -73,7 +73,7 @@ Router.post('/cname', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
+      // console.log(result.content);
       response.end(result.content);
     }
   });

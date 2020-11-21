@@ -33,6 +33,11 @@ const reviewSchema = new Schema({
     enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending',
   },
+  // Submitted by student name, id
+  rstudent: {
+    stid: String,
+    stname: String,
+  },
 },
 {
   versionKey: false,

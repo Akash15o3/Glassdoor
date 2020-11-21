@@ -6,6 +6,7 @@ function ConnectionProvider() {
     // this.client = new kafka.Client('localhost:2181');
     console.log('kafka connect: ', process.env.REACT_APP_KAFKA);
     this.client = new kafka.KafkaClient({ kafkaHost: process.env.REACT_APP_KAFKA });
+
     // eslint-disable-next-line max-len
     this.kafkaConsumerConnection = new kafka.Consumer(this.client, [{ topic: topicName, partition: 0 }]);
     this.client.on('ready', () => { console.log('client ready!'); });

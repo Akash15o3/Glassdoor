@@ -53,16 +53,17 @@ KafkaRPC.prototype.makeRequest = function(topic_name, subTopic, content, callbac
           data:content,
           subTopic,
         }),
-        partition:0
+        partition: 0
       }
+
     ];
-    console.log('rpc payload: ', payload);
+    // console.log('rpc payload: ', payload);
     console.log(self.producer.ready);
     self.producer.send(payload, function(err, data){
       console.log('in response2');
       if(err)
-          console.log(err);
-      console.log(data);
+        console.log(err);
+      // console.log(data);
     });
   });
 };

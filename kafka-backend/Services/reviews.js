@@ -1,5 +1,6 @@
 const redis = require('redis');
 const Reviews = require('../Models/ReviewModel');
+const Students = require('../Models/StudentModel');
 
 const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
 
@@ -22,22 +23,51 @@ function addReview(data, callback) {
     routlook: data.routlook,
     rceoapprove: data.rceoapprove,
     rhelpful: data.rhelpful,
+    rstudent: {
+      stid: data.stid,
+      stname: data.stname,
+    },
   });
-  newReview.save((error, review) => {
+  Students.findById(data.stid, (error, student) => {
     if (error) {
       const response = {
         status: 401,
         header: 'text/plain',
-        content: 'Error saving review',
+        content: 'Student id does not exist',
       };
       callback(null, response);
     } else {
-      const response = {
-        status: 200,
-        header: 'application/json',
-        content: JSON.stringify(review),
-      };
-      callback(null, response);
+      // eslint-disable-next-line no-underscore-dangle
+      student.streviews.push(newReview._id);
+      student.save((err) => {
+        if (err) {
+          const response = {
+            status: 401,
+            header: 'text/plain',
+            content: 'Error modifyinng student',
+          };
+          callback(null, response);
+        } else {
+          newReview.save((e, review) => {
+            if (e) {
+              const response = {
+                status: 401,
+                header: 'text/plain',
+                content: 'Error saving review',
+              };
+              callback(null, response);
+            } else {
+              // Save this review id in student collection
+              const response = {
+                status: 200,
+                header: 'application/json',
+                content: JSON.stringify(review),
+              };
+              callback(null, response);
+            }
+          });
+        }
+      });
     }
   });
 }
@@ -52,6 +82,13 @@ function getByCompnayName(data, callback) {
   data.limit = 5;
   console.log('Req Body: ', data);
   const redisKey = `${data.cname}_Reviews_${data.skip}`;
+  client.set('test', 'foobar', (error, response) => {
+    if (error) {
+      console.log('==> could not save to redis', error);
+    } else {
+      console.log('==> ', response);
+    }
+  });
 
   client.get(redisKey, (err, reply) => {
     if (err) {

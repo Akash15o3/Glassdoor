@@ -10,7 +10,7 @@ function make_request(queue_name, subTopic, msg_payload, callback) {
     if (err) {
       console.error(err);
     } else {
-      console.log("response", response);
+      // console.log("response", response);
       callback(null, response);
     }
   });
