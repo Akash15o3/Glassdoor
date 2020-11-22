@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
 import { BACK_SERVER_URL } from '../Config';
-import { signUp } from '../../Actions/credentialActions';
 
-class Signup extends Component {
+export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,11 +79,3 @@ render() {
   );
 }
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signUp: (user, id, role) => dispatch(signUp(user, id, role))
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Signup);

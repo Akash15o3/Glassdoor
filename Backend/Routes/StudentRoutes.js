@@ -48,6 +48,28 @@ Router.get('/:id', (request, response) => {
   });
 });
 
+Router.post('/updateProfile', (request, response) => {
+  console.log('\nEndpoint POST: post  update student profile');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('studentsTopic', 'UPDATEPROFILE', data, (err, result) => {
+    console.log('Update Student Profile by id result', result);
+    if (err) {
+      console.log('Update Student Profile by id Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Update Student Profile by id Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
 // Get count of ratings
 
 module.exports = Router;

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 // import jwt_decode from 'jwt-decode';
 import '../../Static/Styles/Credentials.css';
-import { BACK_SERVER_URL } from '../Config';
 import { login } from '../../Actions/credentialActions';
+import { setStudent } from '../../Actions/studentActions';
+import { setEmployer } from '../../Actions/employerActions';
 
 class Login extends Component {
   constructor(props) {
@@ -19,16 +20,18 @@ class Login extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     const { role, email, password } = this.state;
-
-    // Please do an axios call on this url (refer Frontend/.env)
-    // REACT_APP_BACKEND="http://localhost:5000"
-    let url = `${process.env.REACT_APP_BACKEND}/login`
-    // axios.post(url, { role, email, password })
-
+    const url = `${process.env.REACT_APP_BACKEND}/login`;
     axios.post(url, { role, email, password })
       .then((response) => {
+        console.log(response.data);
         if (response.data) {
-          this.props.login(null, null, role);
+          const { _id, ...user } = response.data;
+          if (role === 'Student') {
+            this.props.setStudent(user, _id);
+          } else if (role === 'Employer') {
+            this.props.setEmployer(user, _id);
+          }
+          this.props.login(role);
         }
       });
   }
@@ -86,7 +89,9 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (user, id, role) => dispatch(login(user, id, role)),
+    login: (role) => dispatch(login(role)),
+    setStudent: (user, id) => dispatch(setStudent(user, id)),
+    setEmployer: (user, id) => dispatch(setEmployer(user, id)),
   };
 };
 

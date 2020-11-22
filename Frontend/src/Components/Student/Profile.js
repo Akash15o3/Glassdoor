@@ -1,16 +1,93 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { updateProfile } from '../../Actions/studentActions';
 
-export default class Profile extends Component {
+Modal.setAppElement('#root');
+class Profile extends Component {
   constructor(props) {
     super(props);
+    const { stname, stemail } = this.props.student;
     this.state = {
-
+      open: false,
+      stname,
+      title: '',
+      location: '',
+      stemail
     };
   }
 
+  updateProfile = () => {
+    this.setState({ open: true });
+  }
+
+  closeWithoutSaving = () => {
+    const { stname, stemail } = this.props.student;
+    this.setState({ stname, stemail, open: false });
+  }
+
+  nameChangeHandler = (e) => {
+    this.setState({
+      stname: e.target.value
+    });
+  }
+
+  titleChangeHandler = (e) => {
+    this.setState({
+      title: e.target.value
+    });
+  }
+
+  locationChangeHandler = (e) => {
+    this.setState({
+      location: e.target.value
+    });
+  }
+
+  emailChangeHandler = (e) => {
+    this.setState({
+      stemail: e.target.value
+    });
+  }
+
+  saveUpdates = () => {
+    const { id } = this.props;
+    const { stname, stemail } = this.state;
+    const url = `${process.env.REACT_APP_BACKEND}/students/updateProfile`;
+    axios.post(url, { id, stname, stemail })
+      .then((response) => {
+        console.log(response);
+      });
+    this.props.updateProfile({ stname, stemail });
+    this.setState({ open: false });
+  }
+
   render() {
+    const { stname, title, location, stemail } = this.state;
+    console.log(this.props.student);
     return (
       <div id="studentProfile">
+        <Modal isOpen={this.state.open} onRequestClose={this.closeWithoutSaving} style={{ content: { width: '55%', margin: 'auto' } }}>
+          <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.closeWithoutSaving}>
+            <svg className="SVGInline-svg modal_closeIcon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M13.34 12l5.38-5.38a.95.95 0 00-1.34-1.34L12 10.66 6.62 5.28a.95.95 0 00-1.34 1.34L10.66 12l-5.38 5.38a.95.95 0 001.34 1.34L12 13.34l5.38 5.38a.95.95 0 001.34-1.34z" fill="gray" fillRule="evenodd" />
+            </svg>
+          </span>
+          <h1 style={{ textAlign: 'center' }}>
+            Basic Information
+          </h1>
+          <label className="modalLabel"> Name</label>
+          <input onChange={this.nameChangeHandler} value={stname} type="username" name="name" className="modalInput" />
+          <label className="modalLabel">Title</label>
+          <input onChange={this.titleChangeHandler} value={title} className="modalInput" />
+          <label className="modalLabel">Location</label>
+          <input onChange={this.locationChangeHandler} value={location} className="modalInput" />
+          <label className="modalLabel">Email Address</label>
+          <input onChange={this.emailChangeHandler} value={stemail} type="email" name="email" className="modalInput" />
+          <button className="save" onClick={this.saveUpdates}>Save</button>
+
+        </Modal>
         <div id="profileTabs">
           <div id="addStudentPicture">
             <svg style={{ width: '55px', height: '55px' }} viewBox="0 0 24 24">
@@ -36,13 +113,11 @@ export default class Profile extends Component {
               </svg>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <button className="prof-btn info">Add name</button>
-              <button className="prof-btn info">Add job title</button>
-              <button className="prof-btn info">Add location</button>
-              <br />
-              <button className="prof-btn info">Add email address</button>
-              <button className="prof-btn info">Add website</button>
-              <button className="prof-btn info">Add phone number</button>
+              <button onClick={this.updateProfile} className="prof-btn info">{stname === '' ? 'Add Name' : stname}</button>
+              <button onClick={this.updateProfile} className="prof-btn info">{stemail === '' ? 'Add email' : stemail}</button>
+              <button onClick={this.updateProfile} className="prof-btn info">{title === '' ? 'Add job title' : title}</button>
+              <button onClick={this.updateProfile} className="prof-btn info">{location === '' ? 'Add location' : location}</button>
+              {/* <button className="prof-btn info">Add phone number</button> */}
             </div>
           </div>
           <div className="profileField">
@@ -101,3 +176,18 @@ export default class Profile extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    student: state.student.user,
+    id: state.student.id,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateProfile: (updateInfo) => dispatch(updateProfile(updateInfo)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
