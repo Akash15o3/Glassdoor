@@ -7,7 +7,7 @@ const studentSchema = new Schema({
   stname: String,
   stemail: String,
   stpassword: String,
-  stphoto: String,
+  stphoto: { type: String, default: 'https://glassdoor-273.s3.us-west-1.amazonaws.com/1606091787051-unknown.jpg' },
   // cross-referencing photos added for a company
   cphotos: [{
     url: String,

@@ -63,6 +63,26 @@ function updateStudentProfile(data, callback) {
     }
   });
 }
+function uploadStudentProfilePicture(data, callback) {
+  const { id, stphoto } = data;
+  Students.findByIdAndUpdate(id, { stphoto }, options, (error, results) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error uploading student profile picture',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'text/plain',
+        content: stphoto,
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
   switch (msg.subTopic) {
@@ -82,6 +102,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside update student profile');
       console.log('Message:', msg);
       updateStudentProfile(msg.data, callback);
+      break;
+    }
+    case 'UPLOADPROFILEPICTURE': {
+      console.log('KB: Inside upload student profile picture');
+      console.log('Message:', msg);
+      uploadStudentProfilePicture(msg.data, callback);
       break;
     }
     default: {
