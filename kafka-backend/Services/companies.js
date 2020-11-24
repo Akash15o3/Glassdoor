@@ -1,4 +1,5 @@
 const Companies = require('../Models/CompanyModel');
+const Reviews = require('../Models/ReviewModel');
 
 function getAllCompanies(data, callback) {
   Companies.find({}, (error, companies) => {

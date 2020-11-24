@@ -148,7 +148,7 @@ Router.put('/profile/addPhoto/:cid', (request, response) => {
 
 /*
 // Get number of reviews
-Router.get('/numReviews', (request, response) => {
+Router.post('/numReviews', (request, response) => {
 
 });
 
