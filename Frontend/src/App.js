@@ -4,7 +4,7 @@ import './Static/Styles/App.css';
 import Navbar from './Components/Navbar';
 import Login from './Components/Credentials/Login';
 import Signup from './Components/Credentials/Signup';
-import Student from './Components/Student/Profile';
+import Student from './Components/Student/Home/Home';
 import Employer from './Components/Employer/Employer';
 import EmpProfile from './Components/Employer/Profile';
 import Admin from './Components/Admin/Admin';

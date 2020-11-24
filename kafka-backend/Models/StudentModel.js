@@ -27,6 +27,7 @@ const studentSchema = new Schema({
       enum: ['', 'Primary'],
       default: '',
     },
+    _id: false,
   }],
   stjobpref: {
     searchstatus: {
@@ -37,6 +38,7 @@ const studentSchema = new Schema({
     // required job title
     title: String,
     targetsalary: Number,
+    salarypayperiod: String,
     relocation: {
       type: String,
       enum: ['Yes', 'No'],
@@ -47,7 +49,7 @@ const studentSchema = new Schema({
   // If reviews > 0, only then show more than 5 reviews on fronntend
   streviews: [],
   stdemographics: {
-    race: {
+    race_ethnicity: {
       type: String,
       enum: ['American Indian',
         'Alaska Native',
@@ -58,22 +60,22 @@ const studentSchema = new Schema({
         'White',
         'Refuse to disclose',
       ],
-    },
-    ethnicity: {
-      type: String,
-      enum: ['Hispanic or Latino', 'Not Hispanic or Latino', 'Refuse to disclose'],
+      default: 'Refuse to disclose',
     },
     gender: {
       type: String,
       enum: ['Male', 'Female', 'Non-binary', 'Refuse to disclose'],
+      default: 'Refuse to disclose',
     },
     disability: {
       type: String,
       enum: ['Disabled', 'Not Disabled', 'Refuse to disclose'],
+      default: 'Refuse to disclose',
     },
     veteran: {
       type: String,
       enum: ['Protected Veteran', 'Not a Veteran', 'Refuse to disclose'],
+      default: 'Refuse to disclose',
     },
   },
 },

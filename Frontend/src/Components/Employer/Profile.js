@@ -36,7 +36,7 @@ export default class Profile extends Component {
               </svg>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <button className="prof-btn info">Add/Edit Profile Details</button>
+              <button className="home-btn info">Add/Edit Profile Details</button>
               
             </div>
           </div>
@@ -50,7 +50,7 @@ export default class Profile extends Component {
               </svg>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <button className="prof-btn info">
+              <button className="home-btn info">
                 <strong>Add Mission</strong>
                 {' '}
                 about yourself with a brief summary of your experience.
