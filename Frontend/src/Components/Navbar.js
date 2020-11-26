@@ -11,7 +11,7 @@ import EmployerTabs from './Employer/EmployerTab';
 class Navbar extends Component {
   render() {
     const { isAuth, role } = this.props;
-    const searchBar = role === 'student' ? <SearchBar /> : null;
+    const searchBar = role === 'student' ? <SearchBar history={this.props.history} /> : null;
     const studentTabs = role === 'student' ? <StudentTabs /> : null;
     const employerTabs = role === 'employer' ? <EmployerTabs /> : null;
     const searchBar1 = role === 'employer' ? <SearchBar /> : null;

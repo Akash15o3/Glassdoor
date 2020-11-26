@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-class SearchResults extends Component {
+class CompanySearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,13 +79,19 @@ class SearchResults extends Component {
               </div>
               <div className="ei-contribution-wrap col-4 p-0">
                 <a className="eiCell cell salaries d-inline-block py-sm" href="/Salary/McDonald-s-San-Francisco-Salaries-EI_IE432.0,10_IL.11,24_IM759.htm">
-                  <span className="num h2"> { item.salaryCount }</span>
+                  <span className="num h2">
+                    {' '}
+                    { item.salaryCount }
+                  </span>
                   <span className="subtle"> Salaries</span>
                 </a>
               </div>
               <div className="ei-contribution-wrap col-4 pl-0">
                 <a className="eiCell cell interviews d-inline-block py-sm" href="/Interview/McDonald-s-San-Francisco-Interview-Questions-EI_IE432.0,10_IL.11,24_IM759.htm">
-                  <span className="num h2"> { item.interviewCount }</span>
+                  <span className="num h2">
+                    {' '}
+                    { item.interviewCount }
+                  </span>
                   <span className="subtle"> Inter­views</span>
                 </a>
               </div>
@@ -186,4 +192,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SearchResults);
+export default connect(mapStateToProps)(CompanySearchResults);

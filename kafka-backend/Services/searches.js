@@ -58,11 +58,13 @@ function searchJobsByTitle(data, callback) {
     data.limit = 10;
   }
   // data.limit = 10;
+  // { jtitle: regex }
   Jobs.find({ jtitle: regex })
     .skip(data.skip * data.limit)
     .limit(data.limit)
     .exec((error, jobs) => {
       if (error) {
+        console.log(error);
         const response = {
           status: 401,
           header: 'text/plain',

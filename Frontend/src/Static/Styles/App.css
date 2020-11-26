@@ -178,3 +178,10 @@ height: 100px;
   margin-left:5px;
   cursor: pointer;
 }
+
+#jobSearchResults{
+  display: flex;
+  max-width: 1280px;
+  margin:auto;
+  background-color: white;
+}

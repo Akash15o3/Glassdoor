@@ -5,16 +5,38 @@ import { logout } from '../../Actions/credentialActions';
 import { search } from '../../Actions/studentActions';
 
 class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+    this.state = {
+      search: '',
+      type: 'job'
+    };
+  }
+
   handleClick = () => {
-    const searchText = document.getElementById('searchBox').value;
-    this.props.search(searchText);
-    document.getElementById('searchBox').value = '';
+    const { search, type } = this.state;
+    this.props.search(search);
+    this.props.history.push(`/student/${type}SearchResults`);
+  }
+
+  searchChangeHandler = (e) => {
+    this.setState({
+      search: e.target.value
+    });
+  }
+
+  typeChangeHandler = (e) => {
+    this.setState({
+      type: e.target.value
+    });
   }
 
   render() {
+    const { search } = this.state;
     return (
       <nav id="navbar">
-        <a href="/index.htm" alt="" target="_top" rel="nofollow" data-test="header-glassdoor-logo" aria-label="Glassdoor Logo">
+        <a href={`/${this.props.role}`} alt="" target="_top" rel="nofollow" data-test="header-glassdoor-logo" aria-label="Glassdoor Logo">
           <span className="SVGInline d-flex align-items-center memberHeader__HeaderStyles__brandLogo">
             <svg style={{ marginLeft: '3vw' }} width="202" height="94" viewBox="0 0 163 32">
               <g fill="#0CAA41" fillRule="evenodd">
@@ -23,14 +45,15 @@ class SearchBar extends Component {
             </svg>
           </span>
         </a>
-        <input id="searchBox" type="text" placeholder="Job Title, Keywords, or Company" name="search" style={{ position: 'relative', left: '40px', top: '25px', height: '40px', width: '400px' }} />
-        <select id="options" style={{ position: 'relative', left: '55px', top: '25px' }}>
-          <option value="Jobs">Jobs</option>
-          <option value="Companies">Companies</option>
-          <option value="Salaries">Salaries</option>
-          <option value="Interviews">Interviews</option>
+        <input value={search} onChange={this.searchChangeHandler} id="searchBox" type="text" placeholder="Job Title, Keywords, or Company" name="search" style={{ position: 'relative', left: '40px', top: '25px', height: '40px', width: '400px' }} />
+        <select onChange={this.typeChangeHandler} id="options" style={{ position: 'relative', left: '55px', top: '25px' }}>
+          <option value="job">Jobs</option>
+          <option value="company">Companies</option>
+          <option value="salary">Salaries</option>
+          <option value="interview">Interviews</option>
         </select>
-        <div><Link to="/student/searchresults" onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</Link></div>
+        <div><button onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</button></div>
+        {/* <div><Link to="/student/searchresults" onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</Link></div> */}
         {this.props.isAuth ? (
           <Link style={{ marginLeft: 'auto' }} to="/" onClick={this.props.logout}>
             <span className="glyphicon glyphicon-user" />
@@ -45,6 +68,7 @@ class SearchBar extends Component {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.credentials.isAuth,
+    role: state.credentials.role,
   };
 };
 
