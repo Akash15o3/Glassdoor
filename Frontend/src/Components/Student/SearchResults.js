@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { getCNameAndClocation } from '../../Actions/studentActions';
 
 class SearchResults extends Component {
   constructor(props) {
@@ -27,6 +29,12 @@ class SearchResults extends Component {
       });
   }
 
+  handleClick = (e) => {
+    const element = e.target.id;
+    const arr = element.split(',');
+    this.props.getCNameAndClocation(arr[0], arr[1]);
+  }
+
   render() {
     const { companies } = this.state;
     const contents = companies.map((item) => (
@@ -37,11 +45,11 @@ class SearchResults extends Component {
               <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
               <div className="col-9 pr-0">
                 <h2>
-                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                  <Link id={`${item.cname},${item.clocation}`} onClick={this.handleClick} to="/student/company">
                     {' '}
                     {item.cname}
                     {' '}
-                  </a>
+                  </Link>
                   <div>
                     <span>
                       <span className="bigRating strong margRtSm h2">3.5</span>
@@ -186,4 +194,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SearchResults);
+const mapDisptachToProps = (dispatch) => {
+  return {
+    getCNameAndClocation: (cname, clocation) => dispatch(getCNameAndClocation(cname, clocation))
+  };
+};
+
+export default connect(mapStateToProps, mapDisptachToProps)(SearchResults);

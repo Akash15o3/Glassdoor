@@ -22,9 +22,18 @@ const companySchema = new Schema({
   cceo: String,
 
   // number of reviews, salary reviews, and interview reviews for a company
-  reviewCount: Number,
-  salaryCount: Number,
-  interviewCount: Number,
+  reviewCount: {
+    type: Number,
+    default: 0,
+  },
+  salaryCount: {
+    type: Number,
+    default: 0,
+  },
+  interviewCount: {
+    type: Number,
+    default: 0,
+  },
 
   // Average rating overall/recommended/ceo approval will be deduced from reviews
   // review ids that are featured will be stored here

@@ -24,7 +24,7 @@ class Navbar extends Component {
             className="navbar navbar-inverse"
             style={{ backgroundColor: 'white' }}
           >
-            <img id="logo" src={logo} />
+            <img id="logo" src={logo}/>
           </nav>
         )}
         {searchBar}

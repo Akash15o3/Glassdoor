@@ -146,9 +146,26 @@ Router.put('/profile/addPhoto/:cid', (request, response) => {
   });
 });
 
+Router.post('/specificCompany', (request, response) => {
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params, ...request.body };
+
+  kafka.make_request('companiesTopic', 'SPECIFICCOMPANY', data, (err, result) => {
+    if (err) {
+      console.log('Company specific company Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Company specific company Kafka error');
+    } else {
+      response.send(result);
+    }
+  });
+});
+
 /*
 // Get number of reviews
-Router.post('/numReviews', (request, response) => {
+Router.get('/numReviews', (request, response) => {
 
 });
 

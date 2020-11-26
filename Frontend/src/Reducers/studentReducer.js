@@ -21,6 +21,12 @@ const studentReducer = (state = initialState, action) => {
           ...action.updateInfo
         }
       };
+    case 'CNAME_CLOCATION':
+      return {
+        ...state,
+        cname: action.cname,
+        clocation: action.clocation,
+      };
     case 'LOGOUT':
       return {
       };

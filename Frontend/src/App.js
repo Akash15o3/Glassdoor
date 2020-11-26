@@ -10,6 +10,7 @@ import EmpProfile from './Components/Employer/Profile';
 import Admin from './Components/Admin/Admin';
 import Jobs from './Components/Employer/jobs';
 import SearchResults from './Components/Student/SearchResults';
+import CompanyHomePage from './Components/Student/CompanyHomePage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/admin" component={Admin} />
         <Route path="/employerJobs" component={Jobs} />
         <Route path="/student/searchresults" component={SearchResults} />
+        <Route path="/student/company" component={CompanyHomePage} />
       </div>
     </BrowserRouter>
   );

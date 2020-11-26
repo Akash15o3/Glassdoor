@@ -1,5 +1,4 @@
 const Companies = require('../Models/CompanyModel');
-const Reviews = require('../Models/ReviewModel');
 
 function getAllCompanies(data, callback) {
   Companies.find({}, (error, companies) => {
@@ -203,6 +202,17 @@ function addPhoto(data, callback) {
   });
 }
 
+function specificCompany(data, callback) {
+  Companies.findOne({ cname: data.cname, clocation: data.clocation }, (error, company) => {
+    if (error) {
+      console.log(error);
+      return callback(error, null);
+    }
+
+    return callback(null, company);
+  });
+}
+
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'GETALL': {
@@ -244,6 +254,13 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside delete featured review to company');
       console.log('Message:', msg);
       addPhoto(msg.data, callback);
+      break;
+    }
+
+    case 'SPECIFICCOMPANY': {
+      console.log('KB: Inside specific company for company');
+      console.log('Message:', msg);
+      specificCompany(msg.data, callback);
       break;
     }
 
