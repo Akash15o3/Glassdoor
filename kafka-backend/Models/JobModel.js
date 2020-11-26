@@ -15,6 +15,8 @@ const jobSchema = new Schema({
   jaddress: String,
   jlatitude: String,
   jlongitude: String,
+  jsalarylow: Number,
+  jsalaryhigh: Number,
   jwork: {
     type: String,
     enum: ['Remote', 'In-person'],
