@@ -1,36 +1,42 @@
-import React, { Component } from 'react';
-import { Col, Card, FormGroup, Form } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Col, Card, FormGroup, Form } from "react-bootstrap";
+import { connect } from "react-redux";
 // import Navbar from '../Navbar.js';
 // import DatePicker from 'react-bootstrap-date-picker';
 // import Dropdown from 'react-dropdown';
 
+import Modal from "react-modal";
+import axios from "axios";
+
+Modal.setAppElement("#root");
 class Jobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
+      title: "",
       postingDate: new Date(),
       deadline: new Date(),
-      city: '',
-      cstate: '',
-      country: '',
-      salary: '',
-      description: '',
+      city: "",
+      cstate: "",
+      country: "",
+      salary: "",
+      description: "",
     };
 
-    this.onChangePostingDateHandler = this.onChangePostingDateHandler.bind(this);
+    this.onChangePostingDateHandler = this.onChangePostingDateHandler.bind(
+      this
+    );
     // this.onPostSubmit = this.onPostSubmit.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
   }
 
   componentWillMount() {
-    document.title = 'Jobs Page';
+    document.title = "Jobs Page";
   }
 
   onChangeHandler(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -43,9 +49,7 @@ class Jobs extends Component {
   render() {
     return (
       <div>
-        <div>
-          {/* <Navbar /> */}
-        </div>
+        <div>{/* <Navbar /> */}</div>
         <div className="container">
           <div>
             <div className="main-div-createJobPost">
@@ -159,7 +163,9 @@ class Jobs extends Component {
 
                 <FormGroup check row>
                   <Col sm={{ offset: 5 }}>
-                    <button type="submit" className="btn btn-primary">Post Job Opening</button>
+                    <button type="submit" className="btn btn-primary">
+                      Post Job Opening
+                    </button>
                   </Col>
                 </FormGroup>
               </form>

@@ -282,7 +282,7 @@ export default class Job extends Component {
           </div>
           <div style={{ textAlign: "center" }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cname === "" ? "Add Name" : cname}
+              +++
             </button>
 
             {/* <button className="home-btn info">Add phone number</button> */}
