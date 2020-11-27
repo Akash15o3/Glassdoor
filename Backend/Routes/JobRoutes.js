@@ -27,12 +27,37 @@ const Router = express.Router();
 // });
 
 // Get a particular job
-Router.get("/:id", (request, response) => {
+// Router.get("/:id", (request, response) => {
+//   console.log("\nEndpoint GET: get all jobs");
+//   console.log("Req Body: ", request.body);
+//   const data = { ...request.params };
+
+//   kafka.make_request("jobsTopic", "GETONE", data, (err, result) => {
+//     console.log("Get one jobs result ", result);
+//     if (err) {
+//       console.log("Get one jobs Kafka error");
+//       response.writeHead(401, {
+//         "Content-Type": "text/plain",
+//       });
+//       response.end("Get one jobs Kafka error");
+//     } else {
+//       response.writeHead(result.status, {
+//         "Content-Type": result.header,
+//       });
+//       console.log(result.content);
+//       response.end(result.content);
+//     }
+//   });
+// });
+
+
+// Get a particular job
+Router.get("/getJob", (request, response) => {
   console.log("\nEndpoint GET: get all jobs");
-  console.log("Req Body: ", request.body);
+  console.log("Req Body: ", request.query);
   const data = { ...request.params };
 
-  kafka.make_request("jobsTopic", "GETONE", data, (err, result) => {
+  kafka.make_request("jobsTopic", "GETONE", request.query, (err, result) => {
     console.log("Get one jobs result ", result);
     if (err) {
       console.log("Get one jobs Kafka error");
@@ -44,6 +69,7 @@ Router.get("/:id", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
+      console.log("Result get 1 job: result.content")
       console.log(result.content);
       response.end(result.content);
     }

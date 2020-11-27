@@ -24,8 +24,30 @@ function getAllJobs(data, callback) {
   });
 }
 
+// function getOneJob(data, callback) {
+//   Jobs.findById(data.id, (error, job) => {
+//     if (error) {
+//       const response = {
+//         status: 401,
+//         header: "text/plain",
+//         content: "Error fetching jobs",
+//       };
+//       callback(null, response);
+//     } else {
+//       const response = {
+//         status: 200,
+//         header: "application/json",
+//         content: JSON.stringify(job),
+//       };
+//       callback(null, response);
+//     }
+//   });
+// }
+
 function getOneJob(data, callback) {
-  Jobs.findById(data.id, (error, job) => {
+  Jobs.find({cname : data.cname}, (error, job) => {
+    console.log("Kafka backend job: ", job);
+    console.log("kafka backend data: ", data)
     if (error) {
       const response = {
         status: 401,
@@ -39,6 +61,7 @@ function getOneJob(data, callback) {
         header: "application/json",
         content: JSON.stringify(job),
       };
+      console.log("kafka be job response: ", response.content)
       callback(null, response);
     }
   });

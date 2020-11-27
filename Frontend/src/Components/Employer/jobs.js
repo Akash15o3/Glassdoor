@@ -188,6 +188,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 
 import Modal from 'react-modal';
+import { updateProfileEm } from '../../Actions/employerActions';
 
 Modal.setAppElement('#root');
 class JobSearchResults extends Component {
@@ -206,14 +207,15 @@ class JobSearchResults extends Component {
 
   componentDidMount() {
     const { searchQuery } = this.props;
-    const url = `${process.env.REACT_APP_BACKEND}/search/jobs`;
+    const url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${sessionStorage.getItem('cname')}`;
 
-    axios.post(url, { jtitle: searchQuery })
+    axios.get(url)
       .then((response) => {
         if (response.data) {
           this.setState({
             jobs: response.data,
           });
+          console.log('Jobs response fe');
           console.log(response.data);
         }
       });
@@ -269,10 +271,12 @@ class JobSearchResults extends Component {
     });
   }
 
-  filter
-
   render() {
+    // const alljobs = this.state;
+    // console.log('all jobs', alljobs);
     const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication } = this.state;
+    console.log('jobs frontend jobs', jobs);
+    console.log('selected index: ', selectedIndex);
     const selectedJob = jobs[selectedIndex];
     const jobSearchResults = jobs.map((job, i) => {
       const date = new Date(job.jposted);
@@ -280,11 +284,11 @@ class JobSearchResults extends Component {
       return (
         <li className={`jl react-job-listing gdGrid ${selectedIndex === i ? 'selected' : ''}`} index={i} onClick={this.selectJob}>
           <div className="d-flex flex-column css-fbt9gv e1rrn5ka2">
-            <a target="_blank" className="jobLink" style={{ pointerEvents: 'all' }}><span className=" css-9ujsbx euyrj9o1"><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's Logo" title="McDonald's Logo" /></span></a>
-            <span className="compactStars ">
+            <a target="_blank" className="jobLink" style={{ pointerEvents: 'all' }}><span className=" css-9ujsbx euyrj9o1" /></a>
+            {/* <span className="compactStars ">
               3.5
               <i className="star" />
-            </span>
+            </span> */}
           </div>
           <div className="d-flex flex-column pl-sm css-nq3w9f">
             <div className="jobHeader d-flex justify-content-between align-items-start">

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Modal from "react-modal";
-import axios from "axios";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
+import axios from 'axios';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 export default class Profile extends Component {
   constructor(props) {
@@ -11,18 +11,19 @@ export default class Profile extends Component {
     this.state = {
       open: false,
       cname,
-      cwebsite: "",
-      csize: "",
-      ctype: "",
-      crevenue: "",
-      cheadquarters: "",
-      cindustry: "",
-      cfounded: "",
-      cmission: "",
-      cceo: "",
-      clocation: "",
+      cwebsite: '',
+      csize: '',
+      ctype: '',
+      crevenue: '',
+      cheadquarters: '',
+      cindustry: '',
+      cfounded: '',
+      cmission: '',
+      cceo: '',
+      clocation: '',
       cemail,
     };
+    sessionStorage.setItem('cname', cname);
   }
 
   updateProfileEm = () => {
@@ -139,9 +140,9 @@ export default class Profile extends Component {
           onRequestClose={this.closeWithoutSaving}
           style={{
             content: {
-              width: "55%",
-              margin: "auto",
-              border: "2px solid black",
+              width: '55%',
+              margin: 'auto',
+              border: '2px solid black',
             },
           }}
         >
@@ -164,7 +165,7 @@ export default class Profile extends Component {
               />
             </svg>
           </span>
-          <h1 style={{ textAlign: "center" }}>Company Information</h1>
+          <h1 style={{ textAlign: 'center' }}>Company Information</h1>
           <label className="modalLabel"> Name</label>
           <input
             onChange={this.nameChangeHandler}
@@ -256,11 +257,11 @@ export default class Profile extends Component {
           </button>
         </Modal>
         <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Info</h1>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>Info</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -274,33 +275,33 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cname === "" ? "Add Name" : cname}
+              {cname === '' ? 'Add Name' : cname}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cwebsite === "" ? "Add Website" : cwebsite}
+              {cwebsite === '' ? 'Add Website' : cwebsite}
             </button>
 
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {clocation === "" ? "Add location" : clocation}
+              {clocation === '' ? 'Add location' : clocation}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cheadquarters === "" ? "Add Headquarters" : cheadquarters}
+              {cheadquarters === '' ? 'Add Headquarters' : cheadquarters}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cemail === "" ? "Add email" : cemail}
+              {cemail === '' ? 'Add email' : cemail}
             </button>
 
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>About Company</h1>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>About Company</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -314,33 +315,33 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cceo === "" ? "CEO" : cceo}
+              {cceo === '' ? 'CEO' : cceo}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cfounded === "" ? "Founded in" : cfounded}
+              {cfounded === '' ? 'Founded in' : cfounded}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cindustry === "" ? "Industry" : cindustry}
+              {cindustry === '' ? 'Industry' : cindustry}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {ctype === "" ? "Add Type" : ctype}
+              {ctype === '' ? 'Add Type' : ctype}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {csize === "" ? "Add Company Size" : csize}
+              {csize === '' ? 'Add Company Size' : csize}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {crevenue === "" ? "Add Revenue" : crevenue}
+              {crevenue === '' ? 'Add Revenue' : crevenue}
             </button>
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Mission</h1>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>Mission</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -354,18 +355,18 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cmission === "" ? "Mission of the Company" : cmission}
+              {cmission === '' ? 'Mission of the Company' : cmission}
             </button>
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Posted Jobs</h1>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>Posted Jobs</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -379,7 +380,7 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <button className="home-btn info">
               <strong>ALL JOBS</strong>
             </button>
