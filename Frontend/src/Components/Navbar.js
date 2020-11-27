@@ -17,7 +17,7 @@ class Navbar extends Component {
     const searchBar1 = role === 'employer' ? <SearchBar /> : null;
     return (
       <div>
-        {isAuth ? (
+        {isAuth === true ? (
           <Redirect to={`/${role}`} />
         ) : (
           <nav

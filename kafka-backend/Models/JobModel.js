@@ -6,6 +6,8 @@ const { Schema } = mongoose;
 const jobSchema = new Schema({
   // Embedded company name
   cname: String,
+  crating: Number,
+  cphoto: String,
   jtitle: String,
   jindustry: String,
   jcity: String,
@@ -15,8 +17,12 @@ const jobSchema = new Schema({
   jaddress: String,
   jlatitude: String,
   jlongitude: String,
-  jsalarylow: Number,
-  jsalaryhigh: Number,
+  jsalary: Number,
+  jtype: {
+    type: String,
+    enum: ['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'],
+    default: 'Full-time',
+  },
   jwork: {
     type: String,
     enum: ['Remote', 'In-person'],

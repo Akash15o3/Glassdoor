@@ -72,6 +72,7 @@ function searchJobsByTitle(data, callback) {
         };
         callback(null, response);
       } else if (jobs) {
+        jobs.sort((a, b) => Date.parse(a.jposted) - Date.parse(b.jposted));
         const response = {
           status: 200,
           header: 'application/json',
