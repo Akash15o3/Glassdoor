@@ -145,6 +145,7 @@ Router.post('/updateJobTitle', (request, response) => {
   kafka.make_request('studentsTopic', 'UPDATEJOBTITLE', data, (err, result) => {
     console.log('Update Student Job Title by id result', result);
     if (err) {
+      console.log(err);
       console.log('Update Student Job Title by id Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
@@ -237,6 +238,29 @@ Router.post('/updateDemographics', (request, response) => {
         'Content-Type': 'text/plain',
       });
       response.end('Update Student Demographics by id Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
+Router.post('/submitApplication', (request, response) => {
+  console.log('\nEndpoint POST: post student submit application');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('studentsTopic', 'SUBMITAPPLICATION', data, (err, result) => {
+    console.log(err);
+    console.log('Student Submit Application result', result);
+    if (err) {
+      console.log('Student Submit Application Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Student Submit Application Kafka error');
     } else {
       response.writeHead(result.status, {
         'Content-Type': result.header,

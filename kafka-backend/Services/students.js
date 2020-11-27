@@ -1,4 +1,5 @@
 const Students = require('../Models/StudentModel');
+const Application = require('../Models/ApplicationModel');
 
 const options = {
   useFindAndModify: false,
@@ -228,6 +229,28 @@ function updateStudentDemographics(data, callback) {
     }
   });
 }
+function studentSubmitApplication(data, callback) {
+  new Application({ ...data })
+    .save((err, app) => {
+      if (err) {
+        console.log(err);
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error saving application',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(app),
+        };
+        console.log(response);
+        callback(null, response);
+      }
+    });
+}
 
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
@@ -296,6 +319,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside update student demographics');
       console.log('Message:', msg);
       updateStudentDemographics(msg.data, callback);
+      break;
+    }
+    case 'SUBMITAPPLICATION': {
+      console.log('KB: Inside student submit application');
+      console.log('Message:', msg);
+      studentSubmitApplication(msg.data, callback);
       break;
     }
     default: {
