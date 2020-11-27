@@ -1,16 +1,23 @@
-const initialState = { };
+const initialState = {};
 
 const employerReducer = (state = initialState, action) => {
   console.log(action);
   switch (action.type) {
-    case 'SETEMPLOYER':
+    case "SETEMPLOYER":
       return {
         user: action.user,
-        id: action.id
+        id: action.id,
       };
-    case 'LOGOUT':
+    case "UPDATE_PROFILE_EM":
       return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.updateInfo,
+        },
       };
+    case "LOGOUT":
+      return {};
     default:
       return state;
   }

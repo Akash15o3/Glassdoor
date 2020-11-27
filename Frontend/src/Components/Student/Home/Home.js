@@ -86,7 +86,7 @@ class Home extends Component {
       <div id="studentProfile">
         <div id="profileTabs">
           <div id="addStudentPicture">
-            <svg style={{ width: '55px', height: '55px', marginRight: '10px' }}>
+            <svg style={{ width: '55px', height: '55px', marginTop: '10px', marginRight: '10px' }}>
               {/* <path d="M12 7a3 3 0 103 3 3 3 0 00-3-3zm0 9a6 6 0 00-5.33 3.25 9 9 0 0010.66 0A6 6 0 0012 16zm0-14A10 10 0 112 12 10 10 0 0112 2z" fill="grey" fillRule="evenodd" /> */}
               <image style={{ width: '55px', height: '55px' }} href={this.state.stphoto} />
             </svg>

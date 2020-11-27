@@ -55,7 +55,7 @@ class SearchBar extends Component {
         <div><button onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</button></div>
         {/* <div><Link to="/student/searchresults" onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</Link></div> */}
         {this.props.isAuth ? (
-          <Link style={{ marginLeft: 'auto' }} to="/" onClick={this.props.logout}>
+          <Link style={{ marginLeft: 'auto' }} to="/" onClick={this.props.logout} style={{ marginLeft: 'auto', marginRight: '10px', fontSize: '20px', position: 'relative', top: '35px' }}>
             <span className="glyphicon glyphicon-user" />
             Logout
           </Link>

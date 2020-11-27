@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Student extends Component {
   render() {
     return (
       <div id="studentTabs">
-
-        <Link
-          to="/employerJobs"
-        >
-          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
+        <Link to="/employerJobs">
+          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#DFF7E7"
@@ -23,10 +20,8 @@ export default class Student extends Component {
           </svg>
           <h3 className="studentTabTitle">Jobs</h3>
         </Link>
-        <Link
-          to="/employerReviews"
-        >
-          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
+        <Link to="/employerReviews">
+          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#0CAA41"
@@ -57,10 +52,8 @@ export default class Student extends Component {
           </svg>
           <h3 className="studentTabTitle">Reviews</h3>
         </Link>
-        <Link
-          to="/employerDemographics"
-        >
-          <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
+        <Link to="/employerReport">
+          <svg style={{ width: "48px", height: "48px" }} viewBox="0 0 48 48">
             <g fill="none" fillRule="evenodd">
               <path
                 fill="#0CAA41"
@@ -72,7 +65,7 @@ export default class Student extends Component {
               />
             </g>
           </svg>
-          <h3 className="studentTabTitle">Demographics</h3>
+          <h3 className="studentTabTitle">Report</h3>
         </Link>
       </div>
     );

@@ -19,3 +19,11 @@ export const updateProfile = (updateInfo) => {
     updateInfo
   };
 };
+
+export const getCNameAndClocation = (cname, clocation) => {
+  return {
+    type: 'CNAME_CLOCATION',
+    cname,
+    clocation,
+  };
+};
