@@ -181,6 +181,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Card, Row, Col, NavLink } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -205,6 +206,7 @@ class JobSearchResults extends Component {
       ajobid: '',
       jobapplicants: []
     };
+    this.getApplicantsHandler = this.getApplicantsHandler.bind(this);
   }
 
   componentDidMount() {
@@ -243,10 +245,34 @@ class JobSearchResults extends Component {
   }
 
   jobInfoStateChangeHandler = (e) => {
-    console.log(e.currentTarget.value);
+    console.log('Inside jobInfoStateChangeHandler', e.currentTarget.getAttribute('value'));
     this.setState({
       jobInfoState: e.currentTarget.getAttribute('value')
     });
+
+    if (e.currentTarget.getAttribute('value') === 'japplicants') {
+      axios.defaults.withCredentials = true;
+      const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
+      axios.get(url)
+        .then((response, err) => {
+          if (response.data) {
+            this.setState({
+              jobapplicants: response.data,
+              // jobInfoState: e.currentTarget.getAttribute('value')
+
+            });
+            console.log('Jobs applicants response fe');
+            console.log(response.data);
+            console.log('job applicants: ');
+            console.log(this.state.jobapplicants);
+          } else {
+            console.log('ERROR IN RES! ', err);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+    }
+    // console.log('jobinfo state: ', this.state.jobInfoState);
   }
 
   resumeChangeHandler = (e) => {
@@ -275,7 +301,7 @@ class JobSearchResults extends Component {
     });
   }
 
-  getApplicantsHandler = (e) => {
+  getApplicantsHandler = () => {
     axios.defaults.withCredentials = true;
     const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
     axios.get(url)
@@ -283,7 +309,7 @@ class JobSearchResults extends Component {
         if (response.data) {
           this.setState({
             jobapplicants: response.data,
-            jobInfoState: e.currentTarget.getAttribute('value')
+            // jobInfoState: e.currentTarget.getAttribute('value')
 
           });
           console.log('Jobs applicants response fe');
@@ -330,6 +356,20 @@ class JobSearchResults extends Component {
         </li>
       );
     });
+
+    const details = this.state.jobapplicants.map(
+      ({
+        acoverletter,
+        aapplierid
+      }) => {
+        return (
+          <tr>
+            <td>{acoverletter}</td>
+            <td>{aapplierid}</td>
+          </tr>
+        );
+      }
+    );
 
     return (
       <div style={{ marginTop: '15px' }}>
@@ -442,8 +482,9 @@ class JobSearchResults extends Component {
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jdescription' ? 'active' : ''}`} data-test="tab" value="jdescription"><span>Description</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jresponsibilities' ? 'active' : ''}`} data-test="tab" value="jresponsibilities"><span>Responsibilites</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jqualifications' ? 'active' : ''}`} data-test="tab" value="jqualifications"><span>Qualifications</span></div>
-                            <div onClick={this.getApplicantsHandler} className={`tab ${jobInfoState === 'japplicants' ? 'active' : ''}`} data-test="tab" value="japplicants"><span>Applicants</span></div>
-
+                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'japplicants' ? 'active' : ''}`} data-test="tab" value="japplicants">
+                              <span>Applicants</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -453,6 +494,7 @@ class JobSearchResults extends Component {
                           {selectedJob ? selectedJob[jobInfoState] : (
                             null
                           )}
+
                         </div>
                       </div>
                     </div>
