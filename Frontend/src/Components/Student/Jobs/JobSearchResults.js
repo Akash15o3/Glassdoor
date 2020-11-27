@@ -141,7 +141,8 @@ class JobSearchResults extends Component {
   submitApplication = () => {
     const url = `${process.env.REACT_APP_BACKEND}/students/submitApplication`;
     const { jobs, selectedIndex, resume, coverLetter } = this.state;
-    const data = { ajobid: jobs[selectedIndex]._id, aapplierid: this.props.id, aresume: resume, acoverletter: coverLetter };
+    const { _id, cname, jtitle } = jobs[selectedIndex];
+    const data = { ajobid: _id, aapplierid: this.props.id, aresume: resume, acoverletter: coverLetter, cname, jtitle };
     console.log(data);
     axios.post(url, data)
       .then((response) => {

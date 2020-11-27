@@ -98,7 +98,16 @@ cursor: pointer;
 display: inline-block;
 outline: none;
 }
-
+.withdraw-btn {
+  border: none;
+  background-color: inherit;
+  padding: 14px 28px;
+  font-size: 16px;
+  display: inline-block;
+  outline: none;
+  color:green;
+  font-weight: bold;
+  }
 
 .home-btn:hover {color: blue}
 
@@ -258,4 +267,29 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+
+table {
+  width: 95%;
+margin: auto;
+font-family: arial, sans-serif;
+border-collapse: collapse;
+}
+
+th{
+  font-weight: bold;
+}
+td, th {
+font-size: 16px;
+font-family: 'arial';
+border: 1px solid #dddddd;
+text-align: center;
+padding: 8px;
+}
+
+tr:nth-child(odd) {
+background-color:white;
+}
+tr:nth-child(even) {
+background-color: powderblue;
 }

@@ -247,7 +247,28 @@ Router.post('/updateDemographics', (request, response) => {
     }
   });
 });
-
+Router.post('/applications', (request, response) => {
+  console.log('\nEndpoint POST: get student applications');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('studentsTopic', 'GETAPPLICATIONS', data, (err, result) => {
+    console.log(err);
+    console.log('Student Get Application result', result);
+    if (err) {
+      console.log('Student Get Application Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Student Get Application Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
 Router.post('/submitApplication', (request, response) => {
   console.log('\nEndpoint POST: post student submit application');
   console.log('Req Body: ', request.body);
@@ -261,6 +282,28 @@ Router.post('/submitApplication', (request, response) => {
         'Content-Type': 'text/plain',
       });
       response.end('Student Submit Application Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+Router.post('/withdrawApplication', (request, response) => {
+  console.log('\nEndpoint POST: post student withdraw application');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('studentsTopic', 'WITHDRAWAPPLICATION', data, (err, result) => {
+    console.log(err);
+    console.log('Student Withdraw Application result', result);
+    if (err) {
+      console.log('Student Withdraw Application Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Student Withdraw Application Kafka error');
     } else {
       response.writeHead(result.status, {
         'Content-Type': result.header,

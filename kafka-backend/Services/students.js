@@ -229,6 +229,27 @@ function updateStudentDemographics(data, callback) {
     }
   });
 }
+function getStudentApplications(data, callback) {
+  const { aapplierid } = data;
+  Application.find({ aapplierid }, (error, results) => {
+    if (error) {
+      console.log(error);
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error getting student applications',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(results),
+      };
+      callback(null, response);
+    }
+  });
+}
 function studentSubmitApplication(data, callback) {
   new Application({ ...data })
     .save((err, app) => {
@@ -251,7 +272,26 @@ function studentSubmitApplication(data, callback) {
       }
     });
 }
-
+function studentWithdrawApplication(data, callback) {
+  const { id } = data;
+  Application.findByIdAndUpdate(id, { astatus: 'Withdrawn' }, options, (error, results) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error withdrawing student application',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(results),
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
   switch (msg.subTopic) {
@@ -321,10 +361,22 @@ function handleRequest(msg, callback) {
       updateStudentDemographics(msg.data, callback);
       break;
     }
+    case 'GETAPPLICATIONS': {
+      console.log('KB: Inside student get applications');
+      console.log('Message:', msg);
+      getStudentApplications(msg.data, callback);
+      break;
+    }
     case 'SUBMITAPPLICATION': {
       console.log('KB: Inside student submit application');
       console.log('Message:', msg);
       studentSubmitApplication(msg.data, callback);
+      break;
+    }
+    case 'WITHDRAWAPPLICATION': {
+      console.log('KB: Inside student withdraw application');
+      console.log('Message:', msg);
+      studentWithdrawApplication(msg.data, callback);
       break;
     }
     default: {
