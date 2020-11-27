@@ -20,7 +20,9 @@ class JobSearchResults extends Component {
       resume: null,
       coverLetter: '',
       showJobApplication: false,
-      address: ''
+      address: '',
+      minSalary: 0,
+      maxSalary: Infinity
     };
   }
 
@@ -34,21 +36,39 @@ class JobSearchResults extends Component {
           this.setState({
             jobs: response.data,
           });
+          this.allJobs = response.data;
           console.log(response.data);
         }
       });
   }
 
-  handleChange = (address) => {
+  handleAddressChange = (address) => {
     this.setState({ address });
   };
 
-  // handleSelect = (address) => {
-  //   geocodeByAddress(address)
-  //     .then((results) => getLatLng(results[0]))
-  //     .then((latLng) => console.log('Success', latLng))
-  //     .catch((error) => console.error('Error', error));
-  // };
+  handleAddressSelect = (address) => {
+    const { jobs } = this.state;
+    /* global google */
+    const service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [address],
+        destinations: jobs.map((job) => `${job.jcity}, ${job.jstate}`),
+        travelMode: 'DRIVING'
+      }, (response, status) => {
+        if (status === 'OK') {
+          const { elements } = response.rows[0];
+          elements.forEach((item, i) => {
+            jobs[i].distance = item.distance;
+          });
+          jobs.sort((a, b) => {
+            return a.distance.value - b.distance.value;
+          });
+          this.setState({ address, jobs });
+        }
+      }
+    );
+  };
 
   selectJob = (e) => {
     this.setState({
@@ -89,7 +109,48 @@ class JobSearchResults extends Component {
     });
   }
 
-  filter
+  sortTypeChangeHandler = (e) => {
+    const sortType = e.target.value;
+    const { jobs } = this.state;
+    if (sortType === 'Date') jobs.sort((a, b) => Date.parse(a.jposted) - Date.parse(b.jposted));
+    else if (sortType === 'Rating') jobs.sort((a, b) => b.crating - a.crating);
+    this.setState({ jobs });
+  }
+
+  jobTypeFilterChangeHandler = (e) => {
+    const jobs = this.allJobs.filter((job) => job.jtype === e.target.value);
+    this.setState({ jobs });
+  }
+
+  salaryFilterChangeHandler = (e) => {
+    const salaryType = e.target.getAttribute('salaryType');
+    let{ minSalary, maxSalary } = this.state;
+    if (salaryType === 'min') minSalary = parseInt(e.target.value);
+    else if (salaryType === 'max') maxSalary = parseInt(e.target.value);
+    if (Number.isNaN(minSalary)) minSalary = 0;
+    else if (Number.isNaN(maxSalary)) maxSalary = Infinity;
+    if (minSalary === 0 && maxSalary === Infinity) {
+      this.setState({ jobs: this.allJobs });
+      return;
+    }
+    console.log(`Min Salary: ${minSalary}, Max Salary: ${maxSalary}`);
+    const jobs = this.allJobs.filter((job) => job.jsalary >= minSalary && job.jsalary <= maxSalary);
+    this.setState({ jobs, minSalary, maxSalary });
+  }
+
+  submitApplication = () => {
+    const url = `${process.env.REACT_APP_BACKEND}/students/submitApplication`;
+    const { jobs, selectedIndex, resume, coverLetter } = this.state;
+    const data = { ajobid: jobs[selectedIndex]._id, aapplierid: this.props.id, aresume: resume, acoverletter: coverLetter };
+    console.log(data);
+    axios.post(url, data)
+      .then((response) => {
+        if (response.data) {
+          console.log(response.data);
+          this.toggleJobApplication();
+        }
+      });
+  }
 
   render() {
     const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication } = this.state;
@@ -102,7 +163,7 @@ class JobSearchResults extends Component {
           <div className="d-flex flex-column css-fbt9gv e1rrn5ka2">
             <a target="_blank" className="jobLink" style={{ pointerEvents: 'all' }}><span className=" css-9ujsbx euyrj9o1"><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's Logo" title="McDonald's Logo" /></span></a>
             <span className="compactStars ">
-              3.5
+              {job.crating}
               <i className="star" />
             </span>
           </div>
@@ -114,9 +175,15 @@ class JobSearchResults extends Component {
             <div style={{ marginBottom: '10px' }} className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
               <span className="loc css-nq3w9f pr-xxsm">{`${job.jcity}, ${job.jstate}`}</span>
             </div>
-            <div className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
+            <div style={{ marginBottom: '10px' }} className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
               <span className="loc css-nq3w9f pr-xxsm">{posted_on}</span>
             </div>
+            {job.jsalary
+              ? (
+                <div className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
+                  <span className="loc css-nq3w9f pr-xxsm">{`$${job.jsalary}/hour`}</span>
+                </div>
+              ) : null}
           </div>
         </li>
       );
@@ -147,23 +214,21 @@ class JobSearchResults extends Component {
             <label style={{ display: 'block', marginBottom: '10px', }}>Cover Letter </label>
             <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none' }} value={coverLetter} onChange={this.coverLetterChangeHandler} rows="10" cols="50" />
           </div>
-          <button className="save" onClick={this.saveUpdates}>Apply</button>
+          <button onClick={this.submitApplication} className="save">Apply</button>
         </Modal>
         <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
-              <select className="filter">
-                <option>Recent</option>
-                <option>Highest Rated</option>
+              <select onChange={this.sortTypeChangeHandler} on className="filter">
+                <option value="Date">Recent</option>
+                <option value="Rating">Highest Rated</option>
               </select>
-              <input className="filter" placeholder="Minimum Salary" />
-              <input className="filter" placeholder="Maximum Salary" />
               {/* <input className="filter" placeholder="Location" /> */}
               <PlacesAutocomplete
                 className="filter"
                 value={this.state.address}
-                onChange={this.handleChange}
-                onSelect={this.handleSelect}
+                onChange={this.handleAddressChange}
+                onSelect={this.handleAddressSelect}
               >
                 {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                   <div>
@@ -173,7 +238,7 @@ class JobSearchResults extends Component {
                         className: 'location-search-input filter',
                       })}
                     />
-                    <div className="autocomplete-dropdown-container" style={{ width: '218px', border: '1px solid gray' }}>
+                    <div className="autocomplete-dropdown-container" style={{ width: '218px', borderRight: '1px solid gray', borderLeft: '1px solid gray' }}>
                       {loading && <div>Loading...</div>}
                       {suggestions.map((suggestion) => {
                         const className = suggestion.active
@@ -181,8 +246,8 @@ class JobSearchResults extends Component {
                           : 'suggestion-item';
                         // inline style for demonstration purpose
                         const style = suggestion.active
-                          ? { backgroundColor: '#fafafa', cursor: 'pointer', padding: '5px' }
-                          : { backgroundColor: '#ffffff', cursor: 'pointer', padding: '5px' };
+                          ? { backgroundColor: '#fafafa', cursor: 'pointer', borderBottom: '1px solid gray', padding: '5px', zIndex: 1000 }
+                          : { backgroundColor: '#ffffff', cursor: 'pointer', borderBottom: '1px solid gray', padding: '5px', zIndex: 1000 };
                         return (
                           <div
                             {...getSuggestionItemProps(suggestion, {
@@ -198,7 +263,15 @@ class JobSearchResults extends Component {
                   </div>
                 )}
               </PlacesAutocomplete>
-              <input className="filter" placeholder="Job Type" />
+              <select onChange={this.jobTypeFilterChangeHandler} className="filter" style={{ fontSize: 'medium' }}>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+                <option value="Temporary">Temporary</option>
+              </select>
+              <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="min" className="filter" placeholder="Minimum Salary" />
+              <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="max" className="filter" placeholder="Maximum Salary" />
             </div>
           </header>
         </div>
@@ -236,9 +309,9 @@ class JobSearchResults extends Component {
                       <div className="jobDetailsHeader jobDetailsTabs">
                         <div className="scrollableTabContainer">
                           <div className="scrollableTabs">
-                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jdescription' ? 'active' : ''}`} data-test="tab" value="jdescription"><span>Description</span></div>
-                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jresponsibilities' ? 'active' : ''}`} data-test="tab" value="jresponsibilities"><span>Responsibilites</span></div>
-                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jqualifications' ? 'active' : ''}`} data-test="tab" value="jqualifications"><span>Qualifications</span></div>
+                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jdescription' ? 'active' : ''}`} value="jdescription"><span>Description</span></div>
+                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jresponsibilities' ? 'active' : ''}`} value="jresponsibilities"><span>Responsibilites</span></div>
+                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jqualifications' ? 'active' : ''}`} value="jqualifications"><span>Qualifications</span></div>
                           </div>
                         </div>
                       </div>
@@ -263,10 +336,13 @@ class JobSearchResults extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    searchQuery: state.student.searchQuery,
-    resumes: state.student.user.stresumes
-  };
+  if (state.credentials.isAuth) {
+    return {
+      searchQuery: state.student.searchQuery,
+      resumes: state.student.user.stresumes,
+      id: state.student.id
+    };
+  }
 };
 
 export default connect(mapStateToProps)(JobSearchResults);
