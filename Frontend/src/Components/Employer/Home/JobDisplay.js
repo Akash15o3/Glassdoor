@@ -307,11 +307,7 @@ export default class Job extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
-            <button onClick={this.updateProfileEm} className="home-btn info">
-              +++++
-            </button>
-          </div>
+          <div style={{ textAlign: "center" }} />
         </div>
 
         <div className="profileField">
