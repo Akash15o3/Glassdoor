@@ -1,18 +1,22 @@
-const Jobs = require('../Models/JobModel');
+const Jobs = require("../Models/JobModel");
 
+const options = {
+  useFindAndModify: false,
+  new: true,
+};
 function getAllJobs(data, callback) {
   Jobs.find({}, (error, jobs) => {
     if (error) {
       const response = {
         status: 401,
-        header: 'text/plain',
-        content: 'Error fetching jobs',
+        header: "text/plain",
+        content: "Error fetching jobs",
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: 'application/json',
+        header: "application/json",
         content: JSON.stringify(jobs),
       };
       callback(null, response);
@@ -25,20 +29,41 @@ function getOneJob(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: 'text/plain',
-        content: 'Error fetching jobs',
+        header: "text/plain",
+        content: "Error fetching jobs",
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: 'application/json',
+        header: "application/json",
         content: JSON.stringify(job),
       };
       callback(null, response);
     }
   });
 }
+
+// function addNewJob(data, callback) {
+//   const { id, ...updateInfo } = data;
+//   Jobs.findByIdAndUpdate(id, updateInfo, options, (error, results) => {
+//     if (error) {
+//       const response = {
+//         status: 401,
+//         header: "text/plain",
+//         content: "Error updating Job ",
+//       };
+//       callback(null, response);
+//     } else {
+//       const response = {
+//         status: 200,
+//         header: "application/json",
+//         content: JSON.stringify(results),
+//       };
+//       callback(null, response);
+//     }
+//   });
+// }
 
 function addNewJob(data, callback) {
   const now = new Date();
@@ -54,28 +79,28 @@ function addNewJob(data, callback) {
     jcountry: data.jcountry,
     jzip: data.jzip,
     jaddress: data.jaddress,
-    jlatitude: data.jlatitiude,
-    jlongitude: data.jlongitude,
+    jlatitude: " ",
+    jlongitude: " ",
     jwork: data.jwork,
-    jposted: posted,
-    jpostedBy: data.jpostedBy,
+    jposted: data.jposted,
+    jpostedBy: " ",
     jdescription: data.jdescription,
     jresponsibilities: data.jresponsibilities,
-    jqualifications: data.jqualifications,
+    jqualifications: " ",
   });
-
+  console.log("new job in kafka", newJob);
   newJob.save((error, job) => {
     if (error) {
       const response = {
         status: 401,
-        header: 'text/plain',
-        content: 'Error saving job',
+        header: "text/plain",
+        content: "Error saving job",
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: 'application/json',
+        header: "application/json",
         content: JSON.stringify(job),
       };
       callback(null, response);
@@ -85,23 +110,23 @@ function addNewJob(data, callback) {
 
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
-    case 'GETALL': {
-      console.log('KB: Inside get all jobs');
-      console.log('Message:', msg);
+    case "GETALL": {
+      console.log("KB: Inside get all jobs");
+      console.log("Message:", msg);
       getAllJobs(msg.data, callback);
       break;
     }
 
-    case 'GETONE': {
-      console.log('KB: Inside get one job');
-      console.log('Message:', msg);
+    case "GETONE": {
+      console.log("KB: Inside get one job");
+      console.log("Message:", msg);
       getOneJob(msg.data, callback);
       break;
     }
 
-    case 'ADDNEWJOB': {
-      console.log('KB: Inside get one job');
-      console.log('Message:', msg);
+    case "ADDNEWJOB": {
+      console.log("KB: Inside get one job");
+      console.log("Message:", msg);
       addNewJob(msg.data, callback);
       break;
     }
@@ -109,8 +134,8 @@ function handleRequest(msg, callback) {
     default: {
       const response = {
         status: 400,
-        header: 'text/plain',
-        content: 'Bad request',
+        header: "text/plain",
+        content: "Bad request",
       };
       callback(null, response);
     }

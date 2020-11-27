@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { updateProfileEm } from "../../../Actions/employerActions";
 import Profile from "./Profile";
+import JobDisplay from "./JobDisplay";
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    //   const { stphoto } = this.props.student;
+    const { cphotos } = this.props.employer;
     this.state = {
       tab: "Profile",
       // stphoto,
@@ -15,27 +16,30 @@ class Home extends Component {
     };
   }
 
-  // selectPhoto = () => {
-  //   this.inputElement.click();
-  // }
+  selectPhoto = () => {
+    this.inputElement.click();
+  };
 
-  // pictureChangeHandler = (e) => {
-  //   console.log(e.target.files[0]);
-  //   // this.setState({ selectedFile: e.target.files[0], upload: true });
-  //   const data = new FormData();
-  //   data.append('file', e.target.files[0]);
-  //   data.append('id', this.props.id);
-  //   const url = `${process.env.REACT_APP_BACKEND}/students/uploadProfilePicture`;
-  //   axios.post(url, data, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     } })
-  //     .then((res) => { // then print response status
-  //       console.log(res.data);
-  //       this.setState({ stphoto: res.data });
-  //       this.props.updateProfile({ stphoto: res.data });
-  //     });
-  // }
+  pictureChangeHandler = (e) => {
+    console.log(e.target.files[0]);
+    // this.setState({ selectedFile: e.target.files[0], upload: true });
+    const data = new FormData();
+    data.append("file", e.target.files[0]);
+    data.append("id", this.props.id);
+    const url = `${process.env.REACT_APP_BACKEND}/companies/uploadProfilePicture`;
+    axios
+      .post(url, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        // then print response status
+        console.log(res.data);
+        this.setState({ stphoto: res.data });
+        this.props.updateProfileEm({ cphotos: res.data });
+      });
+  };
 
   changeTab = (e) => {
     console.log(e.target);
@@ -51,6 +55,15 @@ class Home extends Component {
       case "Profile":
         homeView = (
           <Profile
+            id={this.props.id}
+            employer={this.props.employer}
+            updateProfileEm={this.props.updateProfileEm}
+          />
+        );
+        break;
+      case "Create Jobs":
+        homeView = (
+          <JobDisplay
             id={this.props.id}
             employer={this.props.employer}
             updateProfileEm={this.props.updateProfileEm}
@@ -75,7 +88,7 @@ class Home extends Component {
               {/* <path d="M12 7a3 3 0 103 3 3 3 0 00-3-3zm0 9a6 6 0 00-5.33 3.25 9 9 0 0010.66 0A6 6 0 0012 16zm0-14A10 10 0 112 12 10 10 0 0112 2z" fill="grey" fillRule="evenodd" /> */}
               <image
                 style={{ width: "55px", height: "55px" }}
-                href={this.state.stphoto}
+                href={this.state.cphotos}
               />
             </svg>
             <a
@@ -101,11 +114,11 @@ class Home extends Component {
               Profile
             </li>
             <li
-              className={`tab ${tab === "Resume" ? "activeTab" : ""}`}
+              className={`tab ${tab === "Create Jobs" ? "activeTab" : ""}`}
               onClick={this.changeTab}
-              tab="Resume"
+              tab="Create Jobs"
             >
-              Resume
+              Create Jobs
             </li>
             <li
               className={`tab ${tab === "Job Preferences" ? "activeTab" : ""}`}

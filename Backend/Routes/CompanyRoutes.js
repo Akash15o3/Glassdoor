@@ -56,28 +56,28 @@ Router.get("/:id", (request, response) => {
 
 // Update company's profile details
 // please refer model: clocation-cceo can be updated here
-Router.put("/profile/:cid", (request, response) => {
-  console.log("\nEndpoint PUT: Update company profile");
-  console.log("Req Body: ", request.body);
-  const data = { ...request.params, ...request.body };
+// Router.put("/profile/:cid", (request, response) => {
+//   console.log("\nEndpoint PUT: Update company profile");
+//   console.log("Req Body: ", request.body);
+//   const data = { ...request.params, ...request.body };
 
-  kafka.make_request("companiesTopic", "UPDATEPROFILE", data, (err, result) => {
-    console.log("Update company profile result ", result);
-    if (err) {
-      console.log("Update company profile Kafka error");
-      response.writeHead(401, {
-        "Content-Type": "text/plain",
-      });
-      response.end("Update company profile Kafka error");
-    } else {
-      response.writeHead(result.status, {
-        "Content-Type": result.header,
-      });
-      console.log(result.content);
-      response.end(result.content);
-    }
-  });
-});
+//   kafka.make_request("companiesTopic", "UPDATEPROFILE", data, (err, result) => {
+//     console.log("Update company profile result ", result);
+//     if (err) {
+//       console.log("Update company profile Kafka error");
+//       response.writeHead(401, {
+//         "Content-Type": "text/plain",
+//       });
+//       response.end("Update company profile Kafka error");
+//     } else {
+//       response.writeHead(result.status, {
+//         "Content-Type": result.header,
+//       });
+//       console.log(result.content);
+//       response.end(result.content);
+//     }
+//   });
+// });
 
 Router.post("/updateProfile", (request, response) => {
   console.log("\nEndpoint POST: post update Company profile");
@@ -107,7 +107,7 @@ Router.post(
   (request, response) => {
     console.log("\nEndpoint POST: post upload Company profile picture");
     console.log("Req Body: ", request.body);
-    const data = { id: request.body.id, stphoto: request.file.location };
+    const data = { id: request.body.id, cphoto: request.file.location };
     kafka.make_request("companiesTopic", "ADDPHOTO", data, (err, result) => {
       console.log("Upload Company Profile Picture by id result", result);
       if (err) {
@@ -176,28 +176,28 @@ Router.put("/profile/delFtReview/:cid", (request, response) => {
 });
 
 // Update company-- Add photos
-Router.put("/profile/addPhoto/:cid", (request, response) => {
-  console.log("\nEndpoint PUT: Add photo");
-  console.log("Req Body: ", request.body);
-  const data = { ...request.params, ...request.body };
+// Router.put("/profile/addPhoto/:cid", (request, response) => {
+//   console.log("\nEndpoint PUT: Add photo");
+//   console.log("Req Body: ", request.body);
+//   const data = { ...request.params, ...request.body };
 
-  kafka.make_request("companiesTopic", "ADDPHOTO", data, (err, result) => {
-    console.log("Company add photo result ", result);
-    if (err) {
-      console.log("Company add photo Kafka error");
-      response.writeHead(401, {
-        "Content-Type": "text/plain",
-      });
-      response.end("Company add photo Kafka error");
-    } else {
-      response.writeHead(result.status, {
-        "Content-Type": result.header,
-      });
-      console.log(result.content);
-      response.end(result.content);
-    }
-  });
-});
+//   kafka.make_request("companiesTopic", "ADDPHOTO", data, (err, result) => {
+//     console.log("Company add photo result ", result);
+//     if (err) {
+//       console.log("Company add photo Kafka error");
+//       response.writeHead(401, {
+//         "Content-Type": "text/plain",
+//       });
+//       response.end("Company add photo Kafka error");
+//     } else {
+//       response.writeHead(result.status, {
+//         "Content-Type": result.header,
+//       });
+//       console.log(result.content);
+//       response.end(result.content);
+//     }
+//   });
+// });
 
 Router.post("/specificCompany", (request, response) => {
   console.log("Req Body: ", request.body);

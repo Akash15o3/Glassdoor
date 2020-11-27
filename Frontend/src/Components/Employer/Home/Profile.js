@@ -279,32 +279,25 @@ export default class Profile extends Component {
               {cname === "" ? "Add Name" : cname}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cemail === "" ? "Add email" : cemail}
+              {cwebsite === "" ? "Add Website" : cwebsite}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
-              {csize === "" ? "Add Company Size" : csize}
-            </button>
+
             <button onClick={this.updateProfileEm} className="home-btn info">
               {clocation === "" ? "Add location" : clocation}
-            </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
-              {ctype === "" ? "Add Type" : ctype}
-            </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
-              {crevenue === "" ? "Add Revenue" : crevenue}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
               {cheadquarters === "" ? "Add Headquarters" : cheadquarters}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cwebsite === "" ? "Add Webssite" : cwebsite}
+              {cemail === "" ? "Add email" : cemail}
             </button>
+
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
         <div className="profileField">
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>About Me</h1>
+            <h1 style={{ display: "inline-block" }}>About Company</h1>
             <svg
               className="SVGInline-svg"
               style={{ width: "24px", height: "24px", marginLeft: "5px" }}
@@ -322,15 +315,29 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: "center" }}>
-            <button className="home-btn info">
-              <strong>Add an introduction</strong> about yourself with a brief
-              summary of your experience.
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {cceo === "" ? "CEO" : cceo}
+            </button>
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {cfounded === "" ? "Founded in" : cfounded}
+            </button>
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {cindustry === "" ? "Industry" : cindustry}
+            </button>
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {ctype === "" ? "Add Type" : ctype}
+            </button>
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {csize === "" ? "Add Company Size" : csize}
+            </button>
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {crevenue === "" ? "Add Revenue" : crevenue}
             </button>
           </div>
         </div>
         <div className="profileField">
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Experience</h1>
+            <h1 style={{ display: "inline-block" }}>Mission</h1>
             <svg
               className="SVGInline-svg"
               style={{ width: "24px", height: "24px", marginLeft: "5px" }}
@@ -348,15 +355,14 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: "center" }}>
-            <button className="home-btn info">
-              <strong>Add your work history</strong> including any internships
-              or contract work and qualifications.
+            <button onClick={this.updateProfileEm} className="home-btn info">
+              {cmission === "" ? "Mission of the Company" : cmission}
             </button>
           </div>
         </div>
         <div className="profileField">
           <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Education</h1>
+            <h1 style={{ display: "inline-block" }}>Posted Jobs</h1>
             <svg
               className="SVGInline-svg"
               style={{ width: "24px", height: "24px", marginLeft: "5px" }}
@@ -375,9 +381,7 @@ export default class Profile extends Component {
           </div>
           <div style={{ textAlign: "center" }}>
             <button className="home-btn info">
-              <strong>Add your most recent education</strong> Since many jobs
-              require a certain level of education, it’s important to mention
-              your academic credentials on your resume.
+              <strong>ALL JOBS</strong>
             </button>
           </div>
         </div>

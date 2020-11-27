@@ -44,45 +44,45 @@ function getOneCompany(data, callback) {
   });
 }
 
-function updateProfile(data, callback) {
-  const updateData = {
-    clocation: data.clocation,
-    clatitude: data.clatitude,
-    clongitude: data.clongitude,
-    cwebsite: data.cwebsite,
-    csize: data.csize,
-    ctype: data.ctype,
-    crevenue: data.crevenue,
-    cindustry: data.cindustry,
-    cheadquarters: data.cheadquarters,
-    cfounded: data.cfounded,
-    cdescription: data.cdescription,
-    cmission: data.cmission,
-    cceo: data.cceo,
-  };
-  Companies.findByIdAndUpdate(
-    data.cid,
-    updateData,
-    { new: true },
-    (error, companyUpdated) => {
-      if (error) {
-        const response = {
-          status: 401,
-          header: "text/plain",
-          content: "Error updating company profile",
-        };
-        callback(null, response);
-      } else {
-        const response = {
-          status: 200,
-          header: "application/json",
-          content: JSON.stringify(companyUpdated),
-        };
-        callback(null, response);
-      }
-    }
-  );
-}
+// function updateProfile(data, callback) {
+//   const updateData = {
+//     clocation: data.clocation,
+//     clatitude: data.clatitude,
+//     clongitude: data.clongitude,
+//     cwebsite: data.cwebsite,
+//     csize: data.csize,
+//     ctype: data.ctype,
+//     crevenue: data.crevenue,
+//     cindustry: data.cindustry,
+//     cheadquarters: data.cheadquarters,
+//     cfounded: data.cfounded,
+//     cdescription: data.cdescription,
+//     cmission: data.cmission,
+//     cceo: data.cceo,
+//   };
+//   Companies.findByIdAndUpdate(
+//     data.cid,
+//     updateData,
+//     { new: true },
+//     (error, companyUpdated) => {
+//       if (error) {
+//         const response = {
+//           status: 401,
+//           header: "text/plain",
+//           content: "Error updating company profile",
+//         };
+//         callback(null, response);
+//       } else {
+//         const response = {
+//           status: 200,
+//           header: "application/json",
+//           content: JSON.stringify(companyUpdated),
+//         };
+//         callback(null, response);
+//       }
+//     }
+//   );
+// }
 
 function updateCompanyProfile(data, callback) {
   const { id, ...updateInfo } = data;
@@ -105,24 +105,29 @@ function updateCompanyProfile(data, callback) {
   });
 }
 function uploadCompanyProfilePicture(data, callback) {
-  const { id, stphoto } = data;
-  Companies.findByIdAndUpdate(id, { stphoto }, options, (error, results) => {
-    if (error) {
-      const response = {
-        status: 401,
-        header: "text/plain",
-        content: "Error uploading student profile picture",
-      };
-      callback(null, response);
-    } else {
-      const response = {
-        status: 200,
-        header: "text/plain",
-        content: stphoto,
-      };
-      callback(null, response);
+  const { id, cphoto } = data;
+  Companies.findByIdAndUpdate(
+    id,
+    { $push: { cphotos: { cphoto } } },
+    options,
+    (error, results) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: "text/plain",
+          content: "Error uploading Company profile picture",
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: "text/plain",
+          content: JSON.stringify(results.cphotos),
+        };
+        callback(null, response);
+      }
     }
-  });
+  );
 }
 
 function addFtReview(data, callback) {
@@ -208,51 +213,51 @@ function deleteFtReview(data, callback) {
   });
 }
 
-function addPhoto(data, callback) {
-  Companies.findById(data.cid, (error, company) => {
-    if (error) {
-      const response = {
-        status: 401,
-        header: "text/plain",
-        content: "Error fetching company",
-      };
-      callback(null, response);
-    } else if (company) {
-      const photoObj = {
-        // URL will be provided by AWS-SDK
-        url: data.url,
-        stname: data.stname,
-        stid: data.stid,
-      };
-      company.cphotos.push(photoObj);
-      console.log("new cphotos:", company.cphotos);
-      company.save((err, companyUpdated) => {
-        if (err) {
-          const response = {
-            status: 401,
-            header: "text/plain",
-            content: "Error adding photo",
-          };
-          callback(null, response);
-        } else {
-          const response = {
-            status: 200,
-            header: "application/json",
-            content: JSON.stringify(companyUpdated),
-          };
-          callback(null, response);
-        }
-      });
-    } else {
-      const response = {
-        status: 401,
-        header: "text/plain",
-        content: "Error adding photo",
-      };
-      callback(null, response);
-    }
-  });
-}
+// function addPhoto(data, callback) {
+//   Companies.findById(data.cid, (error, company) => {
+//     if (error) {
+//       const response = {
+//         status: 401,
+//         header: "text/plain",
+//         content: "Error fetching company",
+//       };
+//       callback(null, response);
+//     } else if (company) {
+//       const photoObj = {
+//         // URL will be provided by AWS-SDK
+//         url: data.url,
+//         stname: data.stname,
+//         stid: data.stid,
+//       };
+//       company.cphotos.push(photoObj);
+//       console.log("new cphotos:", company.cphotos);
+//       company.save((err, companyUpdated) => {
+//         if (err) {
+//           const response = {
+//             status: 401,
+//             header: "text/plain",
+//             content: "Error adding photo",
+//           };
+//           callback(null, response);
+//         } else {
+//           const response = {
+//             status: 200,
+//             header: "application/json",
+//             content: JSON.stringify(companyUpdated),
+//           };
+//           callback(null, response);
+//         }
+//       });
+//     } else {
+//       const response = {
+//         status: 401,
+//         header: "text/plain",
+//         content: "Error adding photo",
+//       };
+//       callback(null, response);
+//     }
+//   });
+// }
 
 function specificCompany(data, callback) {
   Companies.findOne(
