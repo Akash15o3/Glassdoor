@@ -1,4 +1,5 @@
 const Jobs = require("../Models/JobModel");
+const Application = require("../Models/ApplicationModel");
 
 const options = {
   useFindAndModify: false,
@@ -62,6 +63,34 @@ function getOneJob(data, callback) {
         content: JSON.stringify(job),
       };
       console.log("kafka be job response: ", response.content)
+      callback(null, response);
+    }
+  });
+}
+
+//Get Applicants for job
+function getJobApplicants(data, callback) {
+  console.log("INSIDE GET JOB APPLICANTS DATA: ", data)
+  Application.find({ajobid : data.ajobid}, (error, job) => {
+    console.log("INSIDE APPLICANTS.FIND")
+    if (error) {
+      console.log("GET JOB APPLICANTS ERROR ")
+      console.log(error);
+      const response = {
+        status: 401,
+        header: "text/plain",
+        content: "Error fetching jobs",
+      };
+      callback(null, response);
+    } else {
+      console.log("SUCCESS APPLICANTS");
+      console.log(job)
+      const response = {
+        status: 200,
+        header: "application/json",
+        content: JSON.stringify(job),
+      };
+      console.log("job applicants response: ", response);
       callback(null, response);
     }
   });
@@ -132,6 +161,7 @@ function addNewJob(data, callback) {
 }
 
 function handleRequest(msg, callback) {
+  console.log("msg.subTopic", msg.subTopic);
   switch (msg.subTopic) {
     case "GETALL": {
       console.log("KB: Inside get all jobs");
@@ -151,6 +181,13 @@ function handleRequest(msg, callback) {
       console.log("KB: Inside get one job");
       console.log("Message:", msg);
       addNewJob(msg.data, callback);
+      break;
+    }
+
+    case "GETAPPLICANTS": {
+      console.log("KB: Inside get applicants for this job");
+      console.log("Message:", msg);
+      getJobApplicants(msg.data, callback);
       break;
     }
 

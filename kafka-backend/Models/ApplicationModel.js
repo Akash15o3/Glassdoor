@@ -10,7 +10,7 @@ const applicationSchema = new Schema({
   astatus: {
     type: String,
     enum: ['', 'Applied', 'Withdrawn'],
-    default: '',
+    default: 'Applied',
   },
   // embed resume model here
   aresume: String,

@@ -100,4 +100,30 @@ Router.post("/", (request, response) => {
   });
 });
 
+
+
+Router.get("/getJobApplicants", (request, response) => {
+  console.log("\nEndpoint GET: get all jobs");
+  console.log("Req Body: ", request.query);
+  const data = { ...request.params };
+
+  kafka.make_request("jobsTopic", "GETAPPLICANTS", request.query, (err, result) => {
+    console.log("Get jobs applicants result ", result);
+    if (err) {
+      console.log("Get jobs applicants Kafka error");
+      response.writeHead(401, {
+        "Content-Type": "text/plain",
+      });
+      response.end("Get one jobs Kafka error");
+    } else {
+      response.writeHead(result.status, {
+        "Content-Type": result.header,
+      });
+      console.log("Result get 1 job: result.content")
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
 module.exports = Router;

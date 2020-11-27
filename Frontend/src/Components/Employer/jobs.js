@@ -201,7 +201,9 @@ class JobSearchResults extends Component {
       resume: null,
       coverLetter: '',
       showJobApplication: false,
-      address: ''
+      address: '',
+      ajobid: '',
+      jobapplicants: []
     };
   }
 
@@ -236,6 +238,8 @@ class JobSearchResults extends Component {
     this.setState({
       selectedIndex: parseInt(e.currentTarget.getAttribute('index'))
     });
+    console.log('job id i: ', parseInt(e.currentTarget.getAttribute('index')));
+    sessionStorage.setItem('ajobid', this.state.jobs[this.state.selectedIndex]._id);
   }
 
   jobInfoStateChangeHandler = (e) => {
@@ -271,9 +275,30 @@ class JobSearchResults extends Component {
     });
   }
 
+  getApplicantsHandler = (e) => {
+    axios.defaults.withCredentials = true;
+    const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
+    axios.get(url)
+      .then((response, err) => {
+        if (response.data) {
+          this.setState({
+            jobapplicants: response.data,
+            jobInfoState: e.currentTarget.getAttribute('value')
+
+          });
+          console.log('Jobs applicants response fe');
+          console.log(response.data);
+          console.log('job applicants: ');
+          console.log(this.state.jobapplicants);
+        } else {
+          console.log('ERROR IN RES! ', err);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
+
   render() {
-    // const alljobs = this.state;
-    // console.log('all jobs', alljobs);
     const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication } = this.state;
     console.log('jobs frontend jobs', jobs);
     console.log('selected index: ', selectedIndex);
@@ -336,12 +361,6 @@ class JobSearchResults extends Component {
         <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
-              <select className="filter">
-                <option>Recent</option>
-                <option>Highest Rated</option>
-              </select>
-              <input className="filter" placeholder="Minimum Salary" />
-              <input className="filter" placeholder="Maximum Salary" />
               {/* <input className="filter" placeholder="Location" /> */}
               <PlacesAutocomplete
                 className="filter"
@@ -423,6 +442,8 @@ class JobSearchResults extends Component {
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jdescription' ? 'active' : ''}`} data-test="tab" value="jdescription"><span>Description</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jresponsibilities' ? 'active' : ''}`} data-test="tab" value="jresponsibilities"><span>Responsibilites</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jqualifications' ? 'active' : ''}`} data-test="tab" value="jqualifications"><span>Qualifications</span></div>
+                            <div onClick={this.getApplicantsHandler} className={`tab ${jobInfoState === 'japplicants' ? 'active' : ''}`} data-test="tab" value="japplicants"><span>Applicants</span></div>
+
                           </div>
                         </div>
                       </div>
