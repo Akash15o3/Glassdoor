@@ -24,13 +24,9 @@ function App() {
         <Route path="/employer" component={EmpProfile} />
         <Route path="/admin" component={Admin} />
         <Route path="/employerJobs" component={Jobs} />
-<<<<<<< HEAD
-        <Route path="/student/searchresults" component={SearchResults} />
         <Route path="/student/company" component={CompanyHomePage} />
-=======
         <Route path="/student/companySearchResults" component={CompanySearchResults} />
         <Route path="/student/jobSearchResults" component={JobSearchResults} />
->>>>>>> 6c487efbc1b49c044e109e68dea49f10ef882bb0
       </div>
     </BrowserRouter>
   );

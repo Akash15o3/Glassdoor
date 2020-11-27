@@ -56,7 +56,7 @@ class CompanyHomePage extends Component {
                 </div>
               </div>
               <div className="empInfo tbl hideHH ">
-                <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '20px' }}><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" className alt=" Logo" title /></span></a></div>
+                <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '58px', right: '17px' }}><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" className alt=" Logo" title /></span></a></div>
                 <div className="header cell info">
                   <h1 className=" strong tightAll" title data-company="McDonald's">
                     <span id="DivisionsDropdownComponent" className="d-inline-flex align-items-center">
@@ -138,32 +138,42 @@ class CompanyHomePage extends Component {
               </a>
             </div>
           </div>
-          <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: 'auto', marginRight: 'auto', marginTop: '40px' }}>
-            <h2 style={{ marginLeft: '45px' }}>McDonald's Overview</h2>
+          <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
+            <h2 style={{ marginLeft: '45px' }}>
+              { companies.cname }
+              's Overview
+            </h2>
             <ul style={{ listStyleType: 'none' }}>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pr-xxsm">
                 <b><label className="css-1f0lhlt ecl3kjh0">Website:</label></b>
-                <div><a href="//www.mcdonalds.com" target="_blank" rel="noopener noreferrer" className="css-1hg9omi">www.mcdonalds.com</a></div>
+                <div><a href="//www.mcdonalds.com" target="_blank" rel="noopener noreferrer" className="css-1hg9omi">{ companies.cwebsite }</a></div>
               </li>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pl-sm-xxsm">
                 <b><label>Headquarters:</label></b>
-                <div>North York, Canada</div>
+                <div>{ companies.clocation }</div>
               </li>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pr-sm-xxsm">
                 <b><label>Size:</label></b>
-                <div>10000+ Employees</div>
+                <div>
+                  { companies.csize }
+                  {' '}
+                  Employees
+                </div>
               </li>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pl-sm-xxsm">
                 <b><label>Founded:</label></b>
-                <div>1955</div>
+                <div>{ companies.cfounded }</div>
               </li>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pr-sm-xxsm">
                 <b><label className="css-1f0lhlt ecl3kjh0">Type:</label></b>
-                <div>Company - Public</div>
+                <div>{ companies.ctype }</div>
               </li>
               <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pr-sm-xxsm">
                 <b><label>Revenue:</label></b>
-                <div>$10+ billion (USD)</div>
+                <div>
+                  $
+                  {companies.crevenue}
+                </div>
               </li>
             </ul>
             <div style={{ marginLeft: '20px', marginRight: '20px' }}>
@@ -175,9 +185,9 @@ class CompanyHomePage extends Component {
               </span>
             </div>
           </div>
-          <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: 'auto', marginRight: 'auto', marginTop: '40px' }}>
-            <h2 style={{ marginLeft: '45px' }} className="title css-1bqzjlu">McDonald's Reviews</h2>
-            <div style={{ textAlign: 'center', fontSize: '22px' }}>
+          <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
+            <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">{ companies.cname }'s Reviews</h2>
+            <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
               <span style={{ color: 'green' }}>2.5</span>
               <span className="fa fa-star checked" />
               <span className="fa fa-star checked" />
@@ -202,9 +212,9 @@ class CompanyHomePage extends Component {
                 />
                 <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>60%</text>
               </svg>
-              <div style={{ marginLeft: '30px' }}>Recommend to a Friend</div>
+              <div>Recommend to a Friend</div>
             </div>
-            <div className="single-chart" style={{ float: 'left', marginLeft: '150px', marginBottom: '20px' }}>
+            <div className="single-chart" style={{ float: 'left', marginLeft: '220px', marginBottom: '20px' }}>
               <svg viewBox="0 0 36 36" className="circular-chart green">
                 <path
                   className="circle-bg"
@@ -221,13 +231,13 @@ class CompanyHomePage extends Component {
                 />
                 <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>60%</text>
               </svg>
-              <div style={{ marginLeft: '60px' }}>Approve of CEO</div>
+              <div>Approve of CEO</div>
             </div>
             <hr style={{ width: '3000px', backgroundColor: 'black' }} />
             <div>
-              <div style={{ marginLeft: '20px' }}><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" /></span></div>
-              <div>
-                <div style={{ marginLeft: '20px' }}>
+              <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" /></span></div>
+              <div style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+                <div>
                   <h2><a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">"Customer service"</a></h2>
                   <div>
                     <div>
