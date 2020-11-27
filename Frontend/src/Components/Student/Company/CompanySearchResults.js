@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { getCNameAndClocation } from '../../Actions/studentActions';
+import { getCNameAndClocation } from '../../../Actions/studentActions';
 
 class CompanySearchResults extends Component {
   constructor(props) {

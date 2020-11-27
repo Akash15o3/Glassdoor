@@ -10,8 +10,8 @@ import EmpProfile from './Components/Employer/Home/Home';
 // import EmpProfile from "./Components/Employer/Profile";
 import Admin from './Components/Admin/Admin';
 import Jobs from './Components/Employer/jobs';
-import CompanyHomePage from './Components/Student/CompanyHomePage';
-import CompanySearchResults from './Components/Student/CompanySearchResults';
+import CompanyHomePage from './Components/Student/Company/CompanyHomePage';
+import CompanySearchResults from './Components/Student/Company/CompanySearchResults';
 import JobSearchResults from './Components/Student/Jobs/JobSearchResults';
 import JobApplications from './Components/Student/Jobs/JobApplications';
 

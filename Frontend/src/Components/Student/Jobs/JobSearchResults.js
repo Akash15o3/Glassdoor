@@ -142,7 +142,7 @@ class JobSearchResults extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/students/submitApplication`;
     const { jobs, selectedIndex, resume, coverLetter } = this.state;
     const { _id, cname, jtitle } = jobs[selectedIndex];
-    const data = { ajobid: _id, aapplierid: this.props.id, aresume: resume, acoverletter: coverLetter, cname, jtitle };
+    const data = { ajobid: _id, aapplierid: this.props.id, aresume: resume, acoverletter: coverLetter, cname, jtitle, aname: this.props.name };
     console.log(data);
     axios.post(url, data)
       .then((response) => {
@@ -341,6 +341,7 @@ const mapStateToProps = (state) => {
     return {
       searchQuery: state.student.searchQuery,
       resumes: state.student.user.stresumes,
+      name: state.student.user.stname,
       id: state.student.id
     };
   }
