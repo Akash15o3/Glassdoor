@@ -6,7 +6,7 @@ export default class CompanyPhotos extends Component {
     console.log(props);
     super(props);
     this.state = {
-      photos: this.props.company.cphotos,
+      photos: this.props.cphotos,
       upload: false,
       files: []
     };
@@ -42,8 +42,8 @@ export default class CompanyPhotos extends Component {
     const { files } = this.state;
     const data = new FormData();
     for (const file of files) { data.append('files', file); }
-    data.append('cid', this.props.company._id);
-    data.append('cname', this.props.company.cname);
+    data.append('cid', this.props.cid);
+    data.append('cname', this.props.cname);
     data.append('stid', this.props.stid);
     data.append('stname', this.props.stname);
 
@@ -58,16 +58,17 @@ export default class CompanyPhotos extends Component {
         // then print response status
         console.log(res.data);
         this.setState({ photos: res.data, upload: false });
+        this.props.updatePhotos(res.data)
       });
   }
 
   render() {
     const { photos, upload } = this.state;
-    const { company } = this.props;
+    const { cphotos, cname } = this.props;
     return (
       <div id="companyPhotoContainer">
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '*px' }}>
-          <h1 style={{ fontWeight: 'bold' }}>{`${company.cname} Office Photos`}</h1>
+          <h1 style={{ fontWeight: 'bold' }}>{`${cname} Office Photos`}</h1>
           {/* <button className="btn btn-primary">Add Photos</button> */}
           <div id="EIHeaderFollowButton" />
           <input style={{ display: 'none' }} onChange={this.photoChangeHandler} type="file" name="files" multiple ref={(input) => this.inputElement = input} />

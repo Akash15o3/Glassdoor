@@ -312,7 +312,7 @@ function studentUploadCompanyPictures(data, callback) {
       const response = {
         status: 200,
         header: 'text/plain',
-        content: results.cphotos,
+        content: JSON.stringify(results.cphotos),
       };
       callback(null, response);
     }

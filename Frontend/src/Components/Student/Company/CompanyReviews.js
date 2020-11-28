@@ -5,28 +5,25 @@ export default class CompanyReviews extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      overallRating: Number,
+      recommendedRating: Number,
+      ceoRating: Number
     };
   }
 
   componentDidMount() {
-    const { cid } = this.props;
-    const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-    axios.post(url, { cid })
-      .then((response) => {
-        console.log(response.data);
-        if (response.data) {
-          console.log(response.data);
-        }
-      });
+    const { reviews } = this.props;
+    console.log(reviews);
   }
 
   render() {
+    const { company } = this.props;
     return (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
-            Mcdonald's Reviews
+            {company.cname}
+            's Reviews
           </h2>
           <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
             <span style={{ color: 'green' }}>2.5</span>

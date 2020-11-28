@@ -13,34 +13,36 @@ class CompanyHomePage extends Component {
     super(props);
     this.state = {
       company: {},
+      reviews: [],
+      cphotos: [],
       tab: 'Overview'
     };
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
+    let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cname } = this.props;
     const { clocation } = this.props;
-    // let cid;
+    let cid;
 
     axios.post(url, { cname, clocation })
       .then((response) => {
         if (response.data) {
           this.setState({
-            company: response.data,
+            company: response.data, cphotos: response.data.cphotos
           });
           const { company } = this.state;
-          // cid = company._id;
+          cid = company._id;
           console.log(company);
-          // url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-          // axios.post(url, { cid })
-          //   .then((response) => {
-          //     console.log('HEY');
-          //     console.log(response.data);
-          //     if (response.data) {
-          //       console.log(response.data);
-          //     }
-          //   });
+          url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+          axios.post(url, { cid })
+            .then((response) => {
+              if (response.data) {
+                this.setState({
+                  reviews: response.data,
+                });
+              }
+            });
         }
       });
   }
@@ -51,8 +53,12 @@ class CompanyHomePage extends Component {
     });
   }
 
+  updatePhotos = (cphotos) => {
+     this.setState({cphotos})
+  }
+
   render() {
-    const { company, tab } = this.state;
+    const { company, tab, reviews, cphotos } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -60,7 +66,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews cid={company._id} />;
+        companyContent = <CompanyReviews company={company} reviews={reviews} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs />;
@@ -72,7 +78,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyInterviews />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos company={company} stid={this.props.id} stname={this.props.name} />;
+        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} />;
         break;
       default:
         console.log('D');
