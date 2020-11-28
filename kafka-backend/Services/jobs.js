@@ -138,7 +138,8 @@ function addNewJob(data, callback) {
     jpostedBy: " ",
     jdescription: data.jdescription,
     jresponsibilities: data.jresponsibilities,
-    jqualifications: " ",
+    jqualifications: data.jqualifications,
+    jsalary: data.jsalary,
   });
   console.log("new job in kafka", newJob);
   newJob.save((error, job) => {
@@ -178,7 +179,7 @@ function handleRequest(msg, callback) {
     }
 
     case "ADDNEWJOB": {
-      console.log("KB: Inside get one job");
+      console.log("KB: Inside create new job");
       console.log("Message:", msg);
       addNewJob(msg.data, callback);
       break;

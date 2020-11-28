@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Modal from "react-modal";
-import axios from "axios";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
+import axios from 'axios';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 export default class Job extends Component {
   constructor(props) {
@@ -11,20 +11,21 @@ export default class Job extends Component {
     this.state = {
       open: false,
       cname,
-      jtitle: "",
-      jindustry: "",
+      jtitle: '',
+      jindustry: '',
       jposted: new Date(),
       //   deadline: new Date(),
-      jaddress: "",
-      jcity: "",
-      jstate: "",
-      jcountry: "",
-      jzip: "",
-      jwork: "",
-      salary: "",
-      jdescription: "",
-      jresponsibilities: "",
+      jaddress: '',
+      jcity: '',
+      jstate: '',
+      jcountry: '',
+      jzip: '',
+      jwork: '',
+      jsalary: '',
+      jdescription: '',
+      jresponsibilities: '',
       cemail,
+      jqualifications: '',
     };
   }
 
@@ -103,10 +104,22 @@ export default class Job extends Component {
     });
   };
 
+  salaryChangeHandler = (e) => {
+    this.setState({
+      jsalary: e.target.value,
+    });
+  };
+
+  qualificationChangeHandler = (e) => {
+    this.setState({
+      jqualifications: e.target.value,
+    });
+  };
+
   saveUpdates = () => {
     const { id } = this.props;
     const { cname, cemail } = this.state;
-    const url = `${process.env.REACT_APP_BACKEND}/jobs/`;
+    const url = `${process.env.REACT_APP_BACKEND}/jobs/createNewJob`;
     const data = {
       cname,
       cemail,
@@ -121,9 +134,10 @@ export default class Job extends Component {
       jcountry: this.state.jcountry,
       jzip: this.state.jzip,
       jwork: this.state.jwork,
-      //   salary: this.state.salary,
+      jsalary: this.state.jsalary,
       jdescription: this.state.jdescription,
       jresponsibilities: this.state.jresponsibilities,
+      jqualifications: this.state.jqualifications,
     };
     axios.post(url, data).then((response) => {
       console.log(response);
@@ -146,6 +160,8 @@ export default class Job extends Component {
       jzip,
       jdescription,
       jresponsibilities,
+      jsalary,
+      jqualifications,
     } = this.state;
     return (
       <div className="studentHomeContent">
@@ -154,9 +170,9 @@ export default class Job extends Component {
           onRequestClose={this.closeWithoutSaving}
           style={{
             content: {
-              width: "55%",
-              margin: "auto",
-              border: "2px solid black",
+              width: '55%',
+              margin: 'auto',
+              border: '2px solid black',
             },
           }}
         >
@@ -179,7 +195,7 @@ export default class Job extends Component {
               />
             </svg>
           </span>
-          <h1 style={{ textAlign: "center" }}>Change Job Information</h1>
+          <h1 style={{ textAlign: 'center' }}>Change Job Information</h1>
           <label className="modalLabel"> Job Title</label>
           <input
             onChange={this.titleChangeHandler}
@@ -256,17 +272,33 @@ export default class Job extends Component {
             name="name"
             className="modalInput"
           />
+          <label className="modalLabel">Qualifications</label>
+          <input
+            onChange={this.qualificationChangeHandler}
+            value={jqualifications}
+            type="qualification"
+            name="qualification"
+            className="modalInput"
+          />
+          <label className="modalLabel">Salary</label>
+          <input
+            onChange={this.salaryChangeHandler}
+            value={jsalary}
+            type="salary"
+            name="salary"
+            className="modalInput"
+          />
 
           <button className="save" onClick={this.saveUpdates}>
             Save
           </button>
         </Modal>
         <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Create Jobs</h1>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>Create Jobs</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -280,7 +312,7 @@ export default class Job extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: 'center' }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
               +++
             </button>
@@ -288,12 +320,12 @@ export default class Job extends Component {
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
-        <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>About Company</h1>
+        {/* <div className="profileField">
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>About Company</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -307,15 +339,15 @@ export default class Job extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: "center" }} />
-        </div>
+          <div style={{ textAlign: 'center' }} />
+        </div> */}
 
-        <div className="profileField">
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ display: "inline-block" }}>Posted Jobs</h1>
+        {/* <div className="profileField">
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ display: 'inline-block' }}>Posted Jobs</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
+              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -328,13 +360,13 @@ export default class Job extends Component {
                 />
               </g>
             </svg>
-          </div>
-          <div style={{ textAlign: "center" }}>
+          </div> */}
+        {/* <div style={{ textAlign: 'center' }}>
             <button className="home-btn info">
               <strong>ALL JOBS</strong>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }

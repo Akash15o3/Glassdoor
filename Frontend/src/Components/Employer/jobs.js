@@ -483,7 +483,9 @@ class JobSearchResults extends Component {
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jresponsibilities' ? 'active' : ''}`} data-test="tab" value="jresponsibilities"><span>Responsibilites</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jqualifications' ? 'active' : ''}`} data-test="tab" value="jqualifications"><span>Qualifications</span></div>
                             <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'japplicants' ? 'active' : ''}`} data-test="tab" value="japplicants">
-                              <span>Applicants</span>
+                              <span>
+                                Applicants
+                              </span>
                             </div>
                           </div>
                         </div>

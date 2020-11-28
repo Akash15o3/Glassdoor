@@ -77,7 +77,7 @@ Router.get("/getJob", (request, response) => {
 });
 
 // Post a new job
-Router.post("/", (request, response) => {
+Router.post("/createNewJob", (request, response) => {
   console.log("\nEndpoint POST: Add new job");
   console.log("Req Body: ", request.body);
   const data = { ...request.body };
