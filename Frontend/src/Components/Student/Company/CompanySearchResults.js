@@ -37,6 +37,7 @@ class CompanySearchResults extends Component {
 
   render() {
     const { companies } = this.state;
+    const { credentials } = this.props;
     const contents = companies.map((item) => (
       <div className="single-company-result module ">
         <div className="row justify-content-between">
@@ -45,7 +46,7 @@ class CompanySearchResults extends Component {
               <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
               <div className="col-9 pr-0">
                 <h2>
-                  <Link id={`${item.cname},${item.clocation}`} onClick={this.handleClick} to="/student/company">
+                  <Link id={`${item.cname},${item.clocation}`} onClick={this.handleClick} to={credentials.role === 'admin' ? "/admin/company" : "/student/company"}>
                     {' '}
                     {item.cname}
                     {' '}
@@ -197,6 +198,7 @@ class CompanySearchResults extends Component {
 const mapStateToProps = (state) => {
   return {
     searchQuery: state.student.searchQuery,
+    credentials: state.credentials,
   };
 };
 
