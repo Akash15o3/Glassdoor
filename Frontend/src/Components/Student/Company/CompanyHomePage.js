@@ -21,6 +21,7 @@ class CompanyHomePage extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cname } = this.props;
     const { clocation } = this.props;
+    // let cid;
 
     axios.post(url, { cname, clocation })
       .then((response) => {
@@ -29,7 +30,17 @@ class CompanyHomePage extends Component {
             company: response.data,
           });
           const { company } = this.state;
+          // cid = company._id;
           console.log(company);
+          // url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+          // axios.post(url, { cid })
+          //   .then((response) => {
+          //     console.log('HEY');
+          //     console.log(response.data);
+          //     if (response.data) {
+          //       console.log(response.data);
+          //     }
+          //   });
         }
       });
   }
@@ -50,7 +61,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews />;
+        companyContent = <CompanyReviews cid={company._id} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs />;

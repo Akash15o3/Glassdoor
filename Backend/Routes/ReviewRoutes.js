@@ -79,4 +79,26 @@ Router.post('/cname', (request, response) => {
   });
 });
 
+// Get reviews for company by cid
+Router.post('/cid', (request, response) => {
+  console.log('\nEndpoint POST: get all reviews for a company');
+  // console.log('Req Body: ', request.body);
+  kafka.make_request('reviewsTopic', 'GETREVIEWBYCID', request.body, (err, result) => {
+    if (err) {
+      console.log('Reviews getreviewbycname Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews getreviewbycname Kafka error');
+    } else {
+      // response.writeHead(result.status, {
+      //   'Content-Type': result.header,
+      // });
+      // // console.log(result.content);
+      // response.end(result.content);
+      response.send(result);
+    }
+  });
+});
+
 module.exports = Router;

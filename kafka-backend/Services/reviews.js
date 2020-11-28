@@ -138,6 +138,17 @@ function getByCompnayName(data, callback) {
   });
 }
 
+function getByCompnayId(data, callback) {
+  Reviews.find({ cid: data.cid }, (error, reviews) => {
+    if (error) {
+      console.log(error);
+      return callback(error, null);
+    }
+
+    return callback(null, reviews);
+  });
+}
+
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'ADDREVIEW': {
@@ -150,6 +161,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside get review by company name');
       console.log('Message:', msg);
       getByCompnayName(msg.data, callback);
+      break;
+    }
+    case 'GETREVIEWBYCID': {
+      console.log('KB: Inside get review by company name');
+      console.log('Message:', msg);
+      getByCompnayId(msg.data, callback);
       break;
     }
     default: {

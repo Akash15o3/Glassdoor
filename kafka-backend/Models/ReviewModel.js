@@ -6,6 +6,10 @@ const { Schema } = mongoose;
 const reviewSchema = new Schema({
   // Embedded company name--unique
   cname: String,
+  // company ID
+  cid: String,
+  // name of person who wrote review
+  rwriter: String,
   rheadline: String,
   rpros: String,
   rcons: String,
