@@ -9,6 +9,7 @@ import Employer from './Components/Employer/Employer';
 import EmpProfile from './Components/Employer/Home/Home';
 // import EmpProfile from "./Components/Employer/Profile";
 import Admin from './Components/Admin/Admin';
+import AdminCompany from './Components/Admin/AdminCompanyPage';
 import Jobs from './Components/Employer/jobs';
 import CompanyHomePage from './Components/Student/Company/CompanyHomePage';
 import CompanySearchResults from './Components/Student/Company/CompanySearchResults';
@@ -24,7 +25,8 @@ function App() {
         <Route path="/signup" component={Signup} />
         <Route exact path="/student" component={Home} />
         <Route path="/employer" component={EmpProfile} />
-        <Route path="/admin" component={Admin} />
+        <Route exact path="/admin" component={AdminCompany} />
+        <Route exact path="/admin/company" component={Admin} />
         <Route path="/employerJobs" component={Jobs} />
         <Route path="/student/company" component={CompanyHomePage} />
         <Route path="/student/companySearchResults" component={CompanySearchResults} />

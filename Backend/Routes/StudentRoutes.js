@@ -313,4 +313,37 @@ Router.post('/withdrawApplication', (request, response) => {
     }
   });
 });
+
+Router.post('/uploadCompanyPhotos', upload.array('files', 10), (request, response) => {
+  const {
+    cid, stid, stname, cname,
+  } = request.body;
+  const stphotos = [];
+  const cphotos = [];
+  request.files.forEach((file) => {
+    stphotos.push({ url: file.location, cname, cid });
+    cphotos.push({ url: file.location, stname, stid });
+  });
+  console.log('\nEndpoint POST: post student upload company pictures');
+  console.log('Req Body: ', request.body);
+  const data = {
+    cid, stid, cphotos, stphotos,
+  };
+  kafka.make_request('studentsTopic', 'UPLOADCOMPANYPICTURES', data, (err, result) => {
+    console.log('Student Upload Company Pictures by id result', result);
+    if (err) {
+      console.log('Student Upload Company Pictures by id Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Student Upload Company Pictures by id Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
 module.exports = Router;

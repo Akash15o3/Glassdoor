@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import CompanyOverview from './CompanyOverview';
-import CompanyReviews from './CompanyReviews';
-import CompanyJobs from './CompanyJobs';
-import CompanySalaries from './CompanySalaries';
-import CompanyInterviews from './CompanyInterviews';
-import CompanyPhotos from './CompanyPhotos';
+import CompanyOverview from '../Student/Company/CompanyOverview';
+import CompanyReviews from '../Student/Company/CompanyReviews';
 
 class CompanyHomePage extends Component {
   constructor(props) {
@@ -21,7 +17,6 @@ class CompanyHomePage extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cname } = this.props;
     const { clocation } = this.props;
-    // let cid;
 
     axios.post(url, { cname, clocation })
       .then((response) => {
@@ -30,17 +25,7 @@ class CompanyHomePage extends Component {
             company: response.data,
           });
           const { company } = this.state;
-          // cid = company._id;
           console.log(company);
-          // url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-          // axios.post(url, { cid })
-          //   .then((response) => {
-          //     console.log('HEY');
-          //     console.log(response.data);
-          //     if (response.data) {
-          //       console.log(response.data);
-          //     }
-          //   });
         }
       });
   }
@@ -55,25 +40,34 @@ class CompanyHomePage extends Component {
     const { company, tab } = this.state;
     console.log(tab);
     let companyContent = null;
+    
     switch (tab) {
-      case 'Overview':
+      case 'Reviews':
+        console.log('O');
         companyContent = <CompanyOverview company={company} />;
         break;
-      case 'Reviews':
-        companyContent = <CompanyReviews cid={company._id} />;
+        /*
+      case 'Photos':
+        console.log('R');
+        companyContent = <CompanyReviews />;
         break;
       case 'Jobs':
+        console.log('J');
         companyContent = <CompanyJobs />;
         break;
       case 'Salaries':
+        console.log('S');
         companyContent = <CompanySalaries />;
         break;
       case 'Interview':
+        console.log('I');
         companyContent = <CompanyInterviews />;
         break;
       case 'Photos':
+        console.log('P');
         companyContent = <CompanyPhotos company={company} stid={this.props.id} stname={this.props.name} />;
         break;
+        */
       default:
         console.log('D');
         companyContent = null;
@@ -127,29 +121,17 @@ class CompanyHomePage extends Component {
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell reviews " onClick={this.tabChangeHandler} data-label="Reviews">
-                        <span className="num h2"> 43k</span>
+ 
                         <span className="subtle"> Reviews</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell jobs " onClick={this.tabChangeHandler} data-label="Jobs">
-                        <span className="num h2"> 56k</span>
-                        <span className="subtle"> Jobs</span>
+
+                        <span className="subtle"> Photos</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell salaries " onClick={this.tabChangeHandler} data-label="Salaries">
-                        <span className="num h2"> 40k</span>
-                        <span className="subtle"> Salaries</span>
-                      </a>
-                      <div className="vline cell"><i /></div>
-                      <a className="eiCell cell interviews " onClick={this.tabChangeHandler} data-label="Interview">
-                        <span className="num h2"> 7.3k</span>
-                        <span className="subtle"> Inter­views</span>
-                      </a>
-                      <div className="vline cell"><i /></div>
-                      <div className="vline cell"><i /></div>
-                      <a className="eiCell cell photos " onClick={this.tabChangeHandler} data-label="Photos">
-                        <span className="num h2"> 291</span>
-                        <span className="subtle"> Photos</span>
+                        <span className="subtle"> Job Statistics</span>
                       </a>
                     </div>
                   </div>
@@ -172,6 +154,7 @@ class CompanyHomePage extends Component {
   }
 }
 
+/*
 const mapStateToProps = (state) => {
   return {
     cname: state.student.cname,
@@ -182,3 +165,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(CompanyHomePage);
+*/
+
+export default CompanyHomePage;
+

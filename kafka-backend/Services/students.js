@@ -1,5 +1,6 @@
 const Students = require('../Models/StudentModel');
 const Application = require('../Models/ApplicationModel');
+const Company = require('../Models/CompanyModel');
 
 const options = {
   useFindAndModify: false,
@@ -292,6 +293,31 @@ function studentWithdrawApplication(data, callback) {
     }
   });
 }
+function studentUploadCompanyPictures(data, callback) {
+  const {
+    cid, stid, cphotos, stphotos,
+  } = data;
+  Students.findByIdAndUpdate(stid, { $push: { cphotos: { $each: stphotos } } }, options, (error, results) => {
+    console.log(results);
+  });
+  Company.findByIdAndUpdate(cid, { $push: { cphotos: { $each: cphotos } } }, options, (error, results) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error student uploading company pictures',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'text/plain',
+        content: results.cphotos,
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
   switch (msg.subTopic) {
@@ -377,6 +403,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside student withdraw application');
       console.log('Message:', msg);
       studentWithdrawApplication(msg.data, callback);
+      break;
+    }
+    case 'UPLOADCOMPANYPICTURES': {
+      console.log('KB: Inside student upload company pictures');
+      console.log('Message:', msg);
+      studentUploadCompanyPictures(msg.data, callback);
       break;
     }
     default: {

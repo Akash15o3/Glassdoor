@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import credentialReducer from './credentialReducer';
 import studentReducer from './studentReducer';
 import employerReducer from './employerReducer';
+import adminReducer from './adminReducer';
 
 const persistConfig = {
   key: 'root',
@@ -13,7 +14,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   credentials: credentialReducer,
   student: studentReducer,
-  employer: employerReducer
+  employer: employerReducer,
+  admin: adminReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

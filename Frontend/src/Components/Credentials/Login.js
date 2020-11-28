@@ -6,6 +6,7 @@ import '../../Static/Styles/Credentials.css';
 import { login } from '../../Actions/credentialActions';
 import { setStudent } from '../../Actions/studentActions';
 import { setEmployer } from '../../Actions/employerActions';
+import { setAdmin } from '../../Actions/adminActions';
 
 class Login extends Component {
   constructor(props) {
@@ -30,6 +31,9 @@ class Login extends Component {
             this.props.setStudent(user, _id);
           } else if (role === 'Employer') {
             this.props.setEmployer(user, _id);
+          }
+          else if (role === 'Admin') {
+            this.props.setAdmin(user, _id);
           }
           this.props.login(role);
         }
@@ -92,6 +96,7 @@ const mapDispatchToProps = (dispatch) => {
     login: (role) => dispatch(login(role)),
     setStudent: (user, id) => dispatch(setStudent(user, id)),
     setEmployer: (user, id) => dispatch(setEmployer(user, id)),
+    setAdmin: (user, id) => dispatch(setAdmin(user, id)),
   };
 };
 
