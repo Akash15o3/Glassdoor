@@ -35,36 +35,42 @@ class CompanyHomePage extends Component {
   }
 
   tabChangeHandler = (e) => {
-    console.log(e.currentTarget.getAttribute('data-label'));
     this.setState({
       tab: e.currentTarget.getAttribute('data-label')
     });
   }
 
   render() {
-    const { company } = this.state;
-    const { tab } = this.state;
+    const { company, tab } = this.state;
+    console.log(tab);
     let companyContent = null;
     switch (tab) {
       case 'Overview':
+        console.log('O');
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
+        console.log('R');
         companyContent = <CompanyReviews />;
         break;
       case 'Jobs':
+        console.log('J');
         companyContent = <CompanyJobs />;
         break;
       case 'Salaries':
+        console.log('S');
         companyContent = <CompanySalaries />;
         break;
-      case 'Interviews':
+      case 'Interview':
+        console.log('I');
         companyContent = <CompanyInterviews />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos />;
+        console.log('P');
+        companyContent = <CompanyPhotos company={company} stid={this.props.id} stname={this.props.name} />;
         break;
       default:
+        console.log('D');
         companyContent = null;
     }
     return (
@@ -130,7 +136,7 @@ class CompanyHomePage extends Component {
                         <span className="subtle"> Salaries</span>
                       </a>
                       <div className="vline cell"><i /></div>
-                      <a className="eiCell cell interviews " onClick={this.tabChangeHandler} data-label="Inter­views">
+                      <a className="eiCell cell interviews " onClick={this.tabChangeHandler} data-label="Interview">
                         <span className="num h2"> 7.3k</span>
                         <span className="subtle"> Inter­views</span>
                       </a>
@@ -154,12 +160,6 @@ class CompanyHomePage extends Component {
               </div>
             </div>
           </div>
-          <div className="buttons tbl fill hideDesk center">
-            <a href="/Jobs/McDonald-s-Jobs-E432.htm" className="gd-btn gd-btn-link gradient gd-btn-1 gd-btn-med gd-btn-mkt stickyNavViewJobsBtn">
-              <span>View Jobs at McDonald's</span>
-              <i className="hlpr" />
-            </a>
-          </div>
         </div>
         {companyContent}
       </div>
@@ -171,6 +171,8 @@ const mapStateToProps = (state) => {
   return {
     cname: state.student.cname,
     clocation: state.student.clocation,
+    id: state.student.id,
+    name: state.student.user.stname
   };
 };
 
