@@ -254,7 +254,7 @@ function adminSignup(data, callback) {
             const response = {
               status: 401,
               header: 'text/plain',
-              content: 'Error saving student',
+              content: 'Error saving Admin',
             };
             callback(null, response);
           } else {

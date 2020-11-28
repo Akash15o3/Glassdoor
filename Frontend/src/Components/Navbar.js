@@ -7,6 +7,8 @@ import SearchBar from './Student/SearchBar';
 import StudentTabs from './Student/StudentTabs';
 import logo from '../Static/Images/navbarLogo.PNG';
 import EmployerTabs from './Employer/EmployerTab';
+import AdminTabs from './Admin/AdminTabs';
+import AdminSearch from './Admin/AdminSearch';
 
 class Navbar extends Component {
   render() {
@@ -15,6 +17,8 @@ class Navbar extends Component {
     const studentTabs = role === 'student' ? <StudentTabs /> : null;
     const employerTabs = role === 'employer' ? <EmployerTabs /> : null;
     const searchBar1 = role === 'employer' ? <SearchBar /> : null;
+    const adminTabs = role === 'admin' ? <AdminTabs /> : null;
+    const adminSearch = role === 'admin' ? <AdminSearch history={this.props.history} /> : null;
     return (
       <div>
         {isAuth === true ? (
@@ -31,6 +35,8 @@ class Navbar extends Component {
         {studentTabs}
         {searchBar1}
         {employerTabs}
+        {adminSearch}
+        {adminTabs}
       </div>
     );
   }
