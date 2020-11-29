@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import axios from "axios";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 // import CompanyOverview from './CompanyOverview';
 // import CompanyReviews from './CompanyReviews';
 // import CompanyJobs from './CompanyJobs';
@@ -17,20 +17,21 @@ class CompanyHomePage extends Component {
       cphotos: [],
       salaries: [],
       jobs: [],
-      tab: "Overview",
-      aapplierid: "",
-      stname: "",
-      stemail: "",
-      stphoto: "",
-      stjobpref: "",
-      title: "",
-      targetsalary: "",
-      industry: "",
-      relocation: "",
-      gender: "",
-      disability: "",
-      ethnicity: "",
-      veteran: "",
+      tab: 'Overview',
+      aapplierid: '',
+      stname: '',
+      stemail: '',
+      stphoto: '',
+      stjobpref: '',
+      title: '',
+      targetsalary: '',
+      industry: '',
+      relocation: '',
+      gender: '',
+      disability: '',
+      ethnicity: '',
+      veteran: '',
+      stdemographics: '',
     };
   }
 
@@ -40,32 +41,36 @@ class CompanyHomePage extends Component {
     const data = {
       aapplierid: this.props.match.params.aapplierid,
     };
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificStudent?aapplierid=${data.aapplierid}`;
-    axios.get(url, data).then((response) => {
+    const url = `${process.env.REACT_APP_BACKEND}/students/${data.aapplierid}`;
+    axios.get(url).then((response) => {
       if (response.data) {
         // const company = response.data;
+        console.log('Student response: ');
+        console.log(response.data);
         this.setState({
           stname: response.data.stname,
           stemail: response.data.stemail,
           stphoto: response.data.stphoto,
-          stjobpref: response.data.stjobpref,
-          title: response.data.title,
-          targetsalary: response.data.targetsalary,
-          industry: response.data.industry,
-          relocation: response.data.relocation,
-          gender: response.data.gender,
-          disability: response.data.disability,
-          ethnicity: response.data.ethnicity,
-          veteran: response.data.veteran,
+          stjobpref: { ...response.data.stjobpref },
+          stdemographics: { ...response.data.stdemographics },
+          // relocation: response.data.stjobpref.strelocation,
+          // title: response.data.title,
+          // targetsalary: response.data.targetsalary,
+          // industry: response.data.industry,
+          // relocation: response.data.relocation,
+          // gender: response.data.gender,
+          // disability: response.data.disability,
+          // ethnicity: response.data.ethnicity,
+          // veteran: response.data.veteran,
         });
-        console.log("student profile response", response.data);
+        console.log('student profile response', response.data);
       }
     });
   }
 
   tabChangeHandler = (e) => {
     this.setState({
-      tab: e.currentTarget.getAttribute("data-label"),
+      tab: e.currentTarget.getAttribute('data-label'),
     });
   };
 
@@ -125,10 +130,10 @@ class CompanyHomePage extends Component {
           id="EIHdrModule"
           className="snug module noblur eep sticky"
           style={{
-            width: "992px",
-            top: "1px",
-            marginLeft: "auto",
-            marginRight: "auto",
+            width: '992px',
+            top: '1px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
           <div
@@ -136,7 +141,7 @@ class CompanyHomePage extends Component {
             className="gdGrid"
             data-brandviews="MODULE:n=hub-profileImage:eid=432"
           >
-            <div id="HeroLbFrame-432" className="hidden">
+            {/* <div id="HeroLbFrame-432" className="hidden">
               <div className="lbSlideFrame">
                 <div className="titleBar">
                   <span className="viewAll">
@@ -146,7 +151,10 @@ class CompanyHomePage extends Component {
                     </a>
                   </span>
                   <span className="counter">
-                    <span className="current">num</span> of{" "}
+                    <span className="current">num</span>
+                    {' '}
+                    of
+                    {' '}
                     <span className="total">num</span>
                   </span>
                   <span className="close">
@@ -157,7 +165,8 @@ class CompanyHomePage extends Component {
                 </div>
                 <div className="slides" />
               </div>
-            </div>
+            </div> */}
+
             <div className="empInfo tbl hideHH ">
               <div className="logo cell">
                 <a
@@ -167,13 +176,15 @@ class CompanyHomePage extends Component {
                 >
                   <span
                     className="sqLogo tighten lgSqLogo logoOverlay"
-                    style={{ position: "relative", top: "58px", right: "17px" }}
+                    style={{ position: 'relative', top: '58px', right: '7px' }}
                   >
                     <img
-                      src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"
+                      // src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"
+                      src={this.state.stphoto}
                       className
-                      alt=" Logo"
+                      // alt=" Logo"
                       title
+                      style={{ width: '70px', height: '70px' }}
                     />
                   </span>
                 </a>
@@ -184,18 +195,70 @@ class CompanyHomePage extends Component {
                   title
                   data-company="McDonald's"
                 >
-                  <span
+                  {/* <span
                     id="DivisionsDropdownComponent"
                     className="d-inline-flex align-items-center"
-                  >
-                    <p>Student Name: {this.state.stname}</p>
-                  </span>
+                  > */}
+                  <p>
+                    Student Name:
+                    {' '}
+                    {this.state.stname}
+                  </p>
+                  <h2>JOB PRERERENCES: </h2>
+                  <p>
+                    Title:
+                    {' '}
+                    {this.state.stjobpref.title}
+                  </p>
+                  <p>
+                    Target Industry:
+                    {' '}
+                    {this.state.stjobpref.industry}
+                  </p>
+                  <p>
+                    Search Status:
+                    {' '}
+                    {this.state.stjobpref.searchstatus}
+                  </p>
+                  <p>
+                    Relocation Preference:
+                    {' '}
+                    {this.state.stjobpref.relocation}
+                  </p>
+                  <p>
+                    Target Salary:
+                    {' '}
+                    {this.state.stjobpref.targetsalary}
+                  </p>
+                  <h2>DEMOGRAPHICS</h2>
+                  <p>
+                    Gender:
+                    {' '}
+                    {this.state.stdemographics.gender}
+                  </p>
+                  <p>
+                    Disability status:
+                    {' '}
+                    {this.state.stdemographics.disability}
+                  </p>
+                  <p>
+                    Ethnicity Status:
+                    {' '}
+                    {this.state.stdemographics.race_ethnicity}
+                  </p>
+                  <p>
+                    Veteran status:
+                    {' '}
+                    {this.state.stdemographics.veteran}
+                  </p>
+
+                  {/* </span> */}
                 </h1>
               </div>
               <div className="cell unlock small showDesk" />
             </div>
           </div>
-          <div id="StickyNavWrapper" className="stickyNavWrapper ">
+          {/* <div id="StickyNavWrapper" className="stickyNavWrapper ">
             <div id="SmarterNavContainer" className="initialStick">
               <div id="SmarterBannerContainer" />
               <div id="EmpLinksWrapper" className="empLinksWrapper  sticky">
@@ -272,7 +335,7 @@ class CompanyHomePage extends Component {
                   <div className="buttons cell showDesk padRt alignRt">
                     <div
                       id="EIHeaderFollowButton"
-                      style={{ display: "inline-block", marginRight: "12px" }}
+                      style={{ display: 'inline-block', marginRight: '12px' }}
                     />
                     <a
                       href="/mz-survey/employer/collectReview_input.htm?i=432&j=true&y=&c=PAGE_INFOSITE_TOP"
@@ -286,7 +349,7 @@ class CompanyHomePage extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         {companyContent}
       </div>
