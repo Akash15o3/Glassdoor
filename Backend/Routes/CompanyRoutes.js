@@ -222,27 +222,28 @@ Router.post("/specificCompany", (request, response) => {
   );
 });
 
-Router.post("/specificStudent", (request, response) => {
-  console.log("Req Body: ", request.body);
+Router.get("/specificStudent", (request, response) => {
+  console.log("Req Body: ", request.query);
   const data = { ...request.params, ...request.body };
 
   kafka.make_request(
     "companiesTopic",
     "SPECIFICSTUDENT",
-    data,
+    request.query,
     (err, result) => {
       if (err) {
-        console.log("Student specific Student Kafka error");
+        console.log("Get one jobs Kafka error");
         response.writeHead(401, {
           "Content-Type": "text/plain",
         });
-        response.end("Student specific Student Kafka error");
+        response.end("Get one jobs Kafka error");
       } else {
-        res.writeHead(200, {
-          "Content-Type": "application/json",
+        response.writeHead(result.status, {
+          "Content-Type": result.header,
         });
-        res.end(JSON.stringify(result));
-        console.log(JSON.stringify(result));
+        console.log("Result get 1 job: result.content");
+        console.log(result.content);
+        response.end(result.content);
       }
     }
   );

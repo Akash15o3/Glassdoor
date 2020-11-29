@@ -35,13 +35,13 @@ class CompanyHomePage extends Component {
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificStudent`;
     // const { cid } = this.props;
     // let cid;
     const data = {
       aapplierid: this.props.match.params.aapplierid,
     };
-    axios.post(url, data).then((response) => {
+    const url = `${process.env.REACT_APP_BACKEND}/companies/specificStudent?aapplierid=${data.aapplierid}`;
+    axios.get(url, data).then((response) => {
       if (response.data) {
         // const company = response.data;
         this.setState({
