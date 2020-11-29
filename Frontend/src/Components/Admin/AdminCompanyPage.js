@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import CompanyOverview from '../Student/Company/CompanyOverview';
 import CompanyReviews from '../Student/Company/CompanyReviews';
+//Mirror companyhomepage
 
 class CompanyHomePage extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class CompanyHomePage extends Component {
     let companyContent = null;
     
     switch (tab) {
-      case 'Reviews':
+      case 'Overview':
         console.log('O');
         companyContent = <CompanyOverview company={company} />;
         break;
