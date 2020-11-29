@@ -20,10 +20,9 @@ export const updateProfile = (updateInfo) => {
   };
 };
 
-export const getCNameAndClocation = (cname, clocation) => {
+export const getCid = (cid,) => {
   return {
-    type: 'CNAME_CLOCATION',
-    cname,
-    clocation,
+    type: 'CID',
+    cid,
   };
 };

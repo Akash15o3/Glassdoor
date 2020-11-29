@@ -21,11 +21,10 @@ const studentReducer = (state = initialState, action) => {
           ...action.updateInfo
         }
       };
-    case 'CNAME_CLOCATION':
+    case 'CID':
       return {
         ...state,
-        cname: action.cname,
-        clocation: action.clocation,
+        cid: action.cid,
       };
     case 'LOGOUT':
       return {

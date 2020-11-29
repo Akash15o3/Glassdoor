@@ -21,28 +21,28 @@ class CompanyHomePage extends Component {
 
   componentDidMount() {
     let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
-    const { cname } = this.props;
-    const { clocation } = this.props;
-    let cid;
+    const { cid } = this.props;
+    // let cid;
 
-    axios.post(url, { cname, clocation })
+    axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
           this.setState({
             company: response.data, cphotos: response.data.cphotos
           });
           const { company } = this.state;
-          cid = company._id;
+          // cid = company._id;
           console.log(company);
-          url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-          axios.post(url, { cid })
-            .then((response) => {
-              if (response.data) {
-                this.setState({
-                  reviews: response.data,
-                });
-              }
-            });
+        }
+      });
+
+    url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+    axios.post(url, { cid })
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            reviews: response.data,
+          });
         }
       });
   }
@@ -54,7 +54,7 @@ class CompanyHomePage extends Component {
   }
 
   updatePhotos = (cphotos) => {
-     this.setState({cphotos})
+    this.setState({ cphotos });
   }
 
   render() {
@@ -180,8 +180,7 @@ class CompanyHomePage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    cname: state.student.cname,
-    clocation: state.student.clocation,
+    cid: state.student.cid,
     id: state.student.id,
     name: state.student.user.stname
   };

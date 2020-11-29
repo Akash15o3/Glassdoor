@@ -260,8 +260,8 @@ function deleteFtReview(data, callback) {
 // }
 
 function specificCompany(data, callback) {
-  Companies.findOne(
-    { cname: data.cname, clocation: data.clocation },
+  Companies.findById(
+    data.cid,
     (error, company) => {
       if (error) {
         console.log(error);

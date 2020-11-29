@@ -8,7 +8,8 @@ export default class CompanyReviews extends Component {
       overallRating: Number,
       recommendedRating: Number,
       ceoRating: Number,
-      reviewArr: [],
+      firstReview: [],
+      secondReview: [],
     };
   }
 
@@ -16,6 +17,7 @@ export default class CompanyReviews extends Component {
     let average = 0;
     let recommended = 0;
     let approve = 0;
+    const arr = [];
     const { reviews } = this.props;
     console.log(reviews);
 
@@ -35,17 +37,20 @@ export default class CompanyReviews extends Component {
     approve /= reviews.length;
     approve *= 100;
     reviews.sort((a, b) => b.rhelpful - a.rhelpful);
-
-    console.log(reviews);
+    arr.push(reviews[0]);
+    arr.push(reviews[1]);
+    console.log(arr);
     this.setState({
       overallRating: average,
       recommendedRating: recommended,
       ceoRating: approve,
+      firstReview: arr[0],
+      secondReview: arr[1],
     });
   }
 
   render() {
-    const { overallRating, recommendedRating, ceoRating } = this.state;
+    const { overallRating, recommendedRating, ceoRating, firstReview,  secondReview} = this.state;
     const { company } = this.props;
     return (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
@@ -112,7 +117,13 @@ export default class CompanyReviews extends Component {
             <div>
               <div>
                 <div style={{ marginLeft: '50px' }}>
-                  <h2><a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">"Customer service"</a></h2>
+                  <h2>
+                    <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
+                      "
+                      {firstReview.rheadline}
+                      "
+                    </a>
+                  </h2>
                   <div>
                     <div style={{ marginBottom: '50px' }}>
                       <div>
@@ -132,23 +143,23 @@ export default class CompanyReviews extends Component {
                           </div>
                         </aside>
                       </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">Bill Jones - Customer</span>
+                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span>
                     </div>
                   </div>
                   <div style={{ display: 'inline-block' }}>
                     <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>Yes</p>
+                    <p>{firstReview.rrecommended}</p>
                   </div>
                   <div style={{ display: 'inline-block', marginLeft: '50px' }}>
                     <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>No</p>
+                    <p>{firstReview.rceoapprove}</p>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>Worked for a few years.</p>
+                  <p>{firstReview.rdescription}</p>
                   <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>Got free fries.</p>
+                  <p>{firstReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>I worked at McDonald's full-time it was terrible and i hated it alot it was rlly bad.</p>
+                  <p>{firstReview.rcons}</p>
                   <button className="gd-ui-button  css-glrvaa">Helpful</button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
@@ -158,7 +169,7 @@ export default class CompanyReviews extends Component {
               <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
               <div>
                 <div style={{ marginLeft: '50px' }}>
-                  <h2><a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">"Customer service"</a></h2>
+                  <h2><a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">"{secondReview.rheadline}"</a></h2>
                   <div>
                     <div style={{ marginBottom: '50px' }}>
                       <div>
@@ -178,23 +189,23 @@ export default class CompanyReviews extends Component {
                           </div>
                         </aside>
                       </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">Bill Jones - Customer</span>
+                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview.rwriter}</span>
                     </div>
                   </div>
                   <div style={{ display: 'inline-block' }}>
                     <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>Yes</p>
+                    <p>{secondReview.rrecommended}</p>
                   </div>
                   <div style={{ display: 'inline-block', marginLeft: '50px' }}>
                     <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>No</p>
+                    <p>{secondReview.rceoapprove}</p>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>Worked for a few years.</p>
+                  <p>{secondReview.rdescription}</p>
                   <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>Got free fries.</p>
+                  <p>{secondReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>I worked at McDonald's full-time it was terrible and i hated it alot it was rlly bad.</p>
+                  <p>{secondReview.rcons}</p>
                   <button className="gd-ui-button  css-glrvaa">Helpful</button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />

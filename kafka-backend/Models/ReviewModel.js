@@ -12,6 +12,7 @@ const reviewSchema = new Schema({
   rwriter: String,
   // 5 star rating
   overallRating: Number,
+  rdescription: String,
   rheadline: String,
   rpros: String,
   rcons: String,
