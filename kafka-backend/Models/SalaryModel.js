@@ -8,6 +8,7 @@ const salarySchema = new Schema({
   jtitle: String,
   // cname will be matched with company.cname on search
   cname: String,
+  cid: String,
   salbase: Number,
   // number in years
   salexperience: Number,

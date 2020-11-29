@@ -15,6 +15,7 @@ class CompanyHomePage extends Component {
       company: {},
       reviews: [],
       cphotos: [],
+      salaries: [],
       jobs: [],
       tab: 'Overview'
     };
@@ -33,8 +34,8 @@ class CompanyHomePage extends Component {
             company, cphotos: company.cphotos
           });
           console.log(company);
-          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob`;
-          axios.post(url, { cname: company.cname })
+          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${company.cname}`;
+          axios.get(url)
             .then((jobs) => {
               if (jobs.data) {
                 this.setState({
@@ -54,6 +55,16 @@ class CompanyHomePage extends Component {
           });
         }
       });
+
+    url = `${process.env.REACT_APP_BACKEND}/salaries/getSalaries?cid=${cid}`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            salaries: response.data,
+          });
+        }
+      });
   }
 
   tabChangeHandler = (e) => {
@@ -66,8 +77,12 @@ class CompanyHomePage extends Component {
     this.setState({ cphotos });
   }
 
+  updateSalaries = (salaries) => {
+    this.setState({ salaries });
+  }
+
   render() {
-    const { company, tab, reviews, cphotos, jobs } = this.state;
+    const { company, tab, reviews, cphotos, jobs, salaries } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -81,7 +96,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyJobs jobs={jobs} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries />;
+        companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} />;
         break;
       case 'Interview':
         companyContent = <CompanyInterviews />;
