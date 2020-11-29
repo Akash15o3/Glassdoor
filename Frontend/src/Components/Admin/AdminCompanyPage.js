@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import CompanyOverview from '../Student/Company/CompanyOverview';
-import CompanyReviews from '../Student/Company/CompanyReviews';
+import CompanyOverview from './AdminCompanyOverview';
+import AdminReviews from './AdminReviews';
 //Mirror companyhomepage
 
 class CompanyHomePage extends Component {
@@ -22,6 +22,7 @@ class CompanyHomePage extends Component {
     axios.post(url, { cname, clocation })
       .then((response) => {
         if (response.data) {
+          console.log('response.data: ', response.data)
           this.setState({
             company: response.data,
           });
@@ -47,23 +48,10 @@ class CompanyHomePage extends Component {
         console.log('O');
         companyContent = <CompanyOverview company={company} />;
         break;
+      case 'Reviews':
+        companyContent = <AdminReviews company={company} />;
+        break;
         /*
-      case 'Photos':
-        console.log('R');
-        companyContent = <CompanyReviews />;
-        break;
-      case 'Jobs':
-        console.log('J');
-        companyContent = <CompanyJobs />;
-        break;
-      case 'Salaries':
-        console.log('S');
-        companyContent = <CompanySalaries />;
-        break;
-      case 'Interview':
-        console.log('I');
-        companyContent = <CompanyInterviews />;
-        break;
       case 'Photos':
         console.log('P');
         companyContent = <CompanyPhotos company={company} stid={this.props.id} stname={this.props.name} />;
@@ -154,19 +142,6 @@ class CompanyHomePage extends Component {
     );
   }
 }
-
-/*
-const mapStateToProps = (state) => {
-  return {
-    cname: state.student.cname,
-    clocation: state.student.clocation,
-    id: state.student.id,
-    name: state.student.user.stname
-  };
-};
-
-export default connect(mapStateToProps)(CompanyHomePage);
-*/
 
 export default CompanyHomePage;
 

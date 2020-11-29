@@ -25,8 +25,8 @@ function App() {
         <Route path="/signup" component={Signup} />
         <Route exact path="/student" component={Home} />
         <Route path="/employer" component={EmpProfile} />
-        <Route exact path="/admin" component={AdminCompany} />
-        <Route exact path="/admin/company" component={Admin} />
+        <Route exact path="/admin" component={Admin} />
+        <Route exact path="/admin/company" component={AdminCompany} />
         <Route path="/employerJobs" component={Jobs} />
         <Route path="/student/company" component={CompanyHomePage} />
         <Route path="/student/companySearchResults" component={CompanySearchResults} />
