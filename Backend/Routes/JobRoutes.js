@@ -126,4 +126,28 @@ Router.get("/getJobApplicants", (request, response) => {
   });
 });
 
+//Update Application Status
+Router.post("/updateApplicantStatus", (request, response) => {
+  console.log("\nEndpoint POST: updateApplicantStatus ");
+  console.log("Req Body: ", request.body);
+  const data = { ...request.body };
+  console.log(data);
+  kafka.make_request("jobsTopic", "UPDATEAPPLICANTSTATUS", data, (err, result) => {
+    console.log("updateApplicantStatus result ", result);
+    if (err) {
+      console.log("updateApplicantStatus Kafka error");
+      response.writeHead(401, {
+        "Content-Type": "text/plain",
+      });
+      response.end("updateApplicantStatus Kafka error");
+    } else {
+      response.writeHead(result.status, {
+        "Content-Type": result.header,
+      });
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
 module.exports = Router;

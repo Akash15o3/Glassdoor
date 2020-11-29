@@ -11,8 +11,8 @@ const applicationSchema = new Schema(
     aname: String,
     astatus: {
       type: String,
-      enum: ["", "Applied", "Withdrawn"],
-      default: "",
+      enum: ["", "Applied", "Withdrawn", "Hired", "Reviewed", "Initial_Screening", "Interviewing"],
+      default: "Applied",
     },
     // embed resume model here
     aresume: String,

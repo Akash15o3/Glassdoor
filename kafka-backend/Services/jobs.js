@@ -161,6 +161,35 @@ function addNewJob(data, callback) {
   });
 }
 
+function updateApplicantStatus(data, callback) {
+
+var updateStatus = {
+  astatus: data.astatus,
+};
+
+Application.updateOne(
+  { ajobid: data.ajobid , aapplierid : data.aapplierid},
+  { $set: updateStatus },
+    (error, results) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: "text/plain",
+          content: "Error updating Job ",
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: "application/json",
+          content: JSON.stringify(results),
+        };
+        callback(null, response);
+      }
+    }
+  );
+}
+
 function handleRequest(msg, callback) {
   console.log("msg.subTopic", msg.subTopic);
   switch (msg.subTopic) {
@@ -189,6 +218,13 @@ function handleRequest(msg, callback) {
       console.log("KB: Inside get applicants for this job");
       console.log("Message:", msg);
       getJobApplicants(msg.data, callback);
+      break;
+    }
+
+    case "UPDATEAPPLICANTSTATUS" : {
+      console.log("KB: Inside update applicant status");
+      console.log("Message:", msg);
+      updateApplicantStatus(msg.data, callback)
       break;
     }
 

@@ -204,9 +204,11 @@ class JobSearchResults extends Component {
       showJobApplication: false,
       address: '',
       ajobid: '',
-      jobapplicants: []
+      jobapplicants: [],
+      role: 'Applied',
+
     };
-    this.getApplicantsHandler = this.getApplicantsHandler.bind(this);
+    // this.getApplicantsHandler = this.getApplicantsHandler.bind(this);
   }
 
   componentDidMount() {
@@ -301,23 +303,48 @@ class JobSearchResults extends Component {
     });
   }
 
-  getApplicantsHandler = () => {
-    axios.defaults.withCredentials = true;
-    const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
-    axios.get(url)
-      .then((response, err) => {
-        if (response.data) {
-          this.setState({
-            jobapplicants: response.data,
-            // jobInfoState: e.currentTarget.getAttribute('value')
+  // getApplicantsHandler = () => {
+  //   axios.defaults.withCredentials = true;
+  //   const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
+  //   axios.get(url)
+  //     .then((response, err) => {
+  //       if (response.data) {
+  //         this.setState({
+  //           jobapplicants: response.data,
+  //           // jobInfoState: e.currentTarget.getAttribute('value')
 
-          });
-          console.log('Jobs applicants response fe');
-          console.log(response.data);
-          console.log('job applicants: ');
-          console.log(this.state.jobapplicants);
+  //         });
+  //         console.log('Jobs applicants response fe');
+  //         console.log(response.data);
+  //         console.log('job applicants: ');
+  //         console.log(this.state.jobapplicants);
+  //       } else {
+  //         console.log('ERROR IN RES! ', err);
+  //       }
+  //     }).catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  roleChangeHandler = (e) => {
+    console.log(e.target.value);
+    this.setState({
+      role: e.target.value,
+    });
+    console.log('APPLIER ID: ', e.target.id);
+    const data = {
+      ajobid: sessionStorage.getItem('ajobid'),
+      aapplierid: e.target.id,
+      astatus: e.target.value,
+    };
+    axios.defaults.withCredentials = true;
+    const url = `${process.env.REACT_APP_BACKEND}/jobs/updateApplicantStatus`;
+    axios.post(url, data)
+      .then((response, err) => {
+        if (response) {
+          console.log(response);
         } else {
-          console.log('ERROR IN RES! ', err);
+          console.log('ERROR IN UPDATE APP STATUS! ', err);
         }
       }).catch((err) => {
         console.log(err);
@@ -357,19 +384,75 @@ class JobSearchResults extends Component {
       );
     });
 
+    // sessionStorage.setItem('ajobid', this.state.jobs[this.state.selectedIndex]._id);
+
     const details = this.state.jobapplicants.map(
       ({
         acoverletter,
-        aapplierid
+        aresume,
+        aname,
+        astatus,
+        aapplierid,
       }) => {
         return (
           <tr>
+            <td>
+              {' '}
+              <a href={aname}>
+                {' '}
+                {aname}
+              </a>
+              {' '}
+            </td>
             <td>{acoverletter}</td>
-            <td>{aapplierid}</td>
+            <td>
+              {' '}
+              <a href={aresume}> Resume</a>
+            </td>
+            <td>
+              {astatus}
+            </td>
+            <td>
+              <select onChange={this.roleChangeHandler} id={aapplierid}>
+                <option value="Applied">Applied</option>
+                <option value="Initial_Screening">Initial_Screening</option>
+                <option value="Interviewing">Interviewing</option>
+                <option value="Hired">Hired</option>
+                <option value="Withdrawn">Withdrawn</option>
+              </select>
+            </td>
           </tr>
         );
       }
     );
+
+    // const { company, tab } = this.state;
+    const tab = this.state.jobInfoState;
+    console.log(jobInfoState);
+    console.log(typeof (jobInfoState));
+    let applicantContent = null;
+    switch (tab) {
+      // case 'jdescription':
+      //   applicantContent = selectedJob;
+      //   break;
+      // case 'jresponsibilities':
+      //   applicantContent = selectedJob;
+      //   break;
+      // case 'jqualifications':
+      //   applicantContent = selectedJob;
+      //   break;
+      case 'japplicants':
+        applicantContent = (
+          <div>
+            {' '}
+            {details}
+          </div>
+        );
+        break;
+      default:
+        console.log('D');
+        applicantContent = null;
+    }
 
     return (
       <div style={{ marginTop: '15px' }}>
@@ -496,7 +579,7 @@ class JobSearchResults extends Component {
                           {selectedJob ? selectedJob[jobInfoState] : (
                             null
                           )}
-
+                          {applicantContent}
                         </div>
                       </div>
                     </div>
