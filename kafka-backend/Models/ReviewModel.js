@@ -15,6 +15,7 @@ const reviewSchema = new Schema({
   rcons: String,
   // Advice to management
   radvice: String,
+  rreply: String,
   rrecommended: {
     type: String,
     enum: ['Yes', 'No'],
