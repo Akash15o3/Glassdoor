@@ -7,16 +7,45 @@ export default class CompanyReviews extends Component {
     this.state = {
       overallRating: Number,
       recommendedRating: Number,
-      ceoRating: Number
+      ceoRating: Number,
+      reviewArr: [],
     };
   }
 
   componentDidMount() {
+    let average = 0;
+    let recommended = 0;
+    let approve = 0;
     const { reviews } = this.props;
     console.log(reviews);
+
+    for (let i = 0; i < reviews.length; i++) {
+      average += reviews[i].overallRating;
+      if (reviews[i].rrecommended === 'Yes') {
+        recommended++;
+      }
+      if (reviews[i].rceoapprove === 'Yes') {
+        approve++;
+      }
+    }
+
+    recommended /= reviews.length;
+    recommended *= 100;
+    average /= reviews.length;
+    approve /= reviews.length;
+    approve *= 100;
+    reviews.sort((a, b) => b.rhelpful - a.rhelpful);
+
+    console.log(reviews);
+    this.setState({
+      overallRating: average,
+      recommendedRating: recommended,
+      ceoRating: approve,
+    });
   }
 
   render() {
+    const { overallRating, recommendedRating, ceoRating } = this.state;
     const { company } = this.props;
     return (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
@@ -26,7 +55,7 @@ export default class CompanyReviews extends Component {
             's Reviews
           </h2>
           <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
-            <span style={{ color: 'green' }}>2.5</span>
+            <span style={{ color: 'green' }}>{overallRating}</span>
             <span className="fa fa-star checked" />
             <span className="fa fa-star checked" />
             <span className="fa fa-star-half-o" />
@@ -43,12 +72,15 @@ export default class CompanyReviews extends Component {
               />
               <path
                 className="circle"
-                strokeDasharray="60, 100"
+                strokeDasharray={`${recommendedRating}, 100`}
                 d="M18 2.0845
                   a 15.9155 15.9155 0 0 1 0 31.831
                   a 15.9155 15.9155 0 0 1 0 -31.831"
               />
-              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>60%</text>
+              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>
+                {recommendedRating}
+                %
+              </text>
             </svg>
             <div>Recommend to a Friend</div>
           </div>
@@ -62,12 +94,15 @@ export default class CompanyReviews extends Component {
               />
               <path
                 className="circle"
-                strokeDasharray="60, 100"
+                strokeDasharray={`${ceoRating}, 100`}
                 d="M18 2.0845
                   a 15.9155 15.9155 0 0 1 0 31.831
                   a 15.9155 15.9155 0 0 1 0 -31.831"
               />
-              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>60%</text>
+              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>
+                {ceoRating}
+                %
+              </text>
             </svg>
             <div>Approve of CEO</div>
           </div>

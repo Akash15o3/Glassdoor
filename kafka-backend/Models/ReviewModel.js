@@ -10,6 +10,8 @@ const reviewSchema = new Schema({
   cid: String,
   // name of person who wrote review
   rwriter: String,
+  // 5 star rating
+  overallRating: Number,
   rheadline: String,
   rpros: String,
   rcons: String,
