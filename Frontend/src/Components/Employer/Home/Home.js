@@ -8,7 +8,7 @@ import JobDisplay from "./JobDisplay";
 class Home extends Component {
   constructor(props) {
     super(props);
-    const { cphotos } = this.props.employer;
+    const { cphoto } = this.props.employer;
     this.state = {
       tab: "Profile",
       // stphoto,
@@ -37,7 +37,7 @@ class Home extends Component {
         // then print response status
         console.log(res.data);
         this.setState({ stphoto: res.data });
-        this.props.updateProfileEm({ cphotos: res.data });
+        this.props.updateProfileEm({ cphoto: res.data });
       });
   };
 
@@ -88,7 +88,7 @@ class Home extends Component {
               {/* <path d="M12 7a3 3 0 103 3 3 3 0 00-3-3zm0 9a6 6 0 00-5.33 3.25 9 9 0 0010.66 0A6 6 0 0012 16zm0-14A10 10 0 112 12 10 10 0 0112 2z" fill="grey" fillRule="evenodd" /> */}
               <image
                 style={{ width: "55px", height: "55px" }}
-                href={this.state.cphotos}
+                href={this.state.cphoto}
               />
             </svg>
             <a

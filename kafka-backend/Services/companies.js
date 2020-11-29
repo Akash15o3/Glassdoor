@@ -106,28 +106,23 @@ function updateCompanyProfile(data, callback) {
 }
 function uploadCompanyProfilePicture(data, callback) {
   const { id, cphoto } = data;
-  Companies.findByIdAndUpdate(
-    id,
-    { $push: { cphotos: { cphoto } } },
-    options,
-    (error, results) => {
-      if (error) {
-        const response = {
-          status: 401,
-          header: "text/plain",
-          content: "Error uploading Company profile picture",
-        };
-        callback(null, response);
-      } else {
-        const response = {
-          status: 200,
-          header: "text/plain",
-          content: JSON.stringify(results.cphotos),
-        };
-        callback(null, response);
-      }
+  Companies.findByIdAndUpdate(id, { cphoto }, options, (error, results) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: "text/plain",
+        content: "Error uploading Company profile picture",
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: "text/plain",
+        content: cphoto,
+      };
+      callback(null, response);
     }
-  );
+  });
 }
 
 function addFtReview(data, callback) {
@@ -260,17 +255,14 @@ function deleteFtReview(data, callback) {
 // }
 
 function specificCompany(data, callback) {
-  Companies.findById(
-    data.cid,
-    (error, company) => {
-      if (error) {
-        console.log(error);
-        return callback(error, null);
-      }
-
-      return callback(null, company);
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      console.log(error);
+      return callback(error, null);
     }
-  );
+
+    return callback(null, company);
+  });
 }
 
 function handleRequest(msg, callback) {
