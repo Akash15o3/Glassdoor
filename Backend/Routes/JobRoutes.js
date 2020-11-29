@@ -150,4 +150,29 @@ Router.post("/updateApplicantStatus", (request, response) => {
   });
 });
 
+//getApplierDemographics
+Router.get("/getApplierDemographics", (request, response) => {
+  console.log("\nEndpoint GET: get getApplierDemographics");
+  console.log("Req Body: ", request.query);
+  const data = { ...request.params };
+
+  kafka.make_request("jobsTopic", "GETAPPLIERDEMOGRAPHICS", request.query, (err, result) => {
+    console.log("Get one jobs result ", result);
+    if (err) {
+      console.log("Get one jobs Kafka error");
+      response.writeHead(401, {
+        "Content-Type": "text/plain",
+      });
+      response.end("Get one jobs Kafka error");
+    } else {
+      response.writeHead(result.status, {
+        "Content-Type": result.header,
+      });
+      console.log("Result get 1 job: result.content")
+      console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
 module.exports = Router;

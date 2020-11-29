@@ -1,183 +1,3 @@
-// import React, { Component } from "react";
-// import { Col, Card, FormGroup, Form } from "react-bootstrap";
-// import { connect } from "react-redux";
-// // import Navbar from '../Navbar.js';
-// // import DatePicker from 'react-bootstrap-date-picker';
-// // import Dropdown from 'react-dropdown';
-
-// import Modal from "react-modal";
-// import axios from "axios";
-
-// Modal.setAppElement("#root");
-// class Jobs extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       title: "",
-//       postingDate: new Date(),
-//       deadline: new Date(),
-//       city: "",
-//       cstate: "",
-//       country: "",
-//       salary: "",
-//       description: "",
-//     };
-
-//     this.onChangePostingDateHandler = this.onChangePostingDateHandler.bind(
-//       this
-//     );
-//     // this.onPostSubmit = this.onPostSubmit.bind(this);
-//     this.onChangeHandler = this.onChangeHandler.bind(this);
-//   }
-
-//   componentWillMount() {
-//     document.title = "Jobs Page";
-//   }
-
-//   onChangeHandler(e) {
-//     this.setState({
-//       [e.target.name]: e.target.value,
-//     });
-//   }
-
-//   onChangePostingDateHandler(date) {
-//     this.setState({
-//       postingDate: date,
-//     });
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <div>{/* <Navbar /> */}</div>
-//         <div className="container">
-//           <div>
-//             <div className="main-div-createJobPost">
-//               <div className="login-form">
-//                 <h2>Job Details</h2>
-//               </div>
-//               <form onSubmit={this.onPostSubmit}>
-//                 <FormGroup row>
-//                   <Col sm={12}>
-//                     <div className="form-group">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="title"
-//                         placeholder="Job Title"
-//                         pattern="^[a-zA-Z0-9]+([ .]{1}[a-zA-Z0-9]+)*$"
-//                         title="Book Title can only contain letters, digits and single space character. It must start with alphanumeric characters only."
-//                         onChange={this.onChangeHandler}
-//                         required
-//                         autoFocus
-//                       />
-//                     </div>
-//                   </Col>
-//                 </FormGroup>
-//                 {/* <FormGroup row>
-//                   <Form.Label sm={2}>Posting Date: </Form.Label>
-//                   <Col sm={4}>
-//                     <div className="form-group">
-//                       <DatePicker
-//                         className="form-control"
-//                         selected={this.state.postingDate}
-//                         onChange={this.onChangePostingDateHandler}
-//                         required
-//                       />
-//                     </div>
-//                   </Col>
-
-//                 </FormGroup> */}
-//                 <FormGroup row>
-//                   <Col sm={4}>
-//                     <div className="form-group">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="city"
-//                         placeholder="Job City"
-//                         pattern="^[a-zA-Z]+([ .]{1}[a-zA-Z]+)*$"
-//                         title="It can only contain letters, single space character and period. It must start with letter only."
-//                         onChange={this.onChangeHandler}
-//                         required
-//                       />
-//                     </div>
-//                   </Col>
-//                   <Col sm={4}>
-//                     <div className="form-group">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="cstate"
-//                         placeholder="Job State"
-//                         pattern="^[a-zA-Z]+([ .]{1}[a-zA-Z]+)*$"
-//                         title="It can only contain letters, single space character and period. It must start with letter only."
-//                         onChange={this.onChangeHandler}
-//                         required
-//                       />
-//                     </div>
-//                   </Col>
-//                   <Col sm={4}>
-//                     <div className="form-group">
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         name="country"
-//                         placeholder="Job Country"
-//                         pattern="^[a-zA-Z]+([ .]{1}[a-zA-Z]+)*$"
-//                         title="It can only contain letters, single space character and period. It must start with letter only."
-//                         onChange={this.onChangeHandler}
-//                         required
-//                       />
-//                     </div>
-//                   </Col>
-//                 </FormGroup>
-//                 <FormGroup row>
-//                   <Col sm={5}>
-//                     <div className="form-group">
-//                       <input
-//                         type="number"
-//                         className="form-control"
-//                         name="salary"
-//                         placeholder="Annual Salary in USD"
-//                         title="Please enter only digits."
-//                         onChange={this.onChangeHandler}
-//                         required
-//                       />
-//                     </div>
-//                   </Col>
-//                 </FormGroup>
-//                 <FormGroup row>
-//                   <Form.Label sm={2}>Job description: </Form.Label>
-//                   <Col sm={8}>
-//                     <textarea
-//                       rows="8"
-//                       cols="80"
-//                       name="description"
-//                       placeholder="Job Description"
-//                       onChange={this.onChangeHandler}
-//                       required
-//                     />
-//                   </Col>
-//                 </FormGroup>
-
-//                 <FormGroup check row>
-//                   <Col sm={{ offset: 5 }}>
-//                     <button type="submit" className="btn btn-primary">
-//                       Post Job Opening
-//                     </button>
-//                   </Col>
-//                 </FormGroup>
-//               </form>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Jobs;
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -189,6 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 
 import Modal from 'react-modal';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { updateProfileEm } from '../../Actions/employerActions';
 
 Modal.setAppElement('#root');
@@ -207,8 +28,37 @@ class JobSearchResults extends Component {
       jobapplicants: [],
       role: 'Applied',
 
+      totalCountOfJobs: 0,
+      applicantsApplied: 0,
+      applicantsSelected: 0,
+      applicantsRejected: 0,
+
+      applicantDetails: [],
+
+      dgenderBinaryCount: 0,
+      dgenderMaleCount: 0,
+      dgenderFemaleCount: 0,
+      dgenderNotDisclosedCount: 0,
+
+      draceAmericanCount: 0,
+      draceAlaskanCount: 0,
+      draceAsianCount: 0,
+      draceBlackCount: 0,
+      draceHawaiiCount: 0,
+      dracePacificCount: 0,
+      draceWhiteCount: 0,
+      draceNotDisclosedCount: 0,
+
+      dveteranCount: 0,
+      dnotVeteranCount: 0,
+      dveteranNotDisclosedCount: 0,
+
+      ddisabledCount: 0,
+      dnotdisabledCount: 0,
+      ddisabledNotDisclosedCount: 0,
+
     };
-    // this.getApplicantsHandler = this.getApplicantsHandler.bind(this);
+    // this.getApplierDemographics = this.getApplierDemographics.bind(this);
   }
 
   componentDidMount() {
@@ -220,9 +70,11 @@ class JobSearchResults extends Component {
         if (response.data) {
           this.setState({
             jobs: response.data,
+            totalCountOfJobs: response.data.length
           });
           console.log('Jobs response fe');
           console.log(response.data);
+          console.log('total jobs: ', this.state.totalCountOfJobs);
         }
       });
   }
@@ -246,13 +98,30 @@ class JobSearchResults extends Component {
     sessionStorage.setItem('ajobid', this.state.jobs[this.state.selectedIndex]._id);
   }
 
+  // getApplierDemographics(aapplierid) {
+  //   const { searchQuery } = this.props;
+  //   const url = `${process.env.REACT_APP_BACKEND}/jobs/getApplierDemographics?aapplierid=${aapplierid}`;
+
+  //   axios.get(url)
+  //     .then((response) => {
+  //       if (response.data) {
+  //         this.setState({
+  //           applicantDetails: response.data,
+  //         });
+  //         console.log('applicantDetails response fe');
+  //         console.log(response.data);
+  //         console.log(' applicantDetails: ', this.state.applicantDetails);
+  //       }
+  //     });
+  // }
+
   jobInfoStateChangeHandler = (e) => {
     console.log('Inside jobInfoStateChangeHandler', e.currentTarget.getAttribute('value'));
     this.setState({
       jobInfoState: e.currentTarget.getAttribute('value')
     });
 
-    if (e.currentTarget.getAttribute('value') === 'japplicants') {
+    if (e.currentTarget.getAttribute('value') === 'japplicants' || e.currentTarget.getAttribute('value') === 'jreport') {
       axios.defaults.withCredentials = true;
       const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
       axios.get(url)
@@ -261,12 +130,166 @@ class JobSearchResults extends Component {
             this.setState({
               jobapplicants: response.data,
               // jobInfoState: e.currentTarget.getAttribute('value')
+              applicantsApplied: response.data.length,
 
             });
             console.log('Jobs applicants response fe');
             console.log(response.data);
             console.log('job applicants: ');
             console.log(this.state.jobapplicants);
+            console.log('All applicants count: ', response.data.length);
+            let tempCountSelected = 0;
+            let tempCountRejected = 0;
+            const tempDetails = [];
+            for (let i = 0; i < response.data.length; ++i) {
+              if (this.state.jobapplicants[i].astatus === 'Hired') { ++tempCountSelected; } else if (this.state.jobapplicants[i].astatus === 'Withdrawn') { ++tempCountRejected; }
+
+              // this.state.getApplierDemographics(this.state.jobapplicants[i].aapplierid);
+
+              const url = `${process.env.REACT_APP_BACKEND}/jobs/getApplierDemographics?aapplierid=${this.state.jobapplicants[i].aapplierid}`;
+
+              axios.get(url)
+                .then((response) => {
+                  if (response.data) {
+                    tempDetails.push(response.data);
+                    // this.setState({
+                    //   applicantDetails: response.data,
+                    // });
+                    // console.log('applicantDetails response fe');
+                    // console.log(response.data);
+                    // console.log(' applicantDetails: ', this.state.applicantDetails);
+                  }
+                });
+            }
+
+            this.setState({
+              applicantsSelected: tempCountSelected,
+              applicantsRejected: tempCountRejected,
+              applicantDetails: tempDetails
+            });
+
+            const genderBinaryCount = 0;
+            const genderMaleCount = 0;
+            const genderFemaleCount = 0;
+            const genderNotDisclosedCount = 0;
+
+            const raceAmericanCount = 0;
+            const raceAlaskanCount = 0;
+            const raceAsianCount = 0;
+            const raceBlackCount = 0;
+            const raceHawaiiCount = 0;
+            const racePacificCount = 0;
+            const raceWhiteCount = 0;
+            const raceNotDisclosedCount = 0;
+
+            const veteranCount = 0;
+            const notVeteranCount = 0;
+            const veteranNotDisclosedCount = 0;
+
+            const disabledCount = 0;
+            const notdisabledCount = 0;
+            const disabledNotDisclosedCount = 0;
+
+            for (let i = 0; i < this.state.applicantDetails.length; ++i) {
+              switch (this.state.applicantDetails[i].stdemographics.disablity) {
+                case 'Disabled': ++disabledCount;
+                  break;
+
+                case 'Not Disabled': ++notdisabledCount;
+                  break;
+
+                case 'Refuse to disclose': ++veteranNotDisclosedCount;
+                  break;
+
+                default:
+                  console.log('D');
+              }
+
+              switch (this.state.applicantDetails[i].stdemographics.veteran) {
+                case 'Protected Veteran': ++veteranCount;
+                  break;
+
+                case 'Not a Veteran': ++notVeteranCount;
+                  break;
+
+                case 'Refuse to disclose': ++veteranNotDisclosedCount;
+                  break;
+
+                default:
+                  console.log('D');
+              }
+
+              switch (this.state.applicantDetails[i].stdemographics.gender) {
+                case 'Male': ++genderMaleCount;
+                  break;
+
+                case 'Female': ++genderFemaleCount;
+                  break;
+
+                case 'Non-binary': ++genderBinaryCount;
+                  break;
+
+                case 'Refuse to disclose': ++genderNotDisclosedCount;
+                  break;
+
+                default:
+                  console.log('D');
+              }
+
+              switch (this.state.applicantDetails[i].stdemographics.race_ethnicity) {
+                case 'Alaska Native': ++raceAlaskanCount;
+                  break;
+
+                case 'Asian': ++raceAsianCount;
+                  break;
+
+                case 'Black or African American': ++raceBlackCount;
+                  break;
+
+                case 'Native Hawaiian': ++raceHawaiiCount;
+                  break;
+
+                case 'Other Pacific Islander': ++racePacificCount;
+                  break;
+
+                case 'White': ++raceWhiteCount;
+                  break;
+
+                case 'American Indian': ++raceAmericanCount;
+                  break;
+
+                case 'Refuse to disclose': ++raceNotDisclosedCount;
+                  break;
+
+                default:
+                  console.log('D');
+              }
+            }
+
+            this.setState({
+              dgenderBinaryCount: genderBinaryCount,
+              dgenderMaleCount: genderMaleCount,
+              dgenderFemaleCount: genderFemaleCount,
+              dgenderNotDisclosedCount: genderNotDisclosedCount,
+              draceAmericanCount: raceAmericanCount,
+              draceAlaskanCount: raceAlaskanCount,
+              draceAsianCount: raceAsianCount,
+              draceBlackCount: raceBlackCount,
+              draceHawaiiCount: raceHawaiiCount,
+              dracePacificCount: racePacificCount,
+              draceWhiteCount: raceWhiteCount,
+              draceNotDisclosedCount: raceNotDisclosedCount,
+              deteranCount: veteranCount,
+              dnotVeteranCount: notVeteranCount,
+              dveteranNotDisclosedCount: veteranNotDisclosedCount,
+              ddisabledCount: disabledCount,
+              dnotdisabledCount: notdisabledCount,
+              ddisabledNotDisclosedCount: disabledNotDisclosedCount,
+            });
+
+            console.log(' applicantDetails: ', this.state.applicantDetails);
+            console.log('SELECTED APPLICANTS: ', this.state.applicantsSelected);
+            console.log('APPLICANTS REJECTED: ', this.state.applicantsRejected);
           } else {
             console.log('ERROR IN RES! ', err);
           }
@@ -302,29 +325,6 @@ class JobSearchResults extends Component {
       showJobApplication
     });
   }
-
-  // getApplicantsHandler = () => {
-  //   axios.defaults.withCredentials = true;
-  //   const url = `${process.env.REACT_APP_BACKEND}/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
-  //   axios.get(url)
-  //     .then((response, err) => {
-  //       if (response.data) {
-  //         this.setState({
-  //           jobapplicants: response.data,
-  //           // jobInfoState: e.currentTarget.getAttribute('value')
-
-  //         });
-  //         console.log('Jobs applicants response fe');
-  //         console.log(response.data);
-  //         console.log('job applicants: ');
-  //         console.log(this.state.jobapplicants);
-  //       } else {
-  //         console.log('ERROR IN RES! ', err);
-  //       }
-  //     }).catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
 
   roleChangeHandler = (e) => {
     console.log(e.target.value);
@@ -449,6 +449,49 @@ class JobSearchResults extends Component {
           </div>
         );
         break;
+
+      case 'jreport':
+        applicantContent = (
+          <div>
+            {' '}
+            <h3>
+              Total Jobs:
+              {' '}
+              {this.state.totalCountOfJobs}
+            </h3>
+            <h3>
+              Total Applicants applied:
+              {' '}
+              {this.state.applicantsApplied}
+            </h3>
+            <h3>
+              Total Applicants selected:
+              {' '}
+              {this.state.applicantsSelected}
+            </h3>
+            <h3>
+              Total Applicants rejected:
+              {' '}
+              {this.state.applicantsRejected}
+            </h3>
+
+            <h3>
+              {' '}
+              Total Male Count:
+              {' '}
+              {this.state.dgenderMaleCount}
+            </h3>
+
+            <h3>
+              {' '}
+              Total Female Count:
+              {' '}
+              {this.state.dgenderFemaleCount}
+            </h3>
+          </div>
+        );
+        break;
+
       default:
         console.log('D');
         applicantContent = null;
@@ -570,6 +613,7 @@ class JobSearchResults extends Component {
                                 Applicants
                               </span>
                             </div>
+                            <div onClick={this.jobInfoStateChangeHandler} className={`tab ${jobInfoState === 'jreport' ? 'active' : ''}`} data-test="tab" value="jreport"><span>Report</span></div>
                           </div>
                         </div>
                       </div>

@@ -1,5 +1,6 @@
 const Jobs = require("../Models/JobModel");
 const Application = require("../Models/ApplicationModel");
+const Student = require("../Models/StudentModel");
 
 const options = {
   useFindAndModify: false,
@@ -190,6 +191,30 @@ Application.updateOne(
   );
 }
 
+
+function getApplierDemographics(data, callback) {
+  Student.find({_id : data.aapplierid}, (error, job) => {
+    console.log("Kafka backend job: ", job);
+    console.log("kafka backend data: ", data)
+    if (error) {
+      const response = {
+        status: 401,
+        header: "text/plain",
+        content: "Error getApplierDemographics",
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: "application/json",
+        content: JSON.stringify(job),
+      };
+      console.log("kafka be job response getApplierDemographics: ", response.content)
+      callback(null, response);
+    }
+  });
+}
+
 function handleRequest(msg, callback) {
   console.log("msg.subTopic", msg.subTopic);
   switch (msg.subTopic) {
@@ -228,6 +253,12 @@ function handleRequest(msg, callback) {
       break;
     }
 
+    case "GETAPPLIERDEMOGRAPHICS" : {
+      console.log("KB: Inside GETAPPLIERDEMOGRAPHICS");
+      console.log("Message:", msg);
+      getApplierDemographics(msg.data, callback)
+      break;
+    }
     default: {
       const response = {
         status: 400,
