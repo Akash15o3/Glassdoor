@@ -15,6 +15,7 @@ class CompanyHomePage extends Component {
       company: {},
       reviews: [],
       cphotos: [],
+      jobs: [],
       tab: 'Overview'
     };
   }
@@ -27,12 +28,20 @@ class CompanyHomePage extends Component {
     axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
+          const company = response.data;
           this.setState({
-            company: response.data, cphotos: response.data.cphotos
+            company, cphotos: company.cphotos
           });
-          const { company } = this.state;
-          // cid = company._id;
           console.log(company);
+          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob`;
+          axios.post(url, { cname: company.cname })
+            .then((jobs) => {
+              if (jobs.data) {
+                this.setState({
+                  jobs: jobs.data,
+                });
+              }
+            });
         }
       });
 
@@ -58,7 +67,7 @@ class CompanyHomePage extends Component {
   }
 
   render() {
-    const { company, tab, reviews, cphotos } = this.state;
+    const { company, tab, reviews, cphotos, jobs } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -69,7 +78,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyReviews company={company} reviews={reviews} />;
         break;
       case 'Jobs':
-        companyContent = <CompanyJobs />;
+        companyContent = <CompanyJobs jobs={jobs} />;
         break;
       case 'Salaries':
         companyContent = <CompanySalaries />;
