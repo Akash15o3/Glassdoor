@@ -221,8 +221,10 @@ function specificCompany(data, callback) {
 }
 
 function specificStudent(data, callback) {
-  const { id, ...updateInfo } = data;
-  Student.findById(id, (error, results) => {
+  // const { id, ...updateInfo } = data;
+  console.log("data.aapplierid: ", data.aapplierid)
+  Student.find({_id: data.aapplierid}, (error, results) => {
+    console.log("INSIDE FIND results specific student: ", results)
     if (error) {
       console.log(error);
       callback(error, null);
@@ -238,6 +240,8 @@ function specificStudent(data, callback) {
 }
 
 function handleRequest(msg, callback) {
+  console.log("Message subtopic:", msg.subTopic)
+
   switch (msg.subTopic) {
     case 'GETALL': {
       console.log('KB: Inside get all companies');

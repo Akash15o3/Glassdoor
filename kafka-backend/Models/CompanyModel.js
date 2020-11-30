@@ -21,7 +21,12 @@ const companySchema = new Schema(
     cdescription: String,
     cmission: String,
     cceo: String,
-    cphoto: String,
+    // cphoto: String,
+    cphoto: {
+      type: String,
+      default:
+        "https://glassdoor-273.s3.us-west-1.amazonaws.com/1606091787051-unknown.jpg",
+    },
     // number of reviews, salary reviews, and interview reviews for a company
     reviewCount: {
       type: Number,
