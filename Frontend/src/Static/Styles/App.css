@@ -337,3 +337,28 @@ background-color: powderblue;
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+.card {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 100px; /* Added */
+}
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.left-half {
+  background-color: white;
+  position: relative;
+  left: 0px;
+  width: 30%;
+}
+
+.right-half {
+  background-color: white;
+  position: relative;
+  right: 0px;
+  width: 70%;
+}

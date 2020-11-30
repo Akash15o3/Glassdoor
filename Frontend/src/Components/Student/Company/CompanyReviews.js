@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
 export default class CompanyReviews extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overallRating: Number,
+      overallRate: Number,
       recommendedRating: Number,
       ceoRating: Number,
       firstReview: [],
       secondReview: [],
+      showAddReview: false,
+      overallRating: 1,
+      rheadline: '',
+      rdescription: '',
+      rpros: '',
+      rcons: '',
+      radvice: '',
+      rrecommended: 'Yes',
+      routlook: 'Positive',
+      rceoapprove: 'Yes',
     };
   }
 
@@ -33,15 +45,18 @@ export default class CompanyReviews extends Component {
 
     recommended /= reviews.length;
     recommended *= 100;
+    recommended = Math.round(recommended);
     average /= reviews.length;
+    average = average.toFixed(1);
     approve /= reviews.length;
     approve *= 100;
+    approve = Math.round(approve);
     reviews.sort((a, b) => b.rhelpful - a.rhelpful);
     arr.push(reviews[0]);
     arr.push(reviews[1]);
     console.log(arr);
     this.setState({
-      overallRating: average,
+      overallRate: average,
       recommendedRating: recommended,
       ceoRating: approve,
       firstReview: arr[0],
@@ -49,18 +64,126 @@ export default class CompanyReviews extends Component {
     });
   }
 
+  toggleAddReview = () => {
+    const showAddReview = !this.state.showAddReview;
+    this.setState({
+      showAddReview
+    });
+  }
+
+  overallRatingHandler = (e) => {
+    this.setState({ overallRating: e.target.value });
+  }
+
+  rheadlineHandler = (e) => {
+    this.setState({ rheadline: e.target.value });
+  }
+
+  rdescriptionHandler = (e) => {
+    this.setState({ rdescription: e.target.value });
+  }
+
+  rprosHandler = (e) => {
+    this.setState({ rpros: e.target.value });
+  }
+
+  rconsHandler = (e) => {
+    this.setState({ rcons: e.target.value });
+  }
+
+  radviceHandler = (e) => {
+    this.setState({ radvice: e.target.value });
+  }
+
+  rrecommendedHandler = (e) => {
+    this.setState({ rrecommended: e.target.value });
+  }
+
+  routlookHandler = (e) => {
+    this.setState({ routlook: e.target.value });
+  }
+
+  rceoapproveHandler = (e) => {
+    this.setState({ rceoapprove: e.target.value });
+  }
+
+  submitReview = () => {
+    const { overallRating, rheadline, rdescription, rpros, rcons, radvice, rrecommended, routlook, rceoapprove } = this.state;
+    const { cname, cid, stname, stid } = this.props;
+    const url = `${process.env.REACT_APP_BACKEND}/reviews`;
+    axios.post(url, { cname, cid, overallRating, rheadline, rdescription, rpros, rcons, radvice, rrecommended, routlook, rceoapprove, stname, stid })
+      .then((response) => {
+        if (response.data) {
+          const reviews = [...this.props.reviews, response.data];
+          // this.setState({ reviews });
+          this.props.updateReviews(reviews);
+          this.toggleAddReview();
+        }
+      });
+  }
+
   render() {
-    const { overallRating, recommendedRating, ceoRating, firstReview,  secondReview} = this.state;
-    const { company } = this.props;
+    const { showAddReview } = this.state;
+    const { overallRate, recommendedRating, ceoRating, firstReview, secondReview } = this.state;
+    const { cname } = this.props;
     return (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
+        <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
+          <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleAddReview}>
+            <svg className="SVGInline-svg modal_closeIcon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M13.34 12l5.38-5.38a.95.95 0 00-1.34-1.34L12 10.66 6.62 5.28a.95.95 0 00-1.34 1.34L10.66 12l-5.38 5.38a.95.95 0 001.34 1.34L12 13.34l5.38 5.38a.95.95 0 001.34-1.34z" fill="gray" fillRule="evenodd" />
+            </svg>
+          </span>
+          <h1 style={{ textAlign: 'center' }}>
+            Add a Review
+          </h1>
+          <label className="modalLabel">Rate a Company</label>
+          <select className="modalInput" onChange={this.overallRatingHandler}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <label className="modalLabel">Headline</label>
+          <input onChange={this.rheadlineHandler} className="modalInput" />
+          <label className="modalLabel">Description</label>
+          <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rdescriptionHandler} rows="10" cols="50" />
+          <label className="modalLabel">Pros</label>
+          <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rprosHandler} rows="10" cols="30" />
+          <label className="modalLabel">Cons</label>
+          <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rconsHandler} rows="10" cols="30" />
+          <label className="modalLabel">Advice to Management</label>
+          <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.radviceHandler} rows="10" cols="30" />
+          <label className="modalLabel">Recommend to a Friend</label>
+          <select className="modalInput" onChange={this.rrecommendedHandler}>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <label className="modalLabel">Approve CEO</label>
+          <select className="modalInput" onChange={this.rceoapproveHandler}>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <label className="modalLabel">Outlook</label>
+          <select className="modalInput" onChange={this.routlookHandler}>
+            <option value="Positive">Positive</option>
+            <option value="Negative">Negative</option>
+          </select>
+          <button className="save" onClick={this.submitReview}>Submit</button>
+        </Modal>
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
-            {company.cname}
+            {cname}
             's Reviews
+            <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', top: '5px', right: '5px' }}>
+              <i className="btn-plus margRtSm" />
+              <span>+ Add a Review</span>
+              <i className="hlpr" />
+            </button>
           </h2>
           <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
-            <span style={{ color: 'green' }}>{overallRating}</span>
+            <span style={{ color: 'green' }}>{overallRate}</span>
             <span className="fa fa-star checked" />
             <span className="fa fa-star checked" />
             <span className="fa fa-star-half-o" />
@@ -169,7 +292,13 @@ export default class CompanyReviews extends Component {
               <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
               <div>
                 <div style={{ marginLeft: '50px' }}>
-                  <h2><a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">"{secondReview.rheadline}"</a></h2>
+                  <h2>
+                    <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
+                      "
+                      {secondReview.rheadline}
+                      "
+                    </a>
+                  </h2>
                   <div>
                     <div style={{ marginBottom: '50px' }}>
                       <div>

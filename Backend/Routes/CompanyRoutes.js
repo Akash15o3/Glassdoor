@@ -23,7 +23,6 @@ Router.get("/", (request, response) => {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log(result.content);
         response.end(result.content);
       }
     }
@@ -48,7 +47,6 @@ Router.get("/:id", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -95,7 +93,6 @@ Router.post("/updateProfile", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -121,7 +118,6 @@ Router.post(
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log(result.content);
         response.end(result.content);
       }
     });
@@ -146,7 +142,6 @@ Router.put("/profile/addFtReview/:cid", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -170,7 +165,6 @@ Router.put("/profile/delFtReview/:cid", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -241,8 +235,6 @@ Router.get("/specificStudent", (request, response) => {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log("Result Specific student job: result.content");
-        console.log(result.content);
         response.end(result.content);
       }
     }

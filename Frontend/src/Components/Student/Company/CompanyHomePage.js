@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Modal from 'react-modal';
 import CompanyOverview from './CompanyOverview';
 import CompanyReviews from './CompanyReviews';
 import CompanyJobs from './CompanyJobs';
@@ -8,6 +9,7 @@ import CompanySalaries from './CompanySalaries';
 import CompanyInterviews from './CompanyInterviews';
 import CompanyPhotos from './CompanyPhotos';
 
+Modal.setAppElement('#root');
 class CompanyHomePage extends Component {
   constructor(props) {
     super(props);
@@ -16,8 +18,9 @@ class CompanyHomePage extends Component {
       reviews: [],
       cphotos: [],
       salaries: [],
+      interviews: [],
       jobs: [],
-      tab: 'Overview'
+      tab: 'Overview',
     };
   }
 
@@ -39,6 +42,15 @@ class CompanyHomePage extends Component {
               if (jobs.data) {
                 this.setState({
                   jobs: jobs.data,
+                });
+              }
+            });
+          url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${company.cname}`;
+          axios.get(url)
+            .then((interviews) => {
+              if (interviews.data) {
+                this.setState({
+                  interviews: interviews.data,
                 });
               }
             });
@@ -80,8 +92,16 @@ class CompanyHomePage extends Component {
     this.setState({ salaries });
   }
 
+  updateInterviews = (interviews) => {
+    this.setState({ interviews });
+  }
+
+  updateReviews = (reviews) => {
+    this.setState({ reviews });
+  }
+
   render() {
-    const { company, tab, reviews, cphotos, jobs, salaries } = this.state;
+    const { company, tab, reviews, cphotos, jobs, salaries, showAddReview, interviews } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -89,7 +109,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews company={company} reviews={reviews} />;
+        companyContent = <CompanyReviews cname={company.cname} cid={company._id} reviews={reviews} updateReviews={this.updateReviews} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs jobs={jobs} isAuth={this.props.isAuth} />;
@@ -98,7 +118,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
-        companyContent = <CompanyInterviews />;
+        companyContent = <CompanyInterviews interviews={interviews} cname={company.cname} updateInterviews={this.updateInterviews} isAuth={this.props.isAuth} />;
         break;
       case 'Photos':
         companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
@@ -184,11 +204,6 @@ class CompanyHomePage extends Component {
                   </div>
                   <div className="buttons cell showDesk padRt alignRt">
                     <div id="EIHeaderFollowButton" style={{ display: 'inline-block', marginRight: '12px' }} />
-                    <a href="/mz-survey/employer/collectReview_input.htm?i=432&j=true&y=&c=PAGE_INFOSITE_TOP" className="gd-btn gd-btn-link gradient gd-btn-1 gd-btn-med gd-btn-icon padHorz addReview">
-                      <i className="btn-plus margRtSm" />
-                      <span>Add a Review</span>
-                      <i className="hlpr" />
-                    </a>
                   </div>
                 </div>
               </div>

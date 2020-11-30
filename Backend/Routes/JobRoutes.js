@@ -68,8 +68,6 @@ Router.get("/getJob", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log("Result get 1 job: result.content");
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -93,7 +91,6 @@ Router.post("/createNewJob", (request, response) => {
       response.writeHead(result.status, {
         "Content-Type": result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -120,8 +117,6 @@ Router.get("/getJobApplicants", (request, response) => {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log("Result get 1 job: result.content");
-        console.log(result.content);
         response.end(result.content);
       }
     }
@@ -150,7 +145,6 @@ Router.post("/updateApplicantStatus", (request, response) => {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log(result.content);
         response.end(result.content);
       }
     }
@@ -179,8 +173,6 @@ Router.get("/getApplierDemographics", (request, response) => {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log("Result get 1 job: result.content");
-        console.log(result.content);
         response.end(result.content);
       }
     }

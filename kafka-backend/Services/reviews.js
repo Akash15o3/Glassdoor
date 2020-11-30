@@ -13,9 +13,16 @@ client.on('error', (error) => {
 });
 
 function addReview(data, callback) {
+  const now = new Date();
+  const jsonDate = now.toJSON();
+  const date = new Date(jsonDate);
+
   const newReview = new Reviews({
     cname: data.cname,
+    cid: data.cid,
+    overallRating: data.overallRating,
     rheadline: data.rheadline,
+    rdescription: data.rdescription,
     rpros: data.rpros,
     rcons: data.rcons,
     radvice: data.radvice,
@@ -27,6 +34,7 @@ function addReview(data, callback) {
       stid: data.stid,
       stname: data.stname,
     },
+    rdate: date,
   });
   Students.findById(data.stid, (error, student) => {
     if (error) {

@@ -8,6 +8,7 @@ function addNewInterview(data, callback) {
     description: data.description,
     difficulty: data.difficulty,
     offerstatus: data.offerstatus,
+    interviewqna: data.interviewqna,
   });
 
   newInterview.save((error, interview) => {
@@ -112,6 +113,27 @@ function addAnswer(data, callback) {
 }
 */
 
+function getCompanyInterviews(data, callback) {
+  Interviews.find({ cname: data.cname }, (error, interviews) => {
+    console.log('Kafka backend interviews: ', interviews);
+    console.log('kafka backend data: ', data);
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching interviews',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(interviews),
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
   switch (msg.subTopic) {
@@ -136,13 +158,18 @@ function handleRequest(msg, callback) {
       break;
     }
 
-     case 'ADDANSWER': {
+    case 'ADDANSWER': {
       console.log('KB: Inside add new question to interview');
       console.log('Message:', msg);
       addAnswer(msg.data, callback);
       break;
     }
-
+    case 'GETINTERVIEWS': {
+      console.log('KB: Inside get company interviews');
+      console.log('Message:', msg);
+      getCompanyInterviews(msg.data, callback);
+      break;
+    }
     default: {
       const response = {
         status: 400,

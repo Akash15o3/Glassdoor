@@ -9,8 +9,6 @@ const reviewSchema = new Schema(
     cname: String,
     // company ID
     cid: String,
-    // name of person who wrote review
-    rwriter: String,
     // 5 star rating
     overallRating: Number,
     rdescription: String,
@@ -37,7 +35,10 @@ const reviewSchema = new Schema(
       default: "Yes",
     },
     // Incremented with every vote
-    rhelpful: Number,
+    rhelpful: {
+      type: Number,
+      default: 0,
+    },
     rapproval: {
       type: String,
       enum: ["Pending", "Approved", "Rejected"],
@@ -47,6 +48,10 @@ const reviewSchema = new Schema(
     rstudent: {
       stid: String,
       stname: String,
+    },
+    rdate: {
+      type: Date,
+      default: Date.now(),
     },
   },
   {

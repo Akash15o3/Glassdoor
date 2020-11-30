@@ -1,4 +1,5 @@
 const redis = require('redis');
+const Ioredis = require('ioredis');
 const Reviews = require('../Models/ReviewModel');
 const Companies = require('../Models/CompanyModel');
 
@@ -11,6 +12,14 @@ client.on('connect', () => {
 client.on('error', (error) => {
   console.error(error);
 });
+
+function escapeRegex(text) {
+  if (text !== undefined) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  }
+  // eslint-disable-next-line consistent-return, no-useless-return
+  return;
+}
 
 // Get all reviews for a company
 // filter: 'All', 'Pending', 'Approved', 'Rejected'
@@ -168,6 +177,8 @@ function getByCompanyId(data, callback) {
   });
 }
 
+// Delete Redis keys using pattern
+// Ref: https://medium.com/oyotech/finding-and-deleting-the-redis-keys-by-pattern-the-right-way-123629d7730
 function approveReview(data, callback) {
   Reviews.findByIdAndUpdate(data.rid, { rapproval: 'Approved' }, { new: true }, (error, review) => {
     if (error) {
@@ -178,6 +189,20 @@ function approveReview(data, callback) {
       };
       callback(null, response);
     } else if (review) {
+      // Delete all reviews cached in redis to prevent stale data in response
+      const redisDel = new Ioredis(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
+      redisDel.keys('*Reviews*').then((keys) => {
+        // Use pipeline instead of sending
+        // one command each time to improve the
+        // performance.
+        console.log('keys:', keys);
+        let pipeline = redisDel.pipeline();
+        keys.forEach((key) => {
+          console.log('key:', key);
+          pipeline.del(key);
+        });
+        return pipeline.exec();
+      });
       const response = {
         status: 200,
         header: 'application/json',
@@ -205,6 +230,20 @@ function rejectReview(data, callback) {
       };
       callback(null, response);
     } else if (review) {
+      // Delete all reviews cached in redis to prevent stale data in response
+      const redisDel = new Ioredis(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
+      redisDel.keys('*Reviews*').then((keys) => {
+        // Use pipeline instead of sending
+        // one command each time to improve the
+        // performance.
+        console.log('keys:', keys);
+        let pipeline = redisDel.pipeline();
+        keys.forEach((key) => {
+          console.log('key:', key);
+          pipeline.del(key);
+        });
+        return pipeline.exec();
+      });
       const response = {
         status: 200,
         header: 'application/json',
@@ -310,6 +349,31 @@ function rejectPhoto(data, callback) {
   });
 }
 
+function getReviewsPerDay(data, callback) {
+  console.log('here');
+  const now = new Date();
+  const jsonDate = now.toJSON();
+  const date = new Date(jsonDate);
+
+  Reviews.countDocuments({ }, (error, count) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching company',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(count),
+      };
+      callback(null, response);
+    }
+  });
+}
+
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'GETREVIEWSBYCNAME': {
@@ -346,6 +410,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside reject photo');
       console.log('Message:', msg);
       rejectPhoto(msg.data, callback);
+      break;
+    }
+    case 'REVIEWSPERDAY': {
+      console.log('KB: Inside reviews per day');
+      console.log('Message:', msg);
+      getReviewsPerDay(msg.data, callback);
       break;
     }
     default: {

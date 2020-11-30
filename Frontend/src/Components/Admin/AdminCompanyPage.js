@@ -5,7 +5,7 @@ import CompanyOverview from './AdminCompanyOverview';
 import AdminReviews from './AdminReviews';
 //Mirror companyhomepage
 
-class CompanyHomePage extends Component {
+class AdminCompanyPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,13 +15,15 @@ class CompanyHomePage extends Component {
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
-    const { cname } = this.props;
-    const { clocation } = this.props;
 
-    axios.post(url, { cname, clocation })
+    console.log('AdminCompanyPage location query: ', this.props.location.query);
+
+    const url = `${process.env.REACT_APP_BACKEND}/companies/${this.props.location.query.cid}`;
+
+    axios.get(url)
       .then((response) => {
-        if (response.data) {
+        if (response.status === 200) {
+
           console.log('response.data: ', response.data)
           this.setState({
             company: response.data,
@@ -40,7 +42,8 @@ class CompanyHomePage extends Component {
 
   render() {
     const { company, tab } = this.state;
-    console.log(tab);
+    console.log('company page state: ', this.state);
+    console.log('company page: ', company);
     let companyContent = null;
     
     switch (tab) {
@@ -143,5 +146,5 @@ class CompanyHomePage extends Component {
   }
 }
 
-export default CompanyHomePage;
+export default AdminCompanyPage;
 

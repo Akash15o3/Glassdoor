@@ -21,7 +21,6 @@ Router.post('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -44,7 +43,6 @@ Router.get('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -69,7 +67,6 @@ Router.put('/:id/addQuestion', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -95,10 +92,29 @@ Router.put('/:id/addAnswer', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
 });
 
+Router.get('/getInterviews', (request, response) => {
+  console.log('\nEndpoint GET: get all Interviews for a company');
+  console.log('Req Body: ', request.query);
+  const data = { ...request.query };
+  kafka.make_request('interviewsTopic', 'GETINTERVIEWS', data, (err, result) => {
+    console.log('Get get all Interviews for a company result ', result);
+    if (err) {
+      console.log('Get get all Interviews for a company Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Get get all Interviews for a company Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
 module.exports = Router;

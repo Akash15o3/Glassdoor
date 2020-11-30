@@ -17,7 +17,7 @@ class SearchBar extends Component {
   handleClick = () => {
     const { search, type } = this.state;
     this.props.search(search);
-    this.props.history.push(`/student/CompanySearchResults`);
+    this.props.history.push(`/admin/adminSearchResults`);
   }
 
   searchChangeHandler = (e) => {
