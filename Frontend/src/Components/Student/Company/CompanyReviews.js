@@ -243,7 +243,7 @@ export default class CompanyReviews extends Component {
                   <h2>
                     <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
                       "
-                      {firstReview.rheadline}
+                      {firstReview === undefined ? null : firstReview.rheadline}
                       "
                     </a>
                   </h2>
@@ -266,23 +266,23 @@ export default class CompanyReviews extends Component {
                           </div>
                         </aside>
                       </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span>
+                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview === undefined ? null : firstReview.rwriter}</span>
                     </div>
                   </div>
                   <div style={{ display: 'inline-block' }}>
                     <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>{firstReview.rrecommended}</p>
+                    <p>{firstReview === undefined ? null : firstReview.rrecommended}</p>
                   </div>
                   <div style={{ display: 'inline-block', marginLeft: '50px' }}>
                     <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>{firstReview.rceoapprove}</p>
+                    <p>{firstReview === undefined ? null : firstReview.rceoapprove}</p>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>{firstReview.rdescription}</p>
+                  <p>{firstReview === undefined ? null : firstReview.rdescription}</p>
                   <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>{firstReview.rpros}</p>
+                  <p>{firstReview === undefined ? null : firstReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>{firstReview.rcons}</p>
+                  <p>{firstReview === undefined ? null : firstReview.rcons}</p>
                   <button className="gd-ui-button  css-glrvaa">Helpful</button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
@@ -295,7 +295,7 @@ export default class CompanyReviews extends Component {
                   <h2>
                     <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
                       "
-                      {secondReview.rheadline}
+                      {secondReview === undefined ? null : secondReview.rheadline}
                       "
                     </a>
                   </h2>
@@ -318,23 +318,23 @@ export default class CompanyReviews extends Component {
                           </div>
                         </aside>
                       </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview.rwriter}</span>
+                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview === undefined ? null : secondReview.rwriter}</span>
                     </div>
                   </div>
                   <div style={{ display: 'inline-block' }}>
                     <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>{secondReview.rrecommended}</p>
+                    <p>{secondReview === undefined ? null : secondReview.rrecommended}</p>
                   </div>
                   <div style={{ display: 'inline-block', marginLeft: '50px' }}>
                     <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>{secondReview.rceoapprove}</p>
+                    <p>{secondReview === undefined ? null : secondReview.rceoapprove}</p>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>{secondReview.rdescription}</p>
+                  <p>{secondReview === undefined ? null : secondReview.rdescription}</p>
                   <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>{secondReview.rpros}</p>
+                  <p>{secondReview === undefined ? null : secondReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>{secondReview.rcons}</p>
+                  <p>{secondReview === undefined ? null : secondReview.rcons}</p>
                   <button className="gd-ui-button  css-glrvaa">Helpful</button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
