@@ -21,7 +21,6 @@ class CompanyHomePage extends Component {
       interviews: [],
       jobs: [],
       tab: 'Overview',
-      showAddReview: false,
     };
   }
 
@@ -89,19 +88,16 @@ class CompanyHomePage extends Component {
     this.setState({ cphotos });
   }
 
-  toggleAddReview = () => {
-    const showAddReview = !this.state.showAddReview;
-    this.setState({
-      showAddReview
-    });
-  }
-
   updateSalaries = (salaries) => {
     this.setState({ salaries });
   }
 
   updateInterviews = (interviews) => {
     this.setState({ interviews });
+  }
+
+  updateReviews = (reviews) => {
+    this.setState({ reviews });
   }
 
   render() {
@@ -113,7 +109,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews company={company} reviews={reviews} />;
+        companyContent = <CompanyReviews cname={company.cname} cid={company._id} reviews={reviews} updateReviews={this.updateReviews} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs jobs={jobs} isAuth={this.props.isAuth} />;
@@ -133,30 +129,6 @@ class CompanyHomePage extends Component {
     }
     return (
       <div>
-        <Modal isOpen={showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '40%', margin: 'auto', border: '2px solid black', padding: 0 } }}>
-          <h1 data-test="employer-survey-company-title" className="m-0"><b>Rate a Company</b></h1>
-          <p data-test="employer-survey-company-subtitle" className="mt-xsm mb-lg">It only takes a minute! And your anonymous review will help other job seekers.</p>
-          <img alt="McDonald's" className="mr-xsm mr-md-std css-i4hha4 er15eoh2" data-test="employer-survey-company-employer-company-logo" src="https://media.glassdoor.com/sqlm/432/mcdonald-s-squarelogo-1585239308674.png" style={{ width: '50px', height: '50px', float: 'left' }} />
-          <div>
-            <label>
-              <span style={{ float: 'left' }}>Company</span>
-            </label>
-            <br />
-            <input value={company.cname} style={{ width: '500px', height: '20px' }} />
-            <div style={{ marginTop: '20px' }}>
-              <label htmlFor="" className="css-xwfp7p"><span>Overall Rating *</span></label>
-            </div>
-            <div>
-              <select name="rate" id="rating" onChange={this.handleChange}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-          </div>
-        </Modal>
         <div id="EIHdrModule" className="snug module noblur eep sticky" style={{ width: '992px', top: '1px', marginLeft: 'auto', marginRight: 'auto' }}>
           <div id="EmpHeroAndEmpInfo" className="gdGrid" data-brandviews="MODULE:n=hub-profileImage:eid=432">
             <div id="HeroLbFrame-432" className="hidden">
@@ -232,11 +204,6 @@ class CompanyHomePage extends Component {
                   </div>
                   <div className="buttons cell showDesk padRt alignRt">
                     <div id="EIHeaderFollowButton" style={{ display: 'inline-block', marginRight: '12px' }} />
-                    <button onClick={this.toggleAddReview} className="btn btn-primary">
-                      <i className="btn-plus margRtSm" />
-                      <span>+ Add a Review</span>
-                      <i className="hlpr" />
-                    </button>
                   </div>
                 </div>
               </div>
