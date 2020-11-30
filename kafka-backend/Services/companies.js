@@ -1,4 +1,4 @@
-const Companies = require("../Models/CompanyModel");
+const Companies = require('../Models/CompanyModel');
 
 const options = {
   useFindAndModify: false,
@@ -9,14 +9,14 @@ function getAllCompanies(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error fetching companies",
+        header: 'text/plain',
+        content: 'Error fetching companies',
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: "application/json",
+        header: 'application/json',
         content: JSON.stringify(companies),
       };
       callback(null, response);
@@ -29,14 +29,14 @@ function getOneCompany(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error fetching company",
+        header: 'text/plain',
+        content: 'Error fetching company',
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: "application/json",
+        header: 'application/json',
         content: JSON.stringify(company),
       };
       callback(null, response);
@@ -90,14 +90,14 @@ function updateCompanyProfile(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error updating Company profile",
+        header: 'text/plain',
+        content: 'Error updating Company profile',
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: "application/json",
+        header: 'application/json',
         content: JSON.stringify(results),
       };
       callback(null, response);
@@ -114,19 +114,19 @@ function uploadCompanyProfilePicture(data, callback) {
       if (error) {
         const response = {
           status: 401,
-          header: "text/plain",
-          content: "Error uploading Company profile picture",
+          header: 'text/plain',
+          content: 'Error uploading Company profile picture',
         };
         callback(null, response);
       } else {
         const response = {
           status: 200,
-          header: "text/plain",
+          header: 'text/plain',
           content: JSON.stringify(results.cphotos),
         };
         callback(null, response);
       }
-    }
+    },
   );
 }
 
@@ -135,8 +135,8 @@ function addFtReview(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error updating company profile",
+        header: 'text/plain',
+        content: 'Error updating company profile',
       };
       callback(null, response);
     } else if (company.cfeatured.length < 2) {
@@ -145,14 +145,14 @@ function addFtReview(data, callback) {
         if (err) {
           const response = {
             status: 401,
-            header: "text/plain",
-            content: "Error adding review to featured",
+            header: 'text/plain',
+            content: 'Error adding review to featured',
           };
           callback(null, response);
         } else {
           const response = {
             status: 200,
-            header: "application/json",
+            header: 'application/json',
             content: JSON.stringify(companyUpdated),
           };
           callback(null, response);
@@ -161,8 +161,8 @@ function addFtReview(data, callback) {
     } else {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Please delete from existing featured reviews first",
+        header: 'text/plain',
+        content: 'Please delete from existing featured reviews first',
       };
       callback(null, response);
     }
@@ -174,29 +174,29 @@ function deleteFtReview(data, callback) {
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error fetching company",
+        header: 'text/plain',
+        content: 'Error fetching company',
       };
       callback(null, response);
     } else if (company.cfeatured.length > 0) {
-      console.log("=> ", data.reviewid);
+      console.log('=> ', data.reviewid);
       company.cfeatured = company.cfeatured.filter(
-        (item) => item !== data.reviewid
+        (item) => item !== data.reviewid,
       );
       // company.cfeatured = [];
-      console.log("fil:", company.cfeatured);
+      console.log('fil:', company.cfeatured);
       company.save((err, companyUpdated) => {
         if (err) {
           const response = {
             status: 401,
-            header: "text/plain",
-            content: "Error deleting review from featured",
+            header: 'text/plain',
+            content: 'Error deleting review from featured',
           };
           callback(null, response);
         } else {
           const response = {
             status: 200,
-            header: "application/json",
+            header: 'application/json',
             content: JSON.stringify(companyUpdated),
           };
           callback(null, response);
@@ -205,8 +205,8 @@ function deleteFtReview(data, callback) {
     } else {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Nothing to delete",
+        header: 'text/plain',
+        content: 'Nothing to delete',
       };
       callback(null, response);
     }
@@ -267,7 +267,6 @@ function specificCompany(data, callback) {
         console.log(error);
         return callback(error, null);
       }
-
       return callback(null, company);
     }
   );
@@ -275,53 +274,53 @@ function specificCompany(data, callback) {
 
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
-    case "GETALL": {
-      console.log("KB: Inside get all companies");
-      console.log("Message:", msg);
+    case 'GETALL': {
+      console.log('KB: Inside get all companies');
+      console.log('Message:', msg);
       getAllCompanies(msg.data, callback);
       break;
     }
 
-    case "GETONE": {
-      console.log("KB: Inside get one company");
-      console.log("Message:", msg);
+    case 'GETONE': {
+      console.log('KB: Inside get one company');
+      console.log('Message:', msg);
       getOneCompany(msg.data, callback);
       break;
     }
 
-    case "UPDATEPROFILE": {
-      console.log("KB: Inside update company profile");
-      console.log("Message:", msg);
+    case 'UPDATEPROFILE': {
+      console.log('KB: Inside update company profile');
+      console.log('Message:', msg);
       // updateProfile(msg.data, callback);
       updateCompanyProfile(msg.data, callback);
       break;
     }
 
-    case "ADDFTREVIEW": {
-      console.log("KB: Inside add featured review to company");
-      console.log("Message:", msg);
+    case 'ADDFTREVIEW': {
+      console.log('KB: Inside add featured review to company');
+      console.log('Message:', msg);
       addFtReview(msg.data, callback);
       break;
     }
 
-    case "DELFTREVIEW": {
-      console.log("KB: Inside delete featured review to company");
-      console.log("Message:", msg);
+    case 'DELFTREVIEW': {
+      console.log('KB: Inside delete featured review to company');
+      console.log('Message:', msg);
       deleteFtReview(msg.data, callback);
       break;
     }
 
-    case "ADDPHOTO": {
-      console.log("KB: Inside delete featured review to company");
-      console.log("Message:", msg);
+    case 'ADDPHOTO': {
+      console.log('KB: Inside delete featured review to company');
+      console.log('Message:', msg);
       // addPhoto(msg.data, callback);
       uploadCompanyProfilePicture(msg.data, callback);
       break;
     }
 
-    case "SPECIFICCOMPANY": {
-      console.log("KB: Inside specific company for company");
-      console.log("Message:", msg);
+    case 'SPECIFICCOMPANY': {
+      console.log('KB: Inside specific company for company');
+      console.log('Message:', msg);
       specificCompany(msg.data, callback);
       break;
     }
@@ -329,8 +328,8 @@ function handleRequest(msg, callback) {
     default: {
       const response = {
         status: 400,
-        header: "text/plain",
-        content: "Bad request",
+        header: 'text/plain',
+        content: 'Bad request',
       };
       callback(null, response);
     }
