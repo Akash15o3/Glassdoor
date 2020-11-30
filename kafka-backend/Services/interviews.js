@@ -8,6 +8,7 @@ function addNewInterview(data, callback) {
     description: data.description,
     difficulty: data.difficulty,
     offerstatus: data.offerstatus,
+    interviewqna: data.interviewqna,
   });
 
   newInterview.save((error, interview) => {
