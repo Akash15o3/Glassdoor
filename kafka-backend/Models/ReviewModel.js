@@ -48,6 +48,7 @@ const reviewSchema = new Schema(
       stid: String,
       stname: String,
     },
+    rdate: Date,
   },
   {
     versionKey: false,

@@ -130,4 +130,25 @@ Router.put('/photo/reject', (request, response) => {
   });
 });
 
+// Approve/Reject a photo
+Router.get('/reviewsPerDay', (request, response) => {
+  console.log('\nEndpoint GET: Reviews per day');
+  // console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('adminsTopic', 'REVIEWSPERDAY', data, (err, result) => {
+    if (err) {
+      console.log('Reviews: Reviews per day Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews: Reviews per day Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+
 module.exports = Router;

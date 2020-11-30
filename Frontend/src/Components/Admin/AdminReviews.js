@@ -51,7 +51,7 @@ class AdminReviews extends Component {
     console.log('reviews page: ', company)
     return(
       <div>
-        <div class="form-group">
+        <div class="form-inline">
           <label for="ooption">Filter Reviews: </label>
           <select class="form-control" id="ooption" onChange = {this.filterChangeHandler}>>
             <option value = {this.state.filter}> Choose...</option>
@@ -62,16 +62,16 @@ class AdminReviews extends Component {
             ))}
           </select>
         </div>
-        <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
+        <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
             { company.cname }
             's Reviews
           </h2>
-          {this.state.reviews.map (review => (
-            <div>
-              <ReviewCard review = {review} />
-            </div>
-          ))}
+            {this.state.reviews.map (review => (
+              <div>
+                <ReviewCard review = {review} />
+              </div>
+            ))}
         </div>
       </div>
 
