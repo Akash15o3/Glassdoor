@@ -103,7 +103,7 @@ Router.post("/updateProfile", (request, response) => {
 
 Router.post(
   "/uploadProfilePicture",
-  upload.array(),
+  // upload.array(),
   upload.single("file"),
   (request, response) => {
     console.log("\nEndpoint POST: post upload Company profile picture");
@@ -232,16 +232,16 @@ Router.get("/specificStudent", (request, response) => {
     request.query,
     (err, result) => {
       if (err) {
-        console.log("Get one jobs Kafka error");
+        console.log("Get SPECIFIC STUDENT Kafka error");
         response.writeHead(401, {
           "Content-Type": "text/plain",
         });
-        response.end("Get one jobs Kafka error");
+        response.end("Get SPECIFIC STUDENT Kafka error");
       } else {
         response.writeHead(result.status, {
           "Content-Type": result.header,
         });
-        console.log("Result get 1 job: result.content");
+        console.log("Result Specific student job: result.content");
         console.log(result.content);
         response.end(result.content);
       }
