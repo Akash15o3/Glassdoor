@@ -3,7 +3,6 @@ const kafka = require('../kafka/client');
 
 const Router = express.Router();
 
-// Get a particular job
 Router.get('/getSalaries', (request, response) => {
   console.log('\nEndpoint GET: get all salaries for a company');
   console.log('Req Body: ', request.query);

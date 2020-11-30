@@ -18,6 +18,7 @@ class CompanyHomePage extends Component {
       reviews: [],
       cphotos: [],
       salaries: [],
+      interviews: [],
       jobs: [],
       tab: 'Overview',
       showAddReview: false,
@@ -42,6 +43,15 @@ class CompanyHomePage extends Component {
               if (jobs.data) {
                 this.setState({
                   jobs: jobs.data,
+                });
+              }
+            });
+          url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${company.cname}`;
+          axios.get(url)
+            .then((interviews) => {
+              if (interviews.data) {
+                this.setState({
+                  interviews: interviews.data,
                 });
               }
             });
@@ -91,7 +101,7 @@ class CompanyHomePage extends Component {
   }
 
   render() {
-    const { company, tab, reviews, cphotos, jobs, salaries, showAddReview  } = this.state;
+    const { company, tab, reviews, cphotos, jobs, salaries, showAddReview, interviews } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -108,7 +118,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
-        companyContent = <CompanyInterviews />;
+        companyContent = <CompanyInterviews interviews={interviews} cname={company.cname} />;
         break;
       case 'Photos':
         companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
@@ -128,7 +138,7 @@ class CompanyHomePage extends Component {
               <span style={{ float: 'left' }}>Company</span>
             </label>
             <br />
-            <input value={company.cname} style={{ width: '500px', height: '20px'}} />
+            <input value={company.cname} style={{ width: '500px', height: '20px' }} />
             <div style={{ marginTop: '20px' }}>
               <label htmlFor="" className="css-xwfp7p"><span>Overall Rating *</span></label>
             </div>

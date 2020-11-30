@@ -26,6 +26,7 @@ const interviewSchema = new Schema({
     question: String,
     answers: [{ answer: String }],
   }],
+  interviewposted: { type: Date, default: Date.now() },
 },
 {
   versionKey: false,
