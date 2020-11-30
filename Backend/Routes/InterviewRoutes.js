@@ -21,7 +21,6 @@ Router.post('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -44,7 +43,6 @@ Router.get('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -69,7 +67,6 @@ Router.put('/:id/addQuestion', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -95,7 +92,6 @@ Router.put('/:id/addAnswer', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
