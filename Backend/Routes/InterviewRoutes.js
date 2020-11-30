@@ -100,7 +100,7 @@ Router.put('/:id/addAnswer', (request, response) => {
 Router.get('/getInterviews', (request, response) => {
   console.log('\nEndpoint GET: get all Interviews for a company');
   console.log('Req Body: ', request.query);
-  const data = { ...request.params };
+  const data = { ...request.query };
   kafka.make_request('interviewsTopic', 'GETINTERVIEWS', data, (err, result) => {
     console.log('Get get all Interviews for a company result ', result);
     if (err) {
