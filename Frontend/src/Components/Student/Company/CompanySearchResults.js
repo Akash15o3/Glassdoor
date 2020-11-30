@@ -44,7 +44,7 @@ class CompanySearchResults extends Component {
               <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
               <div className="col-9 pr-0">
                 <h2>
-                  <Link id={`${item._id}`} onClick={this.handleClick} to={credentials.role === 'admin' ? "/admin/company" : "/student/company"}>
+                  <Link id={`${item._id}`} onClick={this.handleClick} to={`/${credentials.role}/company`}>
                     {' '}
                     {item.cname}
                     {' '}

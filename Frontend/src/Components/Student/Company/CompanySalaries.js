@@ -88,11 +88,13 @@ export default class CompanySalaries extends Component {
         <div style={{ marginBottom: '8px' }}>
           <h1 style={{ fontWeight: 'bold', marginLeft: '150px', textAlign: 'center' }}>
             {`${cname} Salaries`}
-            <button onClick={this.openSalaryModal} style={{ backgroundColor: '#1861bf', position: 'relative', left: '-25px', top: '-5px', float: 'right' }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
-              <i className="btn-plus margRtSm" />
-              <span>  Add Salary </span>
-              <i className="hlpr" />
-            </button>
+            {this.props.isAuth ? (
+              <button onClick={this.openSalaryModal} style={{ backgroundColor: '#1861bf', position: 'relative', left: '-25px', top: '-5px', float: 'right' }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
+                <i className="btn-plus margRtSm" />
+                <span>  Add Salary </span>
+                <i className="hlpr" />
+              </button>
+            ) : null}
           </h1>
           {/* <button className="btn btn-primary">Add Photos</button> */}
         </div>

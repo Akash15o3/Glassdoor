@@ -25,7 +25,6 @@ class CompanyHomePage extends Component {
     let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cid } = this.props;
     // let cid;
-
     axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
@@ -93,16 +92,16 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyReviews company={company} reviews={reviews} />;
         break;
       case 'Jobs':
-        companyContent = <CompanyJobs jobs={jobs} />;
+        companyContent = <CompanyJobs jobs={jobs} isAuth={this.props.isAuth} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} />;
+        companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
         companyContent = <CompanyInterviews />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} />;
+        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       default:
         console.log('D');
@@ -206,7 +205,8 @@ const mapStateToProps = (state) => {
   return {
     cid: state.student.cid,
     id: state.student.id,
-    name: state.student.user.stname
+    name: state.credentials.isAuth ? state.student.user.stname : '',
+    isAuth: state.credentials.isAuth
   };
 };
 

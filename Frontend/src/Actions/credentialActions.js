@@ -10,3 +10,8 @@ export const logout = () => {
     type: 'LOGOUT',
   };
 };
+export const viewWhileNotLoggedIn = () => {
+  return {
+    type: 'NOT_LOGGED_IN_VIEW',
+  };
+};

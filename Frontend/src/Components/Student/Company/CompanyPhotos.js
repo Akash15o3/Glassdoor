@@ -72,15 +72,18 @@ export default class CompanyPhotos extends Component {
           {/* <button className="btn btn-primary">Add Photos</button> */}
           <div id="EIHeaderFollowButton" />
           <input style={{ display: 'none' }} onChange={this.photoChangeHandler} type="file" name="files" multiple ref={(input) => this.inputElement = input} />
-          <button onClick={upload ? this.uploadPhotos : this.handleClick} style={{ marginTop: '10px', marginRight: '5px', backgroundColor: `${upload ? 'green' : '#1861bf'}` }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
-            <i className="btn-plus margRtSm" />
-            <span>
-              {upload ? 'Upload' : 'Add'}
-              {' '}
-              Photos
-            </span>
-            <i className="hlpr" />
-          </button>
+          {this.props.isAuth
+            ? (
+              <button onClick={upload ? this.uploadPhotos : this.handleClick} style={{ marginTop: '10px', marginRight: '5px', backgroundColor: `${upload ? 'green' : '#1861bf'}` }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
+                <i className="btn-plus margRtSm" />
+                <span>
+                  {upload ? 'Upload' : 'Add'}
+                  {' '}
+                  Photos
+                </span>
+                <i className="hlpr" />
+              </button>
+            ) : null}
         </div>
         {photos.map((photo) => {
           return <img src={photo.url} />;

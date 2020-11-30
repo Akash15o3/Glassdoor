@@ -31,12 +31,12 @@ function App() {
         <Route path="/employerJobs" component={Jobs} />
         <Route path="/studentProfile/:aapplierid" component={StudentProfile} />
         <Route path="/student/company" component={CompanyHomePage} />
-        <Route
-          path="/student/companySearchResults"
-          component={CompanySearchResults}
-        />
+        <Route path="/student/companySearchResults" component={CompanySearchResults} />
         <Route path="/student/jobSearchResults" component={JobSearchResults} />
         <Route path="/student/jobApplications" component={JobApplications} />
+        <Route path="/anonymous/companySearchResults" component={CompanySearchResults} />
+        <Route path="/anonymous/company" component={CompanyHomePage} />
+        <Route path="/anonymous/jobSearchResults" component={JobSearchResults} />
       </div>
     </BrowserRouter>
   );

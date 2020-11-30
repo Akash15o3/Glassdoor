@@ -215,7 +215,7 @@ class JobSearchResults extends Component {
             <label style={{ display: 'block', marginBottom: '10px', }}>Cover Letter </label>
             <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none' }} value={coverLetter} onChange={this.coverLetterChangeHandler} rows="10" cols="50" />
           </div>
-          <button onClick={this.submitApplication} className="save">Apply</button>
+          {this.props.isAuth ? <button onClick={this.submitApplication} className="save">Apply</button> : null}
         </Modal>
         <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
           <header id="DKFilters" className="wide">
@@ -345,6 +345,11 @@ const mapStateToProps = (state) => {
       id: state.student.id
     };
   }
+
+  return {
+    searchQuery: state.student.searchQuery,
+    resumes: []
+  };
 };
 
 export default connect(mapStateToProps)(JobSearchResults);

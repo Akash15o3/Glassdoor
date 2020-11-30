@@ -319,6 +319,13 @@ background-color: powderblue;
     margin-right: 3%;
 }
 
+.student-img{
+  width: 30%;
+  height: 210px;
+  margin-bottom: 1.25%;
+  margin-right: 3%;
+}
+
 .upload{
   background-color: green;
 }
