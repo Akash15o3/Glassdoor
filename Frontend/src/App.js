@@ -10,6 +10,7 @@ import EmpProfile from './Components/Employer/Home/Home';
 // import EmpProfile from "./Components/Employer/Profile";
 import Admin from './Components/Admin/Admin';
 import AdminCompany from './Components/Admin/AdminCompanyPage';
+import AdminSearchResults from './Components/Admin/AdminSearchResults';
 import Jobs from './Components/Employer/jobs';
 import CompanyHomePage from './Components/Student/Company/CompanyHomePage';
 import CompanySearchResults from './Components/Student/Company/CompanySearchResults';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/employer" component={EmpProfile} />
         <Route exact path="/admin" component={Admin} />
         <Route exact path="/admin/company" component={AdminCompany} />
+        <Route exact path="/admin/adminSearchResults" component={AdminSearchResults} />
         <Route path="/employerJobs" component={Jobs} />
         <Route path="/studentProfile/:aapplierid" component={StudentProfile} />
         <Route path="/student/company" component={CompanyHomePage} />

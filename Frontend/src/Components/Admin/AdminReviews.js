@@ -47,6 +47,8 @@ class AdminReviews extends Component {
 
   render() {
     const { company } = this.props;
+    console.log('reviews page props: ', this.props)
+    console.log('reviews page: ', company)
     return(
       <div>
         <div class="form-group">
