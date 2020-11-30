@@ -21,7 +21,6 @@ Router.get('/', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -44,7 +43,6 @@ Router.get('/:id', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -66,7 +64,6 @@ Router.post('/updateProfile', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -88,7 +85,6 @@ Router.post('/uploadProfilePicture', upload.single('file'), (request, response) 
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -110,7 +106,6 @@ Router.post('/uploadResume', upload.single('file'), (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -132,7 +127,6 @@ Router.post('/updateJobStatus', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -155,7 +149,6 @@ Router.post('/updateJobTitle', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -177,7 +170,6 @@ Router.post('/updateTargetSalary', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -199,7 +191,6 @@ Router.post('/updateRelocation', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -220,7 +211,6 @@ Router.post('/updateIndustry', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -242,7 +232,6 @@ Router.post('/updateDemographics', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -264,7 +253,6 @@ Router.post('/applications', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -286,7 +274,6 @@ Router.post('/submitApplication', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -308,7 +295,6 @@ Router.post('/withdrawApplication', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -341,7 +327,6 @@ Router.post('/uploadCompanyPhotos', upload.array('files', 10), (request, respons
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });

@@ -15,6 +15,8 @@ client.on('error', (error) => {
 function addReview(data, callback) {
   const newReview = new Reviews({
     cname: data.cname,
+    cid: data.cid,
+    overallRating: data.overallRating,
     rheadline: data.rheadline,
     rpros: data.rpros,
     rcons: data.rcons,

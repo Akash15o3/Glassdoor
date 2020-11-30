@@ -58,7 +58,7 @@ export default class CompanyPhotos extends Component {
         // then print response status
         console.log(res.data);
         this.setState({ photos: res.data, upload: false });
-        this.props.updatePhotos(res.data)
+        this.props.updatePhotos(res.data);
       });
   }
 
@@ -67,20 +67,23 @@ export default class CompanyPhotos extends Component {
     const { cphotos, cname } = this.props;
     return (
       <div id="companyPhotoContainer">
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '*px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
           <h1 style={{ fontWeight: 'bold' }}>{`${cname} Office Photos`}</h1>
           {/* <button className="btn btn-primary">Add Photos</button> */}
           <div id="EIHeaderFollowButton" />
           <input style={{ display: 'none' }} onChange={this.photoChangeHandler} type="file" name="files" multiple ref={(input) => this.inputElement = input} />
-          <button onClick={upload ? this.uploadPhotos : this.handleClick} style={{ marginTop: '10px', marginRight: '5px', backgroundColor: `${upload ? 'green' : '#1861bf'}` }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
-            <i className="btn-plus margRtSm" />
-            <span>
-              {upload ? 'Upload' : 'Add'}
-              {' '}
-              Photos
-            </span>
-            <i className="hlpr" />
-          </button>
+          {this.props.isAuth
+            ? (
+              <button onClick={upload ? this.uploadPhotos : this.handleClick} style={{ marginTop: '10px', marginRight: '5px', backgroundColor: `${upload ? 'green' : '#1861bf'}` }} className="gd-btn gd-btn-link gradient gd-btn-med gd-btn-icon padHorz addReview">
+                <i className="btn-plus margRtSm" />
+                <span>
+                  {upload ? 'Upload' : 'Add'}
+                  {' '}
+                  Photos
+                </span>
+                <i className="hlpr" />
+              </button>
+            ) : null}
         </div>
         {photos.map((photo) => {
           return <img src={photo.url} />;

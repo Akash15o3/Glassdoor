@@ -21,7 +21,6 @@ Router.post('/companies', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });
@@ -45,7 +44,6 @@ Router.post('/jobs', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log(result.content);
       response.end(result.content);
     }
   });

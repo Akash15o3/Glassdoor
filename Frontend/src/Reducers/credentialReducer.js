@@ -1,5 +1,7 @@
 const initialState = {
-  isAuth: false
+  isAuth: false,
+  role: 'anonymous',
+  views: 0
 };
 
 const credentialReducer = (state = initialState, action) => {
@@ -13,6 +15,13 @@ const credentialReducer = (state = initialState, action) => {
     case 'LOGOUT':
       return {
         isAuth: false,
+        role: 'anonymous',
+        views: 0
+      };
+    case 'NOT_LOGGED_IN_VIEW':
+      return {
+        ...state,
+        views: state.views + 1
       };
     default:
       return state;

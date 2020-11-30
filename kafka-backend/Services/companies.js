@@ -1,4 +1,5 @@
-const Companies = require('../Models/CompanyModel');
+const Companies = require("../Models/CompanyModel");
+const Student = require("../Models/StudentModel");
 
 const options = {
   useFindAndModify: false,
@@ -106,28 +107,23 @@ function updateCompanyProfile(data, callback) {
 }
 function uploadCompanyProfilePicture(data, callback) {
   const { id, cphoto } = data;
-  Companies.findByIdAndUpdate(
-    id,
-    { $push: { cphotos: { cphoto } } },
-    options,
-    (error, results) => {
-      if (error) {
-        const response = {
-          status: 401,
-          header: 'text/plain',
-          content: 'Error uploading Company profile picture',
-        };
-        callback(null, response);
-      } else {
-        const response = {
-          status: 200,
-          header: 'text/plain',
-          content: JSON.stringify(results.cphotos),
-        };
-        callback(null, response);
-      }
-    },
-  );
+  Companies.findByIdAndUpdate(id, { cphoto }, options, (error, results) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: "text/plain",
+        content: "Error uploading Company profile picture",
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: "text/plain",
+        content: cphoto,
+      };
+      callback(null, response);
+    }
+  });
 }
 
 function addFtReview(data, callback) {
@@ -213,63 +209,32 @@ function deleteFtReview(data, callback) {
   });
 }
 
-// function addPhoto(data, callback) {
-//   Companies.findById(data.cid, (error, company) => {
-//     if (error) {
-//       const response = {
-//         status: 401,
-//         header: "text/plain",
-//         content: "Error fetching company",
-//       };
-//       callback(null, response);
-//     } else if (company) {
-//       const photoObj = {
-//         // URL will be provided by AWS-SDK
-//         url: data.url,
-//         stname: data.stname,
-//         stid: data.stid,
-//       };
-//       company.cphotos.push(photoObj);
-//       console.log("new cphotos:", company.cphotos);
-//       company.save((err, companyUpdated) => {
-//         if (err) {
-//           const response = {
-//             status: 401,
-//             header: "text/plain",
-//             content: "Error adding photo",
-//           };
-//           callback(null, response);
-//         } else {
-//           const response = {
-//             status: 200,
-//             header: "application/json",
-//             content: JSON.stringify(companyUpdated),
-//           };
-//           callback(null, response);
-//         }
-//       });
-//     } else {
-//       const response = {
-//         status: 401,
-//         header: "text/plain",
-//         content: "Error adding photo",
-//       };
-//       callback(null, response);
-//     }
-//   });
-// }
-
 function specificCompany(data, callback) {
-  Companies.findById(
-    data.cid,
-    (error, company) => {
-      if (error) {
-        console.log(error);
-        return callback(error, null);
-      }
-      return callback(null, company);
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      console.log(error);
+      return callback(error, null);
     }
-  );
+
+    return callback(null, company);
+  });
+}
+
+function specificStudent(data, callback) {
+  const { id, ...updateInfo } = data;
+  Student.findById(id, (error, results) => {
+    if (error) {
+      console.log(error);
+      callback(error, null);
+    } else {
+      const response = {
+        status: 200,
+        header: "application/json",
+        content: JSON.stringify(results),
+      };
+      callback(null, response);
+    }
+  });
 }
 
 function handleRequest(msg, callback) {
@@ -322,6 +287,13 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside specific company for company');
       console.log('Message:', msg);
       specificCompany(msg.data, callback);
+      break;
+    }
+
+    case "SPECIFICSTUDENT": {
+      console.log("KB: Inside specific student ");
+      console.log("Message:", msg);
+      specificStudent(msg.data, callback);
       break;
     }
 

@@ -9,6 +9,7 @@ const Students = require('./Services/students');
 const Reviews = require('./Services/reviews');
 const Interviews = require('./Services/interviews');
 const Admin = require('./Services/admin');
+const Salaries = require('./Services/Salaries');
 
 const mongoDB = process.env.REACT_APP_MONGODB;
 
@@ -70,3 +71,4 @@ handleTopicRequest('studentsTopic', Students);
 handleTopicRequest('reviewsTopic', Reviews);
 handleTopicRequest('interviewsTopic', Interviews);
 handleTopicRequest('adminsTopic', Admin);
+handleTopicRequest('salariesTopic', Salaries);

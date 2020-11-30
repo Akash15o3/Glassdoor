@@ -6,7 +6,6 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -21,26 +20,8 @@ class CompanyJobs extends Component {
       coverLetter: '',
       showJobApplication: false,
       address: '',
-      minSalary: 0,
-      maxSalary: Infinity
     };
   }
-
-  // componentDidMount() {
-  //   const { searchQuery } = this.props;
-  //   const url = `${process.env.REACT_APP_BACKEND}/search/jobs`;
-
-  //   axios.post(url, { jtitle: searchQuery })
-  //     .then((response) => {
-  //       if (response.data) {
-  //         this.setState({
-  //           jobs: response.data,
-  //         });
-  //         this.props.jobs = response.data;
-  //         console.log(response.data);
-  //       }
-  //     });
-  // }
 
   handleAddressChange = (address) => {
     this.setState({ address });
@@ -109,33 +90,9 @@ class CompanyJobs extends Component {
     });
   }
 
-  sortTypeChangeHandler = (e) => {
-    const sortType = e.target.value;
-    const { jobs } = this.state;
-    if (sortType === 'Date') jobs.sort((a, b) => Date.parse(a.jposted) - Date.parse(b.jposted));
-    else if (sortType === 'Rating') jobs.sort((a, b) => b.crating - a.crating);
+  jobTitleFilter = (e) => {
+    const jobs = this.props.jobs.filter((job) => job.jtitle.toLowerCase().includes(e.target.value));
     this.setState({ jobs });
-  }
-
-  jobTypeFilterChangeHandler = (e) => {
-    const jobs = this.props.jobs.filter((job) => job.jtype === e.target.value);
-    this.setState({ jobs });
-  }
-
-  salaryFilterChangeHandler = (e) => {
-    const salaryType = e.target.getAttribute('salaryType');
-    let{ minSalary, maxSalary } = this.state;
-    if (salaryType === 'min') minSalary = parseInt(e.target.value);
-    else if (salaryType === 'max') maxSalary = parseInt(e.target.value);
-    if (Number.isNaN(minSalary)) minSalary = 0;
-    else if (Number.isNaN(maxSalary)) maxSalary = Infinity;
-    if (minSalary === 0 && maxSalary === Infinity) {
-      this.setState({ jobs: this.props.jobs });
-      return;
-    }
-    console.log(`Min Salary: ${minSalary}, Max Salary: ${maxSalary}`);
-    const jobs = this.props.jobs.filter((job) => job.jsalary >= minSalary && job.jsalary <= maxSalary);
-    this.setState({ jobs, minSalary, maxSalary });
   }
 
   submitApplication = () => {
@@ -179,12 +136,12 @@ class CompanyJobs extends Component {
             <div style={{ marginBottom: '10px' }} className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
               <span className="loc css-nq3w9f pr-xxsm">{posted_on}</span>
             </div>
-            {job.jsalary
+            {/* {job.jsalary
               ? (
                 <div className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
                   <span className="loc css-nq3w9f pr-xxsm">{`$${job.jsalary}/hour`}</span>
                 </div>
-              ) : null}
+              ) : null} */}
           </div>
         </li>
       );
@@ -215,15 +172,12 @@ class CompanyJobs extends Component {
             <label style={{ display: 'block', marginBottom: '10px', }}>Cover Letter </label>
             <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none' }} value={coverLetter} onChange={this.coverLetterChangeHandler} rows="10" cols="50" />
           </div>
-          <button onClick={this.submitApplication} className="save">Apply</button>
+          {this.props.isAuth ? <button onClick={this.submitApplication} className="save">Apply</button> : null}
         </Modal>
         <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
-              <select onChange={this.sortTypeChangeHandler} on className="filter">
-                <option value="Date">Recent</option>
-                <option value="Rating">Highest Rated</option>
-              </select>
+
               {/* <input className="filter" placeholder="Location" /> */}
               <PlacesAutocomplete
                 className="filter"
@@ -264,15 +218,7 @@ class CompanyJobs extends Component {
                   </div>
                 )}
               </PlacesAutocomplete>
-              <select onChange={this.jobTypeFilterChangeHandler} className="filter" style={{ fontSize: 'medium' }}>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-                <option value="Temporary">Temporary</option>
-              </select>
-              <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="min" className="filter" placeholder="Minimum Salary" />
-              <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="max" className="filter" placeholder="Maximum Salary" />
+              <input onChange={this.jobTitleFilter} className="filter" placeholder="Job Title" />
             </div>
           </header>
         </div>

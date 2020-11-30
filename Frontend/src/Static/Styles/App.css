@@ -167,7 +167,16 @@ height: 100px;
   height:40px;
   margin-bottom: 20px;
 }
+.salaryModalLabel{
+  display: block;
+  margin-bottom: 10px;
+}
 
+.salaryModalInput{
+  width:95%;
+  height:39px;
+  margin-bottom: 15px;
+}
 .save{
   border: 1px solid transparent;
     border-radius: 3px;
@@ -310,6 +319,21 @@ background-color: powderblue;
     margin-right: 3%;
 }
 
+.student-img{
+  width: 30%;
+  height: 210px;
+  margin-bottom: 1.25%;
+  margin-right: 3%;
+}
+
 .upload{
   background-color: green;
+}
+
+#companySalariesContainer{
+  width: 65%;
+  margin: auto;
+  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }

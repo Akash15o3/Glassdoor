@@ -13,29 +13,26 @@ import AdminSearch from './Admin/AdminSearch';
 class Navbar extends Component {
   render() {
     const { isAuth, role } = this.props;
-    const searchBar = role === 'student' ? <SearchBar history={this.props.history} /> : null;
     const studentTabs = role === 'student' ? <StudentTabs /> : null;
     const employerTabs = role === 'employer' ? <EmployerTabs /> : null;
-    const searchBar1 = role === 'employer' ? <SearchBar /> : null;
     const adminTabs = role === 'admin' ? <AdminTabs /> : null;
-    const adminSearch = role === 'admin' ? <AdminSearch history={this.props.history} /> : null;
+    const searchBar = role === 'admin' ? <AdminSearch history={this.props.history} /> : <SearchBar history={this.props.history} />;
     return (
+
       <div>
         {isAuth === true ? (
           <Redirect to={`/${role}`} />
-        ) : (
-          <nav
-            className="navbar navbar-inverse"
-            style={{ backgroundColor: 'white' }}
-          >
-            <img id="logo" src={logo}/>
-          </nav>
+        ) : (null
+        // <nav
+        //   className="navbar navbar-inverse"
+        //   style={{ backgroundColor: 'white' }}
+        // >
+        //   <img id="logo" src={logo} />
+        // </nav>
         )}
         {searchBar}
         {studentTabs}
-        {searchBar1}
         {employerTabs}
-        {adminSearch}
         {adminTabs}
       </div>
     );

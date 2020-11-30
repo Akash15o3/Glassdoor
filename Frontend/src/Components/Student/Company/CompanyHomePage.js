@@ -17,6 +17,7 @@ class CompanyHomePage extends Component {
       company: {},
       reviews: [],
       cphotos: [],
+      salaries: [],
       jobs: [],
       tab: 'Overview',
       showAddReview: false,
@@ -27,7 +28,6 @@ class CompanyHomePage extends Component {
     let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cid } = this.props;
     // let cid;
-
     axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
@@ -36,8 +36,8 @@ class CompanyHomePage extends Component {
             company, cphotos: company.cphotos
           });
           console.log(company);
-          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob`;
-          axios.post(url, { cname: company.cname })
+          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${company.cname}`;
+          axios.get(url)
             .then((jobs) => {
               if (jobs.data) {
                 this.setState({
@@ -54,6 +54,16 @@ class CompanyHomePage extends Component {
         if (response.data) {
           this.setState({
             reviews: response.data,
+          });
+        }
+      });
+
+    url = `${process.env.REACT_APP_BACKEND}/salaries/getSalaries?cid=${cid}`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            salaries: response.data,
           });
         }
       });
@@ -76,8 +86,12 @@ class CompanyHomePage extends Component {
     });
   }
 
+  updateSalaries = (salaries) => {
+    this.setState({ salaries });
+  }
+
   render() {
-    const { company, tab, reviews, cphotos, jobs, showAddReview } = this.state;
+    const { company, tab, reviews, cphotos, jobs, salaries, showAddReview  } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -88,16 +102,16 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyReviews company={company} reviews={reviews} />;
         break;
       case 'Jobs':
-        companyContent = <CompanyJobs jobs={jobs} />;
+        companyContent = <CompanyJobs jobs={jobs} isAuth={this.props.isAuth} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries />;
+        companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
         companyContent = <CompanyInterviews />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} />;
+        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       default:
         console.log('D');
@@ -225,7 +239,8 @@ const mapStateToProps = (state) => {
   return {
     cid: state.student.cid,
     id: state.student.id,
-    name: state.student.user.stname
+    name: state.credentials.isAuth ? state.student.user.stname : '',
+    isAuth: state.credentials.isAuth
   };
 };
 

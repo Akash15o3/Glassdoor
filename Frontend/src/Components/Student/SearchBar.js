@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../../Actions/credentialActions';
+import { logout, viewWhileNotLoggedIn } from '../../Actions/credentialActions';
 import { search } from '../../Actions/studentActions';
 
 class SearchBar extends Component {
@@ -15,6 +15,15 @@ class SearchBar extends Component {
   }
 
   handleClick = () => {
+    const { isAuth, views, viewWhileNotLoggedIn } = this.props;
+    if (!isAuth) {
+      if (views >= 2) {
+        alert('You have surpassed your limit of 2 seraches. Please login to continue!');
+        return;
+      }
+
+      viewWhileNotLoggedIn();
+    }
     const { search, type } = this.state;
     this.props.search(search);
     this.props.history.push(`/${this.props.role}/${type}SearchResults`);
@@ -36,7 +45,7 @@ class SearchBar extends Component {
     const { search } = this.state;
     return (
       <nav id="navbar">
-        <a href={`/${this.props.role}`} alt="" target="_top" rel="nofollow" data-test="header-glassdoor-logo" aria-label="Glassdoor Logo">
+        <a href={`/${this.props.role === 'anonymous' ? '' : this.props.role}`} alt="" target="_top" rel="nofollow" data-test="header-glassdoor-logo" aria-label="Glassdoor Logo">
           <span className="SVGInline d-flex align-items-center memberHeader__HeaderStyles__brandLogo">
             <svg style={{ marginLeft: '3vw' }} width="202" height="94" viewBox="0 0 163 32">
               <g fill="#0CAA41" fillRule="evenodd">
@@ -69,13 +78,15 @@ const mapStateToProps = (state) => {
   return {
     isAuth: state.credentials.isAuth,
     role: state.credentials.role,
+    views: state.credentials.views,
   };
 };
 
 const mapDisptachToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout()),
-    search: (searchQuery) => dispatch(search(searchQuery))
+    search: (searchQuery) => dispatch(search(searchQuery)),
+    viewWhileNotLoggedIn: () => dispatch(viewWhileNotLoggedIn()),
   };
 };
 export default connect(mapStateToProps, mapDisptachToProps)(SearchBar);
