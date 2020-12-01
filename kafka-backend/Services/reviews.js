@@ -184,6 +184,29 @@ function updateReview(data, callback) {
   });
 }
 
+function getFeatReview(data, callback) {
+  Reviews.findById(data.rid, (error, job) => {
+    console.log("Kafka backend feat review: ", job);
+    console.log("kafka backend data: ", data)
+    if (error) {
+      const response = {
+        status: 401,
+        header: "text/plain",
+        content: "Error fetching jobs",
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: "application/json",
+        content: JSON.stringify(job),
+      };
+      console.log("kafka be f etareview response: ", response.content)
+      callback(null, response);
+    }
+  });
+}
+
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'ADDREVIEW': {
@@ -209,6 +232,13 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside Reply to review');
       console.log('Message:', msg);
       updateReview(msg.data, callback);
+      break;
+    }
+
+    case 'GETFEATREVIEWS' : {
+      console.log('KB: Inside Reply to review');
+      console.log('Message:', msg);
+      getFeatReview(msg.data, callback);
       break;
     }
 

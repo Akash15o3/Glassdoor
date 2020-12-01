@@ -138,7 +138,7 @@ function addFtReview(data, callback) {
         content: 'Error updating company profile',
       };
       callback(null, response);
-    } else if (company.cfeatured.length < 3) {
+    } else if (company.cfeatured.length < 2) {
       // company.cfeatured.push(data.reviewid);
       company.cfeatured.push(data.rreplyid);
       console.log("inside addftReviews: ", company.cfeatured)

@@ -122,4 +122,29 @@ Router.post('/replyReviews', (request, response) => {
   });
 });
 
+
+//getFeatReviews
+
+Router.get("/getFeatReviews", (request, response) => {
+  console.log("\nEndpoint GET: get all jobs");
+  console.log("Req Body: ", request.query);
+  const data = { ...request.params };
+
+  kafka.make_request("reviewsTopic", "GETFEATREVIEWS", request.query, (err, result) => {
+    console.log("Get one jobs result ", result);
+    if (err) {
+      console.log("Get one jobs Kafka error");
+      response.writeHead(401, {
+        "Content-Type": "text/plain",
+      });
+      response.end("Get one jobs Kafka error");
+    } else {
+      response.writeHead(result.status, {
+        "Content-Type": result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+
 module.exports = Router;
