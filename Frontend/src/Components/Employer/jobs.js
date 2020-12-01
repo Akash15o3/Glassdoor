@@ -287,7 +287,7 @@ class JobSearchResults extends Component {
             for (let i = 0; i < response.data.length; ++i) {
               if (this.state.jobapplicants[i].astatus === 'Hired') {
                 ++tempCountSelected;
-              } else if (this.state.jobapplicants[i].astatus === 'Withdrawn') {
+              } else if (this.state.jobapplicants[i].astatus === 'Rejected') {
                 ++tempCountRejected;
               }
 
