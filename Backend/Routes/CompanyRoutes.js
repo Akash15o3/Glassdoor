@@ -240,31 +240,8 @@ Router.get('/specificStudent', (request, response) => {
     },
   );
 });
-// Get number of reviews
-Router.get('/:id/numPhotos', (request, response) => {
-  console.log('\nEndpoint GET: Get number of company Photos');
-  console.log('Req Body: ', request.body);
-  const data = { ...request.params };
-  kafka.make_request('companiesTopic', 'NUMPHOTOS', data, (err, result) => {
-    console.log('Get number of company Photos result ', result);
-    if (err) {
-      console.log('Get number of company Photos Kafka error');
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
-      });
-      response.end('Get number of company Photos Kafka error');
-    } else {
-      response.writeHead(result.status, {
-        'Content-Type': result.header,
-      });
-      response.end(result.content);
-    }
-  });
-});
 
-
-
-//Add featured review
+// Add featured review
 Router.post('/addFeaturedReview', (request, response) => {
   console.log('\nEndpoint POST: Reply to a review');
   console.log('Req Body: ', request.body);
@@ -284,7 +261,6 @@ Router.post('/addFeaturedReview', (request, response) => {
     }
   });
 });
-
 
 /*
 // Get number of reviews

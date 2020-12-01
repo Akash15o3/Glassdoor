@@ -6,24 +6,10 @@ export default class CompanyPhotos extends Component {
     console.log(props);
     super(props);
     this.state = {
-      photos: [],
+      photos: this.props.cphotos,
       upload: false,
       files: []
     };
-  }
-
-  componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
-    const { cid } = this.props;
-    axios.post(url, { cid })
-      .then((response) => {
-        if (response.data) {
-          const photos = response.data.cphotos;
-          this.setState({
-            photos
-          });
-        }
-      });
   }
 
   handleClick = () => {
@@ -55,7 +41,7 @@ export default class CompanyPhotos extends Component {
         // then print response status
         console.log(res.data);
         this.setState({ photos: res.data, upload: false });
-        // this.props.updatePhotos(res.data);
+        this.props.updatePhotos(res.data);
       });
   }
 
