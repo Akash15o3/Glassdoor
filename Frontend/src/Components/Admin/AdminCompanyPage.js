@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import CompanyOverview from './AdminCompanyOverview';
 import AdminReviews from './AdminReviews';
-//Mirror companyhomepage
+import AdminPhotos from './AdminPhotos';
 
 class AdminCompanyPage extends Component {
   constructor(props) {
@@ -48,21 +48,16 @@ class AdminCompanyPage extends Component {
     
     switch (tab) {
       case 'Overview':
-        console.log('O');
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
         companyContent = <AdminReviews company={company} />;
         break;
-        /*
       case 'Photos':
-        console.log('P');
-        companyContent = <CompanyPhotos company={company} stid={this.props.id} stname={this.props.name} />;
+        companyContent = <AdminPhotos company={company} />;
         break;
-        */
       default:
-        console.log('D');
-        companyContent = null;
+        break;
     }
     return (
       <div>
@@ -117,7 +112,7 @@ class AdminCompanyPage extends Component {
                         <span className="subtle"> Reviews</span>
                       </a>
                       <div className="vline cell"><i /></div>
-                      <a className="eiCell cell jobs " onClick={this.tabChangeHandler} data-label="Jobs">
+                      <a className="eiCell cell photos " onClick={this.tabChangeHandler} data-label="Photos">
 
                         <span className="subtle"> Photos</span>
                       </a>

@@ -351,11 +351,11 @@ function rejectPhoto(data, callback) {
 
 function getReviewsPerDay(data, callback) {
   console.log('here');
-  const now = new Date();
-  const jsonDate = now.toJSON();
-  const date = new Date(jsonDate);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
 
-  Reviews.countDocuments({ }, (error, count) => {
+  Reviews.countDocuments({ rdate: { $gte: yesterday } }, (error, count) => {
     if (error) {
       const response = {
         status: 401,
@@ -372,6 +372,15 @@ function getReviewsPerDay(data, callback) {
       callback(null, response);
     }
   });
+}
+
+function mostReviewed(data, callback) {
+  const response = {
+    status: 401,
+    header: 'text/plain',
+    content: 'Error fetching company',
+  };
+  callback(null, response);
 }
 
 function handleRequest(msg, callback) {
@@ -416,6 +425,12 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside reviews per day');
       console.log('Message:', msg);
       getReviewsPerDay(msg.data, callback);
+      break;
+    }
+    case 'MOSTREVIEWED': {
+      console.log('KB: Inside reviews per day');
+      console.log('Message:', msg);
+      mostReviewed(msg.data, callback);
       break;
     }
     default: {

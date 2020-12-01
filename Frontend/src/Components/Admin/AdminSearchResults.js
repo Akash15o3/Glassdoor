@@ -127,6 +127,7 @@ class CompanySearchResults extends Component {
         </div>
       </div>
     ));
+    
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
