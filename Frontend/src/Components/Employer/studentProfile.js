@@ -176,7 +176,7 @@ class CompanyHomePage extends Component {
                 >
                   <span
                     className="sqLogo tighten lgSqLogo logoOverlay"
-                    style={{ position: 'relative', top: '58px', right: '7px' }}
+                    // style={{ top: '8px', right: '5px' }}
                   >
                     <img
                       // src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"

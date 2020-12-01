@@ -30,20 +30,6 @@ export default class Profile extends Component {
   }
 
   componentWillMount() {
-    // const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-    // const data = { cid: sessionStorage.getItem('cid') };
-    // axios.post(url, data)
-    //   .then((response) => {
-    //     if (response.data) {
-    //       console.log('Review response: ');
-    //       console.log(response.data);
-    //       console.log(response.data._id, '||||', response.data[0]._id);
-    //       this.setState({
-    //         reviews: response.data,
-    //       });
-    //     }
-    //   });
-
     const url = `${
       process.env.REACT_APP_BACKEND
     }/companies/${sessionStorage.getItem('cid')}`;
@@ -54,53 +40,73 @@ export default class Profile extends Component {
         if (response.data) {
           console.log('company response: ');
           console.log(response.data);
-          // console.log(response.data._id, '||||', response.data[0]._id);
-          this.setState({
-            companydetails: response.data,
-            cfeat: response.data.cfeatured,
-          });
-          for (let i = 0; i < this.state.cfeat.length; ++i) {
-            const url1 = `${
-              process.env.REACT_APP_BACKEND
-            }/reviews/getFeatReviews?rid=${this.state.cfeat[i]}`;
-            console.log('Inside for loop reviews feat');
-            // const data = { cid: sessionStorage.getItem('cid') };
-            axios.get(url1)
-              .then((res) => {
-                if (res.data) {
-                  console.log('Review response: ');
-                  console.log(res.data);
-                  // console.log(response.data._id, '||||', response.data[0]._id);
+
+          const cfeatarray = [...response.data.cfeatured];
+
+          const promiseArray = cfeatarray.map((dataarr) => axios.get(`${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`));
+
+          Promise.all(promiseArray)
+            .then(
+              (results) => {
+                // let responses = results.filter(entry =>
+                //   entry.status === 200
+                // )
+                const responses = results;
+
+                const restaurants = [];
+                responses.forEach((response) => {
+                  restaurants.push(response.data);
+                });
+                if (restaurants.length > 0) {
                   this.setState({
-                    reviews: res.data,
+                    reviews: restaurants,
                   });
                 }
-              });
-          }
+              }
+            )
+            .catch(console.log);
         }
+      }).catch((err) => {
+        console.log('No response');
       });
 
-    // const cfeatdata = this.state.companydetails.cfeatured;
-    console.log('cfeat', this.state.companydetails, this.state.cfeat);
-    // for (let i = 0; i <= cfeatdata.length; ++i) {
-    //   const url = `${
-    //     process.env.REACT_APP_BACKEND
-    //   }/reviews/getFeatReviews?rid=${cfeatdata[i]}`;
-    //   console.log('Inside for loop reviews feat');
-    //   // const data = { cid: sessionStorage.getItem('cid') };
-    //   axios.get(url)
-    //     .then((response) => {
-    //       if (response.data) {
-    //         console.log('Review response: ');
-    //         console.log(response.data);
-    //         console.log(response.data._id, '||||', response.data[0]._id);
-    //         this.setState({
-    //           reviews: response.data,
-    //         });
+    // const url = `${
+    //   process.env.REACT_APP_BACKEND
+    // }/companies/${sessionStorage.getItem('cid')}`;
+    // console.log('Inside for loop reviews feat');
+    // // const data = { cid: sessionStorage.getItem('cid') };
+    // axios.get(url)
+    //   .then((response) => {
+    //     if (response.data) {
+    //       console.log('company response: ');
+    //       console.log(response.data);
+    //       this.setState({
+    //         companydetails: response.data,
+    //         cfeat: response.data.cfeatured,
+    //       });
+    //       for (let i = 0; i < this.state.cfeat.length; ++i) {
+    //         const url1 = `${
+    //           process.env.REACT_APP_BACKEND
+    //         }/reviews/getFeatReviews?rid=${this.state.cfeat[i]}`;
+    //         console.log('Inside for loop reviews feat');
+    //         // const data = { cid: sessionStorage.getItem('cid') };
+    //         axios.get(url1)
+    //           .then((res) => {
+    //             if (res.data) {
+    //               console.log('Review response: ');
+    //               console.log(res.data);
+    //               // let temp = []
+    //               // this.state.reviews.push(res.data);
+    //               this.setState({
+    //                 reviews: { ...res.data },
+    //               });
+    //             }
+    //           });
     //       }
-    //     });
-    // }
-    // console.log('this.props.cfeat len lebgth', cfeatdata.length, this.props.employer.cfeatured);
+    //     }
+    //   });
+
+    // console.log('cfeat', this.state.companydetails, this.state.cfeat);
   }
 
   updateProfileEm = () => {
@@ -201,9 +207,9 @@ export default class Profile extends Component {
   // })}
 
   render() {
-    console.log('cfeat', this.state.cfeat);
-
-    const details = this.state.reviews.map(
+    console.log('all reviews using promise', this.state.reviews);
+    const { reviews } = this.state;
+    const details = reviews.map(
       ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
         return (
           <div>
@@ -218,7 +224,7 @@ export default class Profile extends Component {
                     {/* </a> */}
                   </h2>
                   <div>
-                    <div style={{ marginBottom: '50px' }}>
+                    <div>
                       <div>
                         <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
                           <div className="tooltipContainer">
@@ -246,17 +252,18 @@ export default class Profile extends Component {
                   <p>{rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
                   <p>{rcons}</p>
-                  <p className="mb-0 mt-xsm strong ">Reply to review</p>
-                  <p>{rreply}</p>
                 </div>
-                <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+                <hr style={{ backgroundColor: 'black' }} />
               </div>
             </div>
           </div>
         );
       }
     );
-
+    console.log('*****ALL FEAT REVIEWS*****');
+    const templist = [];
+    templist.push(this.state.reviews);
+    console.log(templist[0]);
     const {
       cname,
       cwebsite,
@@ -519,10 +526,66 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: 'center' }}>
+            <p>
 
+              {details}
+            </p>
             {
-              details
+              // this.state.reviews.map(
+              //   ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
+              //     return (
+              //       <div>
+              //         <div>
+              //           <div>
+              //             <div style={{ marginLeft: '50px' }}>
+              //               <h2>
+              //                 {/* <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm"> */}
+              //                 "
+              //                 {rheadline}
+              //                 "
+              //                 {/* </a> */}
+              //               </h2>
+              //               <div>
+              //                 <div style={{ marginBottom: '50px' }}>
+              //                   <div>
+              //                     <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+              //                       <div className="tooltipContainer">
+              //                         <span className="pointer" />
+              //                         <div className="content">
+              //                           <ul className="pl-0" />
+              //                         </div>
+              //                       </div>
+              //                     </aside>
+              //                   </div>
+              //                   {/* <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span> */}
+              //                 </div>
+              //               </div>
+              //               <div style={{ display: 'inline-block' }}>
+              //                 <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
+              //                 <p>{rrecommended}</p>
+              //               </div>
+              //               <div style={{ display: 'inline-block', marginLeft: '50px' }}>
+              //                 <p className="mb-0 mt-xsm strong ">CEO Approval</p>
+              //                 <p>{rceoapprove}</p>
+              //               </div>
+              //               <p className="mb-0 mt-xsm strong ">Description</p>
+              //               <p>{rdescription}</p>
+              //               <p className="mb-0 mt-xsm strong ">Pros</p>
+              //               <p>{rpros}</p>
+              //               <p className="mb-0 mt-xsm strong ">Cons</p>
+              //               <p>{rcons}</p>
+              //               <p className="mb-0 mt-xsm strong ">Reply to review</p>
+              //               <p>{rreply}</p>
+              //             </div>
+              //             <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+              //           </div>
+              //         </div>
+              //       </div>
+              //     );
+              //   }
+              // )
             }
+
           </div>
         </div>
       </div>

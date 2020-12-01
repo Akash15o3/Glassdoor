@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { Card, Row, Col, NavLink } from 'react-bootstrap';
+import { Card, Row, Col, NavLink, Container } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -14,11 +14,15 @@ import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { Pie } from 'react-chartjs-2';
 import { updateProfileEm } from '../../Actions/employerActions';
 
+import Pagination from '../Pagination';
+
 Modal.setAppElement('#root');
 class JobSearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pageIndex: 0,
+
       jobs: [],
       selectedIndex: 0,
       jobInfoState: 'jdescription',
@@ -173,6 +177,10 @@ class JobSearchResults extends Component {
       dnotdisabledCount: 0,
       ddisabledNotDisclosedCount: 0,
     };
+
+    this.itemsPerPage = 10;
+    this.numPages = 3;
+
     // this.getApplierDemographics = this.getApplierDemographics.bind(this);
   }
 
@@ -193,6 +201,22 @@ class JobSearchResults extends Component {
         console.log('total jobs: ', this.state.totalCountOfJobs);
       }
     });
+  }
+
+  handleClick = () => {
+    this.inputElement.click();
+  }
+
+  setPage = (e) => {
+    const { className } = e.currentTarget;
+    const { pageIndex } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      this.setState({ pageIndex: pageIndex - 1 });
+    } else if (className === 'next' && pageIndex < this.numPages - 1) {
+      this.setState({ pageIndex: pageIndex + 1 });
+    } else if (className.includes('page')) {
+      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+    }
   }
 
   handleChange = (address) => {
@@ -610,7 +634,11 @@ class JobSearchResults extends Component {
       jobInfoState,
       coverLetter,
       showJobApplication,
+      pageIndex,
     } = this.state;
+
+    const { itemsPerPage } = this;
+
     console.log('jobs frontend jobs', jobs);
     console.log('selected index: ', selectedIndex);
     const selectedJob = jobs[selectedIndex];
@@ -936,8 +964,20 @@ class JobSearchResults extends Component {
             style={{ flex: 7, overflowY: 'scroll', height: '65%' }}
             className="jlGrid hover p-0 "
           >
-            {jobSearchResults}
+            {/* {jobSearchResults} */}
+            {
+              [...Array(this.itemsPerPage)].map((e, i) => {
+                return (
+                  <container>
+                    {jobSearchResults[i + (pageIndex * itemsPerPage)]}
+                  </container>
+                );
+              })
+            }
+            <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.numPages} />
+
           </ul>
+
           <div id="JDCol" className="noPad opened transformNone">
             <div id="JDWrapper" className>
               <article
