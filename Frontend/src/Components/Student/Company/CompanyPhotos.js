@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Pagination from '../../Pagination';
 
 export default class CompanyPhotos extends Component {
   constructor(props) {
@@ -8,8 +9,11 @@ export default class CompanyPhotos extends Component {
     this.state = {
       photos: this.props.cphotos,
       upload: false,
-      files: []
+      files: [],
+      pageIndex: 0
     };
+    this.itemsPerPage = 6;
+    this.numPages = 3;
   }
 
   handleClick = () => {
@@ -45,9 +49,26 @@ export default class CompanyPhotos extends Component {
       });
   }
 
+  previousPage= (e) => {
+
+  }
+
+  setPage = (e) => {
+    const { className } = e.currentTarget;
+    const { pageIndex } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      this.setState({ pageIndex: pageIndex - 1 });
+    } else if (className === 'next' && pageIndex < this.numPages - 1) {
+      this.setState({ pageIndex: pageIndex + 1 });
+    } else if (className.includes('page')) {
+      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+    }
+  }
+
   render() {
-    const { photos, upload } = this.state;
+    const { photos, upload, pageIndex } = this.state;
     const { cname } = this.props;
+    const { itemsPerPage } = this;
     return (
       <div id="companyPhotoContainer">
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -68,9 +89,14 @@ export default class CompanyPhotos extends Component {
               </button>
             ) : null}
         </div>
-        {photos.map((photo) => {
-          return <img src={photo.url} />;
+        {[...Array(this.itemsPerPage)].map((e, i) => {
+          return <img src={photos[i + (pageIndex * itemsPerPage)].url} />;
+          // return <li onClick={setPageNumber} keyValue={i} className={`page-item ${currentPage === i ? 'active' : ''}`}><a keyValue={i} className="page-link" href="#">{i + 1}</a></li>;
         })}
+        {/* {photos.map((photo) => {
+          return <img src={photo.url} />;
+        })} */}
+        <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.numPages} />
       </div>
     );
   }
