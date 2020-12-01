@@ -59,14 +59,13 @@ export default class Profile extends Component {
             companydetails: response.data,
             cfeat: response.data.cfeatured,
           });
-
           for (let i = 0; i < this.state.cfeat.length; ++i) {
-            const url = `${
+            const url1 = `${
               process.env.REACT_APP_BACKEND
             }/reviews/getFeatReviews?rid=${this.state.cfeat[i]}`;
             console.log('Inside for loop reviews feat');
             // const data = { cid: sessionStorage.getItem('cid') };
-            axios.get(url)
+            axios.get(url1)
               .then((res) => {
                 if (res.data) {
                   console.log('Review response: ');
