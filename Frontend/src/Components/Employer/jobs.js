@@ -703,7 +703,7 @@ class JobSearchResults extends Component {
                 <option value="Initial_Screening">Initial_Screening</option>
                 <option value="Interviewing">Interviewing</option>
                 <option value="Hired">Hired</option>
-                <option value="Withdrawn">Withdrawn</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </td>
           </tr>
@@ -758,24 +758,6 @@ class JobSearchResults extends Component {
               Total Applicants rejected:
               {' '}
               {this.state.applicantsRejected}
-            </h3>
-            <h3>
-              {' '}
-              Total Male Count:
-              {' '}
-              {this.state.dgenderMaleCount}
-            </h3>
-            <h3>
-              {' '}
-              Total Female Count:
-              {' '}
-              {this.state.dgenderFemaleCount}
-            </h3>
-            <h3>
-              {' '}
-              Gender Not Disclosed Count:
-              {' '}
-              {this.state.dgenderNotDisclosedCount}
             </h3>
             <h1>Gender Breakdown</h1>
             <Pie

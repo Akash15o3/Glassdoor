@@ -51,6 +51,8 @@ class Home extends Component {
   render() {
     const { tab } = this.state;
     let homeView = null;
+    console.log('CID: ', this.props.id);
+    sessionStorage.setItem('cid', this.props.id);
     switch (tab) {
       case 'Profile':
         homeView = (
