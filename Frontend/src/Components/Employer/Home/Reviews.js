@@ -30,43 +30,6 @@ export default class CompanyReviews extends Component {
   }
 
   componentDidMount() {
-    // let average = 0;
-    // let recommended = 0;
-    // let approve = 0;
-    // const arr = [];
-    // const { reviews } = this.props;
-    // console.log(reviews);
-
-    // for (let i = 0; i < reviews.length; i++) {
-    //   average += reviews[i].overallRating;
-    //   if (reviews[i].rrecommended === 'Yes') {
-    //     recommended++;
-    //   }
-    //   if (reviews[i].rceoapprove === 'Yes') {
-    //     approve++;
-    //   }
-    // }
-
-    // recommended /= reviews.length;
-    // recommended *= 100;
-    // recommended = Math.round(recommended);
-    // average /= reviews.length;
-    // average = average.toFixed(1);
-    // approve /= reviews.length;
-    // approve *= 100;
-    // approve = Math.round(approve);
-    // reviews.sort((a, b) => b.rhelpful - a.rhelpful);
-    // arr.push(reviews[0]);
-    // arr.push(reviews[1]);
-    // console.log(arr);
-    // this.setState({
-    //   overallRate: average,
-    //   recommendedRating: recommended,
-    //   ceoRating: approve,
-    //   firstReview: arr[0],
-    //   secondReview: arr[1],
-    // });
-
     const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
     const data = { cid: sessionStorage.getItem('cid') };
     axios.post(url, data)
@@ -74,7 +37,7 @@ export default class CompanyReviews extends Component {
         if (response.data) {
           console.log('Review response: ');
           console.log(response.data);
-          console.log(response.data._id, '||||', response.data[0]._id);
+          //   console.log(response.data._id, '||||', response.data[0]._id);
           this.setState({
             reviews: response.data,
           });
@@ -195,7 +158,7 @@ export default class CompanyReviews extends Component {
                 Reply to Review
               </h1>
               <label className="modalLabel">Write your reply here</label>
-              <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rreplyHandler} id={this.state.reviews[3]._id} rows="10" cols="50" />
+              <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rreplyHandler} rows="10" cols="50" />
               <button className="save" onClick={this.submitReview}>Submit Reply</button>
             </Modal>
 

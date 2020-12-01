@@ -22,8 +22,86 @@ export default class Profile extends Component {
       cceo: '',
       clocation: '',
       cemail,
+      reviews: [],
+      companydetails: [],
+      cfeat: [],
     };
     sessionStorage.setItem('cname', cname);
+  }
+
+  componentWillMount() {
+    // const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+    // const data = { cid: sessionStorage.getItem('cid') };
+    // axios.post(url, data)
+    //   .then((response) => {
+    //     if (response.data) {
+    //       console.log('Review response: ');
+    //       console.log(response.data);
+    //       console.log(response.data._id, '||||', response.data[0]._id);
+    //       this.setState({
+    //         reviews: response.data,
+    //       });
+    //     }
+    //   });
+
+    const url = `${
+      process.env.REACT_APP_BACKEND
+    }/companies/${sessionStorage.getItem('cid')}`;
+    console.log('Inside for loop reviews feat');
+    // const data = { cid: sessionStorage.getItem('cid') };
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          console.log('company response: ');
+          console.log(response.data);
+          // console.log(response.data._id, '||||', response.data[0]._id);
+          this.setState({
+            companydetails: response.data,
+            cfeat: response.data.cfeatured,
+          });
+
+          for (let i = 0; i < this.state.cfeat.length; ++i) {
+            const url = `${
+              process.env.REACT_APP_BACKEND
+            }/reviews/getFeatReviews?rid=${this.state.cfeat[i]}`;
+            console.log('Inside for loop reviews feat');
+            // const data = { cid: sessionStorage.getItem('cid') };
+            axios.get(url)
+              .then((res) => {
+                if (res.data) {
+                  console.log('Review response: ');
+                  console.log(res.data);
+                  // console.log(response.data._id, '||||', response.data[0]._id);
+                  this.setState({
+                    reviews: res.data,
+                  });
+                }
+              });
+          }
+        }
+      });
+
+    // const cfeatdata = this.state.companydetails.cfeatured;
+    console.log('cfeat', this.state.companydetails, this.state.cfeat);
+    // for (let i = 0; i <= cfeatdata.length; ++i) {
+    //   const url = `${
+    //     process.env.REACT_APP_BACKEND
+    //   }/reviews/getFeatReviews?rid=${cfeatdata[i]}`;
+    //   console.log('Inside for loop reviews feat');
+    //   // const data = { cid: sessionStorage.getItem('cid') };
+    //   axios.get(url)
+    //     .then((response) => {
+    //       if (response.data) {
+    //         console.log('Review response: ');
+    //         console.log(response.data);
+    //         console.log(response.data._id, '||||', response.data[0]._id);
+    //         this.setState({
+    //           reviews: response.data,
+    //         });
+    //       }
+    //     });
+    // }
+    // console.log('this.props.cfeat len lebgth', cfeatdata.length, this.props.employer.cfeatured);
   }
 
   updateProfileEm = () => {
@@ -118,7 +196,68 @@ export default class Profile extends Component {
     this.setState({ open: false });
   };
 
+  // <h1>Photos Added</h1>
+  // {this.props.student.cphotos.map((photo) => {
+  //   return <img className="student-img" src={photo.url} />;
+  // })}
+
   render() {
+    console.log('cfeat', this.state.cfeat);
+
+    const details = this.state.reviews.map(
+      ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
+        return (
+          <div>
+            <div>
+              <div>
+                <div style={{ marginLeft: '50px' }}>
+                  <h2>
+                    {/* <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm"> */}
+                    "
+                    {rheadline}
+                    "
+                    {/* </a> */}
+                  </h2>
+                  <div>
+                    <div style={{ marginBottom: '50px' }}>
+                      <div>
+                        <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+                          <div className="tooltipContainer">
+                            <span className="pointer" />
+                            <div className="content">
+                              <ul className="pl-0" />
+                            </div>
+                          </div>
+                        </aside>
+                      </div>
+                      {/* <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span> */}
+                    </div>
+                  </div>
+                  <div style={{ display: 'inline-block' }}>
+                    <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
+                    <p>{rrecommended}</p>
+                  </div>
+                  <div style={{ display: 'inline-block', marginLeft: '50px' }}>
+                    <p className="mb-0 mt-xsm strong ">CEO Approval</p>
+                    <p>{rceoapprove}</p>
+                  </div>
+                  <p className="mb-0 mt-xsm strong ">Description</p>
+                  <p>{rdescription}</p>
+                  <p className="mb-0 mt-xsm strong ">Pros</p>
+                  <p>{rpros}</p>
+                  <p className="mb-0 mt-xsm strong ">Cons</p>
+                  <p>{rcons}</p>
+                  <p className="mb-0 mt-xsm strong ">Reply to review</p>
+                  <p>{rreply}</p>
+                </div>
+                <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+              </div>
+            </div>
+          </div>
+        );
+      }
+    );
+
     const {
       cname,
       cwebsite,
@@ -363,7 +502,7 @@ export default class Profile extends Component {
         </div>
         <div className="profileField">
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Posted Jobs</h1>
+            <h1 style={{ display: 'inline-block' }}>Featured Reviews</h1>
             <svg
               className="SVGInline-svg"
               style={{ width: '24px', height: '24px', marginLeft: '5px' }}
@@ -381,9 +520,10 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <button className="home-btn info">
-              <strong>ALL JOBS</strong>
-            </button>
+
+            {
+              details
+            }
           </div>
         </div>
       </div>
