@@ -61,7 +61,7 @@ class CompanyHomePage extends Component {
     let companyContent = null;
     switch (tab) {
       case 'Overview':
-        companyContent = <CompanyOverview company={company} />;
+        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id}/>;
         break;
       case 'Reviews':
         companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
