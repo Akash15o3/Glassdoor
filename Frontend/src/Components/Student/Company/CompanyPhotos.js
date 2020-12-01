@@ -49,10 +49,6 @@ export default class CompanyPhotos extends Component {
       });
   }
 
-  previousPage= (e) => {
-
-  }
-
   setPage = (e) => {
     const { className } = e.currentTarget;
     const { pageIndex } = this.state;

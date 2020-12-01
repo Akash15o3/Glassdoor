@@ -9,9 +9,9 @@ export default class CompanyInterview extends Component {
     this.state = {
       open: false,
       interviews: [],
-      positivePercent: '',
-      neutralPercent: '',
-      negativePercent: '',
+      positivePercent: 0,
+      neutralPercent: 0,
+      negativePercent: 0,
       overallexp: 'Positive',
       jobtitle: '',
       description: '',
@@ -26,7 +26,7 @@ export default class CompanyInterview extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${this.props.cname}`;
     axios.get(url)
       .then((response) => {
-        if (response.data) {
+        if (response.data && response.data.length > 0) {
           const interviews = response.data;
           let negative = 0;
           let neutral = 0;
@@ -85,15 +85,14 @@ export default class CompanyInterview extends Component {
 
   submitInterview = () => {
     const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer } = this.state;
-    const { cname } = this.props;
+    const { cname, stid } = this.props;
     const interviewqna = { question, answers: [answer] };
     const url = `${process.env.REACT_APP_BACKEND}/interviews`;
-    axios.post(url, { cname, overallexp, jobtitle, description, difficulty, offerstatus, interviewqna })
+    axios.post(url, { cname, overallexp, jobtitle, description, difficulty, offerstatus, interviewqna, stid })
       .then((response) => {
         if (response.data) {
           const interviews = [...this.state.interviews, response.data];
           this.setState({ interviews });
-          this.props.updateInterviews(interviews);
           this.closeInterviewModal();
         }
       });
@@ -130,8 +129,8 @@ export default class CompanyInterview extends Component {
           </select>
           <label className="modalLabel">Offer Status</label>
           <select value={offerstatus} className="modalInput" onChange={this.offerStatusChangeHandler}>
-            <option value="Easy">Rejected</option>
-            <option value="Average">Accepted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
           </select>
           <label className="modalLabel">Interview Question</label>
           <textarea value={question} style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.questionChangeHandler} rows="10" cols="30" />

@@ -1,18 +1,53 @@
 const Interviews = require('../Models/InterviewModel');
+const Students = require('../Models/StudentModel');
 
 function addNewInterview(data, callback) {
+  const {
+    cname, overallexp, jobtitle, description, difficulty, offerstatus, interviewqna,
+  } = data;
   const newInterview = new Interviews({
-    cname: data.cname,
-    overallexp: data.overallexp,
-    jobtitle: data.jobtitle,
-    description: data.description,
-    difficulty: data.difficulty,
-    offerstatus: data.offerstatus,
-    interviewqna: data.interviewqna,
+    cname,
+    overallexp,
+    jobtitle,
+    description,
+    difficulty,
+    offerstatus,
+    interviewqna,
+  });
+  Students.findById(data.stid, (error, student) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Student id does not exist',
+      };
+      callback(null, response);
+    } else {
+      student.stinterviews.push({
+        cname,
+        overallexp,
+        jobtitle,
+        description,
+        difficulty,
+        offerstatus,
+        interviewqna,
+      });
+      student.save((err) => {
+        if (err) {
+          const response = {
+            status: 401,
+            header: 'text/plain',
+            content: 'Error modifying student',
+          };
+          callback(null, response);
+        }
+      });
+    }
   });
 
   newInterview.save((error, interview) => {
     if (error) {
+      console.log(error);
       const response = {
         status: 401,
         header: 'text/plain',
@@ -20,7 +55,6 @@ function addNewInterview(data, callback) {
       };
       callback(null, response);
     } else {
-      updateCompany()
       const response = {
         status: 200,
         header: 'application/json',

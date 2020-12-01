@@ -62,6 +62,7 @@ export default class Profile extends Component {
   }
 
   render() {
+    const { streviews, stinterviews, stsalaries, cphotos } = this.props.student;
     const { stname, title, location, stemail } = this.state;
     return (
       <div className="studentHomeContent">
@@ -86,7 +87,7 @@ export default class Profile extends Component {
         </Modal>
         <div className="profileField">
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Info</h1>
+            <h1 style={{ display: 'inline-block' }}>Basic Info</h1>
             <svg className="SVGInline-svg" style={{ width: '24px', height: '24px', marginLeft: '5px' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <g fill="currentColor" fillRule="evenodd">
                 <path id="prefix__icon-edit" d="M14.775 6.202l2.99 2.99-11.81 11.663a.499.499 0 01-.352.144H3.498a.5.5 0 01-.5-.5v-2.342a.5.5 0 01.147-.354l11.63-11.6zM16.19 4.79l1.641-1.638a.502.502 0 01.707 0l2.3 2.298a.5.5 0 010 .707l-.003.003-1.648 1.627L16.19 4.79z" />
@@ -102,44 +103,19 @@ export default class Profile extends Component {
           </div>
         </div>
         <div className="profileField">
+          <h1>User Statistics</h1>
+          <div>
+            <span className="userStat">{`Reviews Added: ${streviews.length}`}</span>
+            <span className="userStat">{`Salaries Added: ${stsalaries.length}`}</span>
+            <span className="userStat">{`Interviews Added: ${stinterviews.length}`}</span>
+            <span className="userStat">{`Photos Added: ${cphotos.length}`}</span>
+          </div>
+        </div>
+        <div className="profileField">
           <h1>Photos Added</h1>
-          {this.props.student.cphotos.map((photo) => {
+          {cphotos.map((photo) => {
             return <img className="student-img" src={photo.url} />;
           })}
-        </div>
-        <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Experience</h1>
-            <svg className="SVGInline-svg" style={{ width: '24px', height: '24px', marginLeft: '5px' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <g fill="currentColor" fillRule="evenodd">
-                <path id="prefix__icon-edit" d="M14.775 6.202l2.99 2.99-11.81 11.663a.499.499 0 01-.352.144H3.498a.5.5 0 01-.5-.5v-2.342a.5.5 0 01.147-.354l11.63-11.6zM16.19 4.79l1.641-1.638a.502.502 0 01.707 0l2.3 2.298a.5.5 0 010 .707l-.003.003-1.648 1.627L16.19 4.79z" />
-              </g>
-            </svg>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <button className="home-btn info">
-              <strong>Add your work history</strong>
-              {' '}
-              including any internships or contract work and qualifications.
-            </button>
-          </div>
-        </div>
-        <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Education</h1>
-            <svg className="SVGInline-svg" style={{ width: '24px', height: '24px', marginLeft: '5px' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <g fill="currentColor" fillRule="evenodd">
-                <path id="prefix__icon-edit" d="M14.775 6.202l2.99 2.99-11.81 11.663a.499.499 0 01-.352.144H3.498a.5.5 0 01-.5-.5v-2.342a.5.5 0 01.147-.354l11.63-11.6zM16.19 4.79l1.641-1.638a.502.502 0 01.707 0l2.3 2.298a.5.5 0 010 .707l-.003.003-1.648 1.627L16.19 4.79z" />
-              </g>
-            </svg>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <button className="home-btn info">
-              <strong>Add your most recent education</strong>
-              {' '}
-              Since many jobs require a certain level of education, it’s important to mention your academic credentials on your resume.
-            </button>
-          </div>
         </div>
       </div>
     );

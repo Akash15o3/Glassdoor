@@ -362,3 +362,8 @@ background-color: powderblue;
   right: 0px;
   width: 70%;
 }
+
+.userStat{
+  margin-right: 25px;
+  font-weight: bold;
+}

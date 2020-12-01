@@ -60,12 +60,11 @@ export default class CompanySalaries extends Component {
   submitSalary = () => {
     const { jtitle, salbase, salexperience, sallocation, salbonus } = this.state;
     const url = `${process.env.REACT_APP_BACKEND}/salaries/createSalary`;
-    axios.post(url, { jtitle, salbase, salexperience, sallocation, salbonus })
+    axios.post(url, { jtitle, salbase, salexperience, sallocation, salbonus, stid: this.props.stid })
       .then((response) => {
         if (response.data) {
           const salaries = [...this.state.salaries, response.data];
           this.setState({ salaries });
-          this.props.updateSalaries(salaries);
           this.closeSalaryModal();
         }
       });

@@ -70,10 +70,10 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyJobs cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries cname={company.cname} cid={company._id} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
+        companyContent = <CompanySalaries stid={this.props.id} cname={company.cname} cid={company._id} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
-        companyContent = <CompanyInterviews cname={company.cname} updateInterviews={this.updateInterviews} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyInterviews stid={this.props.id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Photos':
         companyContent = <CompanyPhotos cphotos={cphotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;

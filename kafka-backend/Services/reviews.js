@@ -22,7 +22,6 @@ function addReview(data, callback) {
   const now = new Date();
   const jsonDate = now.toJSON();
   const date = new Date(jsonDate);
-
   const newReview = new Reviews({
     cname: data.cname,
     cid: data.cid,
@@ -52,7 +51,21 @@ function addReview(data, callback) {
       callback(null, response);
     } else {
       // eslint-disable-next-line no-underscore-dangle
-      student.streviews.push(newReview._id);
+      student.streviews.push({
+        cname: data.cname,
+        cid: data.cid,
+        overallRating: data.overallRating,
+        rheadline: data.rheadline,
+        rdescription: data.rdescription,
+        rpros: data.rpros,
+        rcons: data.rcons,
+        radvice: data.radvice,
+        rrecommended: data.rrecommended,
+        routlook: data.routlook,
+        rceoapprove: data.rceoapprove,
+        rhelpful: data.rhelpful,
+        rdate: date,
+      });
       student.save((err) => {
         if (err) {
           const response = {
@@ -165,7 +178,7 @@ function getByCompnayId(data, callback) {
 function updateReview(data, callback) {
   const { id, ...updateInfo } = data;
   Reviews.findByIdAndUpdate(id, updateInfo, options, (error, results) => {
-    console.log("Inside Find by ID reply: ", data)
+    console.log('Inside Find by ID reply: ', data);
     if (error) {
       const response = {
         status: 401,
@@ -186,22 +199,22 @@ function updateReview(data, callback) {
 
 function getFeatReview(data, callback) {
   Reviews.findById(data.rid, (error, job) => {
-    console.log("Kafka backend feat review: ", job);
-    console.log("kafka backend data: ", data)
+    console.log('Kafka backend feat review: ', job);
+    console.log('kafka backend data: ', data);
     if (error) {
       const response = {
         status: 401,
-        header: "text/plain",
-        content: "Error fetching jobs",
+        header: 'text/plain',
+        content: 'Error fetching jobs',
       };
       callback(null, response);
     } else {
       const response = {
         status: 200,
-        header: "application/json",
+        header: 'application/json',
         content: JSON.stringify(job),
       };
-      console.log("kafka be f etareview response: ", response.content)
+      console.log('kafka be f etareview response: ', response.content);
       callback(null, response);
     }
   });
@@ -228,14 +241,14 @@ function handleRequest(msg, callback) {
       break;
     }
 
-    case 'REPLYTOREVIEW' : {
+    case 'REPLYTOREVIEW': {
       console.log('KB: Inside Reply to review');
       console.log('Message:', msg);
       updateReview(msg.data, callback);
       break;
     }
 
-    case 'GETFEATREVIEWS' : {
+    case 'GETFEATREVIEWS': {
       console.log('KB: Inside Reply to review');
       console.log('Message:', msg);
       getFeatReview(msg.data, callback);

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -12,7 +12,7 @@ const studentSchema = new Schema(
     stphoto: {
       type: String,
       default:
-        "https://glassdoor-273.s3.us-west-1.amazonaws.com/1606091787051-unknown.jpg",
+        'https://glassdoor-273.s3.us-west-1.amazonaws.com/1606091787051-unknown.jpg',
     },
     // cross-referencing photos added for a company
     cphotos: [
@@ -23,8 +23,8 @@ const studentSchema = new Schema(
         cid: String,
         approval: {
           type: String,
-          enum: ["Pending", "Approved", "Rejected"],
-          default: "Pending",
+          enum: ['Pending', 'Approved', 'Rejected'],
+          default: 'Pending',
         },
       },
     ],
@@ -33,8 +33,8 @@ const studentSchema = new Schema(
         stresume: String,
         stselect: {
           type: String,
-          enum: ["", "Primary"],
-          default: "",
+          enum: ['', 'Primary'],
+          default: '',
         },
         _id: false,
       },
@@ -42,8 +42,8 @@ const studentSchema = new Schema(
     stjobpref: {
       searchstatus: {
         type: String,
-        enum: ["Not Looking", "Casually Looking", "Actively Looking"],
-        default: "Casually Looking",
+        enum: ['Not Looking', 'Casually Looking', 'Actively Looking'],
+        default: 'Casually Looking',
       },
       // required job title
       title: String,
@@ -51,49 +51,51 @@ const studentSchema = new Schema(
       salarypayperiod: String,
       relocation: {
         type: String,
-        enum: ["Yes", "No"],
-        default: "No",
+        enum: ['Yes', 'No'],
+        default: 'No',
       },
       industry: String,
     },
     // If reviews > 0, only then show more than 5 reviews on fronntend
     streviews: [],
+    stsalaries: [],
+    stinterviews: [],
     stdemographics: {
       race_ethnicity: {
         type: String,
         enum: [
-          "American Indian",
-          "Alaska Native",
-          "Asian",
-          "Black or African American",
-          "Native Hawaiian",
-          "Other Pacific Islander",
-          "White",
-          "Refuse to disclose",
+          'American Indian',
+          'Alaska Native',
+          'Asian',
+          'Black or African American',
+          'Native Hawaiian',
+          'Other Pacific Islander',
+          'White',
+          'Refuse to disclose',
         ],
-        default: "Refuse to disclose",
+        default: 'Refuse to disclose',
       },
       gender: {
         type: String,
-        enum: ["Male", "Female", "Non-binary", "Refuse to disclose"],
-        default: "Refuse to disclose",
+        enum: ['Male', 'Female', 'Non-binary', 'Refuse to disclose'],
+        default: 'Refuse to disclose',
       },
       disability: {
         type: String,
-        enum: ["Disabled", "Not Disabled", "Refuse to disclose"],
-        default: "Refuse to disclose",
+        enum: ['Disabled', 'Not Disabled', 'Refuse to disclose'],
+        default: 'Refuse to disclose',
       },
       veteran: {
         type: String,
-        enum: ["Protected Veteran", "Not a Veteran", "Refuse to disclose"],
-        default: "Refuse to disclose",
+        enum: ['Protected Veteran', 'Not a Veteran', 'Refuse to disclose'],
+        default: 'Refuse to disclose',
       },
     },
   },
   {
     versionKey: false,
-  }
+  },
 );
 
-const studentModel = mongoose.model("student", studentSchema);
+const studentModel = mongoose.model('student', studentSchema);
 module.exports = studentModel;

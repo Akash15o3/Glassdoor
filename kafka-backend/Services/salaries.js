@@ -1,4 +1,5 @@
 const Salary = require('../Models/SalaryModel');
+const Students = require('../Models/StudentModel');
 
 function getSalaries(data, callback) {
   Salary.find({ cid: data.cid }, (error, salaries) => {
@@ -22,7 +23,36 @@ function getSalaries(data, callback) {
   });
 }
 function createNewSalary(data, callback) {
-  new Salary({ ...data })
+  const {
+    jtitle, salbase, salexperience, sallocation, salbonus, stid,
+  } = data;
+  Students.findById(stid, (error, student) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Student id does not exist',
+      };
+      callback(null, response);
+    } else {
+      student.stsalaries.push({
+        jtitle, salbase, salexperience, sallocation, salbonus,
+      });
+      student.save((err) => {
+        if (err) {
+          const response = {
+            status: 401,
+            header: 'text/plain',
+            content: 'Error modifying student',
+          };
+          callback(null, response);
+        }
+      });
+    }
+  });
+  new Salary({
+    jtitle, salbase, salexperience, sallocation, salbonus,
+  })
     .save((err, salary) => {
       if (err) {
         const response = {
