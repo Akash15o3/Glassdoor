@@ -125,27 +125,27 @@ Router.post(
 );
 
 // Update company--Add review to featured
-Router.put('/profile/addFtReview/:cid', (request, response) => {
-  console.log('\nEndpoint PUT: Add featured review');
-  console.log('Req Body: ', request.body);
-  const data = { ...request.params, ...request.body };
+// Router.put('/profile/addFtReview/:cid', (request, response) => {
+//   console.log('\nEndpoint PUT: Add featured review');
+//   console.log('Req Body: ', request.body);
+//   const data = { ...request.params, ...request.body };
 
-  kafka.make_request('companiesTopic', 'ADDFTREVIEW', data, (err, result) => {
-    console.log('Add featured review result ', result);
-    if (err) {
-      console.log('Add featured review Kafka error');
-      response.writeHead(401, {
-        'Content-Type': 'text/plain',
-      });
-      response.end('Add featured review Kafka error');
-    } else {
-      response.writeHead(result.status, {
-        'Content-Type': result.header,
-      });
-      response.end(result.content);
-    }
-  });
-});
+//   kafka.make_request('companiesTopic', 'ADDFTREVIEW', data, (err, result) => {
+//     console.log('Add featured review result ', result);
+//     if (err) {
+//       console.log('Add featured review Kafka error');
+//       response.writeHead(401, {
+//         'Content-Type': 'text/plain',
+//       });
+//       response.end('Add featured review Kafka error');
+//     } else {
+//       response.writeHead(result.status, {
+//         'Content-Type': result.header,
+//       });
+//       response.end(result.content);
+//     }
+//   });
+// });
 
 // Delete review from featured
 Router.put('/profile/delFtReview/:cid', (request, response) => {
@@ -261,6 +261,31 @@ Router.get('/:id/numPhotos', (request, response) => {
     }
   });
 });
+
+
+
+//Add featured review
+Router.post('/addFeaturedReview', (request, response) => {
+  console.log('\nEndpoint POST: Reply to a review');
+  console.log('Req Body: ', request.body);
+  kafka.make_request('companiesTopic', 'ADDFTREVIEW', request.body, (err, result) => {
+    if (err) {
+      console.log('Reviews ReplyReview Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews addreview Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
+
+
 /*
 // Get number of reviews
 Router.get('/numReviews', (request, response) => {
