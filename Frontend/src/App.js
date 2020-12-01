@@ -17,7 +17,7 @@ import CompanySearchResults from './Components/Student/Company/CompanySearchResu
 import JobSearchResults from './Components/Student/Jobs/JobSearchResults';
 import JobApplications from './Components/Student/Jobs/JobApplications';
 import StudentProfile from './Components/Employer/studentProfile';
-
+import StudentPhotos from './Components/Student/Activity/StudentPhotos';
 import EmployerReviews from './Components/Employer/Home/Reviews';
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
         <Route path="/student/companySearchResults" component={CompanySearchResults} />
         <Route path="/student/jobSearchResults" component={JobSearchResults} />
         <Route path="/student/jobApplications" component={JobApplications} />
+        <Route path="/student/addedPhotos" component={StudentPhotos} />
         <Route path="/anonymous/companySearchResults" component={CompanySearchResults} />
         <Route path="/anonymous/company" component={CompanyHomePage} />
         <Route path="/anonymous/jobSearchResults" component={JobSearchResults} />

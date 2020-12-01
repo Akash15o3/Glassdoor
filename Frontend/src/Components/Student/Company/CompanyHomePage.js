@@ -43,18 +43,6 @@ class CompanyHomePage extends Component {
     this.setState({ cphotos });
   }
 
-  updateSalaries = (salaries) => {
-    this.setState({ salaries });
-  }
-
-  updateInterviews = (interviews) => {
-    this.setState({ interviews });
-  }
-
-  updateReviews = (reviews) => {
-    this.setState({ reviews });
-  }
-
   render() {
     const { company, tab, cphotos } = this.state;
     console.log(tab);
@@ -76,7 +64,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyInterviews stid={this.props.id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos cphotos={cphotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyPhotos updatePhotos={this.updatePhotos} cphotos={cphotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       default:
         console.log('D');

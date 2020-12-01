@@ -13,7 +13,7 @@ export default class CompanyPhotos extends Component {
       pageIndex: 0
     };
     this.itemsPerPage = 6;
-    this.numPages = 3;
+    this.numPages = Math.ceil((this.props.cphotos.length / this.itemsPerPage));
   }
 
   handleClick = () => {
@@ -46,6 +46,7 @@ export default class CompanyPhotos extends Component {
         console.log(res.data);
         this.setState({ photos: res.data, upload: false });
         this.props.updatePhotos(res.data);
+        this.numPages = Math.ceil((res.data.length / this.itemsPerPage));
       });
   }
 
@@ -64,7 +65,9 @@ export default class CompanyPhotos extends Component {
   render() {
     const { photos, upload, pageIndex } = this.state;
     const { cname } = this.props;
-    const { itemsPerPage } = this;
+    const { itemsPerPage, numPages } = this;
+    const numPhotos = photos.length;
+    const numItems = numPages === pageIndex + 1 ? numPhotos % itemsPerPage : itemsPerPage;
     return (
       <div id="companyPhotoContainer">
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -85,13 +88,9 @@ export default class CompanyPhotos extends Component {
               </button>
             ) : null}
         </div>
-        {[...Array(this.itemsPerPage)].map((e, i) => {
+        {[...Array(numItems)].map((e, i) => {
           return <img src={photos[i + (pageIndex * itemsPerPage)].url} />;
-          // return <li onClick={setPageNumber} keyValue={i} className={`page-item ${currentPage === i ? 'active' : ''}`}><a keyValue={i} className="page-link" href="#">{i + 1}</a></li>;
         })}
-        {/* {photos.map((photo) => {
-          return <img src={photo.url} />;
-        })} */}
         <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.numPages} />
       </div>
     );
