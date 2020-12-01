@@ -20,6 +20,7 @@ function addNewInterview(data, callback) {
       };
       callback(null, response);
     } else {
+      updateCompany()
       const response = {
         status: 200,
         header: 'application/json',

@@ -2,6 +2,7 @@ const redis = require('redis');
 const Ioredis = require('ioredis');
 const Reviews = require('../Models/ReviewModel');
 const Companies = require('../Models/CompanyModel');
+const Students = require('../Models/StudentModel');
 
 const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
 
@@ -177,6 +178,31 @@ function getByCompanyId(data, callback) {
   });
 }
 
+const updateCompany = function update(cid, rating) {
+  Companies.findById(cid, (error, company) => {
+    if (error) {
+      return false;
+    }
+    // eslint-disable-next-line max-len, no-param-reassign
+    company.averageRating = (company.averageRating * company.reviewCount + rating) / (company.reviewCount + 1);
+    // eslint-disable-next-line no-param-reassign, no-plusplus
+    company.reviewCount++;
+    company.save();
+    return true;
+  });
+};
+
+const updateStudent = function update(stid, review) {
+  Students.findById(stid, (error, student) => {
+    if (error) {
+      return false;
+    }
+    student.streviews.push(review);
+    student.save();
+    return true;
+  });
+};
+
 // Delete Redis keys using pattern
 // Ref: https://medium.com/oyotech/finding-and-deleting-the-redis-keys-by-pattern-the-right-way-123629d7730
 function approveReview(data, callback) {
@@ -203,6 +229,8 @@ function approveReview(data, callback) {
         });
         return pipeline.exec();
       });
+      updateCompany(review.cid, review.overallRating);
+      // updateStudent(review.rstudent.stid, review);
       const response = {
         status: 200,
         header: 'application/json',
@@ -374,13 +402,75 @@ function getReviewsPerDay(data, callback) {
   });
 }
 
-function mostReviewed(data, callback) {
-  const response = {
-    status: 401,
-    header: 'text/plain',
-    content: 'Error fetching company',
-  };
-  callback(null, response);
+// Get top 5 most reviewed companies
+function getMostReviewed(data, callback) {
+  Companies.find({})
+    .sort({ reviewCount: -1 })
+    .limit(5)
+    .exec((error, companies) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error fetching companies',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(companies),
+        };
+        callback(null, response);
+      }
+    });
+}
+
+function getBestAvg(data, callback) {
+  Companies.find({})
+    .sort({ averageRating: -1 })
+    .limit(5)
+    .exec((error, companies) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error fetching companies',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(companies),
+        };
+        callback(null, response);
+      }
+    });
+}
+
+function getTopCEO(data, callback) {
+  Companies.find({})
+    .sort({ averageRating: -1 })
+    .limit(10)
+    .select({ cceo: 1 })
+    .exec((error, companies) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error fetching companies',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(companies),
+        };
+        callback(null, response);
+      }
+    });
 }
 
 function handleRequest(msg, callback) {
@@ -428,9 +518,21 @@ function handleRequest(msg, callback) {
       break;
     }
     case 'MOSTREVIEWED': {
-      console.log('KB: Inside reviews per day');
+      console.log('KB: Inside most reviewed');
       console.log('Message:', msg);
-      mostReviewed(msg.data, callback);
+      getMostReviewed(msg.data, callback);
+      break;
+    }
+    case 'BESTAVG': {
+      console.log('KB: Inside best abg');
+      console.log('Message:', msg);
+      getBestAvg(msg.data, callback);
+      break;
+    }
+    case 'TOPCEO': {
+      console.log('KB: Inside top ceo');
+      console.log('Message:', msg);
+      getTopCEO(msg.data, callback);
       break;
     }
     default: {

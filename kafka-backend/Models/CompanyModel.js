@@ -44,7 +44,6 @@ const companySchema = new Schema(
       type: Number,
       default: 0,
     },
-
     // review ids that are featured will be stored here
     cfeatured: [],
     cviewedperday: { type: Number, default: 0 },

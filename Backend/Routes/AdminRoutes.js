@@ -172,5 +172,46 @@ Router.get('/mostReviewed', (request, response) => {
   });
 });
 
+// Top 5 average Rating
+Router.get('/bestAvg', (request, response) => {
+  console.log('\nEndpoint GET: Best avg rating companies');
+  // console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('adminsTopic', 'BESTAVG', data, (err, result) => {
+    if (err) {
+      console.log('Reviews: Best avg rating Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews: Best avg rating Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+
+// Top 10 ceo
+Router.get('/topCEO', (request, response) => {
+  console.log('\nEndpoint GET: Top 10 CEOs');
+  // console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('adminsTopic', 'TOPCEO', data, (err, result) => {
+    if (err) {
+      console.log('Reviews: Top 10 CEOs Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews: Top 10 CEOs Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
 
 module.exports = Router;

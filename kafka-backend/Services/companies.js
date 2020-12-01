@@ -1,5 +1,8 @@
 const Companies = require("../Models/CompanyModel");
 const Student = require("../Models/StudentModel");
+const redis = require('redis');
+
+const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
 
 const options = {
   useFindAndModify: false,
@@ -220,7 +223,33 @@ function specificCompany(data, callback) {
       console.log(error);
       return callback(error, null);
     }
-
+    // update views for company
+    const redisKey = `Views_${data.cid}`;
+    client.get(redisKey, (err, reply) => {
+      if (err) {
+        console.log(err);
+      }
+      if (reply !== null) {
+        // Response exists in the cache
+        const updatedReply = +reply + 1;
+        client.set(redisKey, updatedReply, 'EX', 86400, (e, r) => {
+          if (e) {
+            console.log(e);
+          } else {
+            console.log('Cache successful: ', r);
+          }
+        });
+      } else {
+        // set timeout to 24h x 60m x 60s (24 h)
+        client.set(redisKey, 1, 'EX', 86400, (e, r) => {
+          if (e) {
+            console.log(e);
+          } else {
+            console.log('Cache successful: ', r);
+          }
+        });
+      }
+    });
     return callback(null, company);
   });
 }

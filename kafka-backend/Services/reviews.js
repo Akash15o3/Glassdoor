@@ -1,6 +1,7 @@
 const redis = require('redis');
 const Reviews = require('../Models/ReviewModel');
 const Students = require('../Models/StudentModel');
+const Companies = require('../Models/CompanyModel');
 
 const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
 
@@ -57,7 +58,7 @@ function addReview(data, callback) {
           const response = {
             status: 401,
             header: 'text/plain',
-            content: 'Error modifyinng student',
+            content: 'Error modifying student',
           };
           callback(null, response);
         } else {
@@ -70,7 +71,6 @@ function addReview(data, callback) {
               };
               callback(null, response);
             } else {
-              // Save this review id in student collection
               const response = {
                 status: 200,
                 header: 'application/json',
