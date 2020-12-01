@@ -13,8 +13,20 @@ export default class CompanySalaries extends Component {
       salexperience: '',
       sallocation: '',
       salbonus: '',
-      salaries: this.props.salaries
+      salaries: []
     };
+  }
+
+  componentDidMount() {
+    const url = `${process.env.REACT_APP_BACKEND}/salaries/getSalaries?cid=${this.props.cid}`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            salaries: response.data,
+          });
+        }
+      });
   }
 
   openSalaryModal = () => {

@@ -26,3 +26,10 @@ export const getCid = (cid,) => {
     cid,
   };
 };
+
+export const getCName = (cname) => {
+  return {
+    type: 'CNAME',
+    cname,
+  };
+};

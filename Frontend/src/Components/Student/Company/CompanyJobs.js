@@ -13,7 +13,7 @@ class CompanyJobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jobs: this.props.jobs,
+      jobs: [],
       selectedIndex: 0,
       jobInfoState: 'jdescription',
       resume: null,
@@ -21,6 +21,19 @@ class CompanyJobs extends Component {
       showJobApplication: false,
       address: '',
     };
+  }
+
+  componentDidMount() {
+    const url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${this.props.cname}`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.allJobs = response.data;
+          this.setState({
+            jobs: response.data,
+          });
+        }
+      });
   }
 
   handleAddressChange = (address) => {
@@ -91,7 +104,7 @@ class CompanyJobs extends Component {
   }
 
   jobTitleFilter = (e) => {
-    const jobs = this.props.jobs.filter((job) => job.jtitle.toLowerCase().includes(e.target.value));
+    const jobs = this.allJobs.filter((job) => job.jtitle.toLowerCase().includes(e.target.value));
     this.setState({ jobs });
   }
 
