@@ -64,7 +64,7 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyOverview company={company} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews cname={company.cname} cid={company._id} updateReviews={this.updateReviews} stname={this.props.name} stid={this.props.id} />;
+        companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs cname={company.cname} isAuth={this.props.isAuth} />;

@@ -121,9 +121,8 @@ export default class CompanyReviews extends Component {
     axios.post(url, { cname, cid, overallRating, rheadline, rdescription, rpros, rcons, radvice, rrecommended, routlook, rceoapprove, stname, stid })
       .then((response) => {
         if (response.data) {
-          const reviews = [...this.props.reviews, response.data];
+          const reviews = [...this.state.reviews, response.data];
           // this.setState({ reviews });
-          this.props.updateReviews(reviews);
           this.toggleAddReview();
         }
       });
