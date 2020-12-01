@@ -67,7 +67,7 @@ export default class CompanyPhotos extends Component {
     const { cname } = this.props;
     const { itemsPerPage, numPages } = this;
     const numPhotos = photos.length;
-    const numItems = numPages === pageIndex + 1 ? numPhotos % itemsPerPage : itemsPerPage;
+    const numItems = numPages === pageIndex + 1 && numPhotos % itemsPerPage !== 0 ? numPhotos % itemsPerPage : itemsPerPage;
     return (
       <div id="companyPhotoContainer">
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
