@@ -40,8 +40,11 @@ const companySchema = new Schema(
       type: Number,
       default: 0,
     },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
 
-    // Average rating overall/recommended/ceo approval will be deduced from reviews
     // review ids that are featured will be stored here
     cfeatured: [],
     cviewedperday: { type: Number, default: 0 },

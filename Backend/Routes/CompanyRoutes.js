@@ -262,23 +262,92 @@ Router.post('/addFeaturedReview', (request, response) => {
   });
 });
 
-/*
 // Get number of reviews
-Router.get('/numReviews', (request, response) => {
-
+Router.get('/:cid/numReviews', (request, response) => {
+  console.log('\nEndpoint GET: Number of reviews');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params };
+  kafka.make_request('companiesTopic', 'GETNUMREVIEWS', data, (err, result) => {
+    if (err) {
+      console.log('Company get number of reviews Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Company get number of reviews Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
+    }
+  });
 });
 
 // Get number of salary reviews
-Router.get('/numSalReviews', (request, response) => {
-
+Router.get('/:cid/numSalReviews', (request, response) => {
+  console.log('\nEndpoint GET: Number of salary reviews');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params };
+  kafka.make_request('companiesTopic', 'GETNUMSALARY', data, (err, result) => {
+    if (err) {
+      console.log('Company get number of salary reviews Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Company get number of salary reviews Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
+    }
+  });
 });
 
 // Get number of interview reviewss
-Router.get('/numIntReviews', (request, response) => {
-
+Router.get('/:cid/numIntReviews', (request, response) => {
+  console.log('\nEndpoint GET: Number of interview reviews');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params };
+  kafka.make_request('companiesTopic', 'GETNUMINT', data, (err, result) => {
+    if (err) {
+      console.log('Company get number of interview reviews Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Company get number of interview reviews Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
+    }
+  });
 });
-*/
 
 // get average rating
+Router.get('/:cid/averageRating', (request, response) => {
+  console.log('\nEndpoint GET: Average rating for company');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params };
+  kafka.make_request('companiesTopic', 'AVGRATING', data, (err, result) => {
+    if (err) {
+      console.log('Company get avg rating Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Company get avg rating Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
+    }
+  });
+});
 
 module.exports = Router;

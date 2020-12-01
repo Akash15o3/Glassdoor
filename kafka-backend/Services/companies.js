@@ -244,6 +244,86 @@ function specificStudent(data, callback) {
   });
 }
 
+function getNumReviews(data, callback) {
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching company',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 401,
+        header: 'application/json',
+        content: JSON.stringify({ reviews: company.reviewCount }),
+      };
+      callback(null, response);
+    }
+  });
+}
+
+function getNumSalReviews(data, callback) {
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching company',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 401,
+        header: 'application/json',
+        content: JSON.stringify({ salaries: company.salaryCount }),
+      };
+      callback(null, response);
+    }
+  });
+}
+
+function getNumIntReviews(data, callback) {
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching company',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 401,
+        header: 'application/json',
+        content: JSON.stringify({ interviews: company.interviewCount }),
+      };
+      callback(null, response);
+    }
+  });
+}
+
+function getAvgRating(data, callback) {
+  Companies.findById(data.cid, (error, company) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching company',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 401,
+        header: 'application/json',
+        content: JSON.stringify({ averageRating: company.averageRating }),
+      };
+      callback(null, response);
+    }
+  });
+}
+
 function handleRequest(msg, callback) {
   console.log("*******Message subtopic*******:", msg.subTopic)
   switch (msg.subTopic) {
@@ -302,6 +382,30 @@ function handleRequest(msg, callback) {
       console.log("KB: Inside specific student ");
       console.log("Message:", msg);
       specificStudent(msg.data, callback);
+      break;
+    }
+
+    case 'GETNUMREVIEWS': {
+      console.log('KB: Get number of reviews');
+      getNumReviews(msg.data, callback);
+      break;
+    }
+
+    case 'GETNUMSALARY': {
+      console.log('KB: Get number of salary reviews');
+      getNumSalReviews(msg.data, callback);
+      break;
+    }
+
+    case 'GETNUMINT': {
+      console.log('KB: Get number of interview reviews');
+      getNumIntReviews(msg.data, callback);
+      break;
+    }
+
+    case 'AVGRATING': {
+      console.log('KB: Get number of interview reviews');
+      getAvgRating(msg.data, callback);
       break;
     }
 

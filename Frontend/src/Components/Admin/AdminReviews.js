@@ -52,6 +52,7 @@ class AdminReviews extends Component {
     return(
       <div>
         <div class="form-inline">
+          <br/>
           <label for="ooption">Filter Reviews: </label>
           <select class="form-control" id="ooption" onChange = {this.filterChangeHandler}>>
             <option value = {this.state.filter}> Choose...</option>
