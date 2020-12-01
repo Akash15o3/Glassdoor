@@ -127,7 +127,10 @@ function uploadCompanyProfilePicture(data, callback) {
 }
 
 function addFtReview(data, callback) {
+  console.log("inside addftReviews: ", data)
+
   Companies.findById(data.cid, (error, company) => {
+    console.log("inside findbyID addftReviews: ", company)
     if (error) {
       const response = {
         status: 401,
@@ -135,8 +138,10 @@ function addFtReview(data, callback) {
         content: 'Error updating company profile',
       };
       callback(null, response);
-    } else if (company.cfeatured.length < 2) {
-      company.cfeatured.push(data.reviewid);
+    } else if (company.cfeatured.length < 3) {
+      // company.cfeatured.push(data.reviewid);
+      company.cfeatured.push(data.rreplyid);
+      console.log("inside addftReviews: ", company.cfeatured)
       company.save((err, companyUpdated) => {
         if (err) {
           const response = {
@@ -240,8 +245,7 @@ function specificStudent(data, callback) {
 }
 
 function handleRequest(msg, callback) {
-  console.log("Message subtopic:", msg.subTopic)
-
+  console.log("*******Message subtopic*******:", msg.subTopic)
   switch (msg.subTopic) {
     case 'GETALL': {
       console.log('KB: Inside get all companies');

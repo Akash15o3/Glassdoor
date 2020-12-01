@@ -94,9 +94,30 @@ Router.post('/cid', (request, response) => {
       // response.writeHead(result.status, {
       //   'Content-Type': result.header,
       // });
-      // // console.log(result.content);
+      console.log("Reviews by cid: ", result.content);
       // response.end(result.content);
       response.send(result);
+    }
+  });
+});
+
+//Reply to a review
+Router.post('/replyReviews', (request, response) => {
+  console.log('\nEndpoint POST: Reply to a review');
+  console.log('Req Body: ', request.body);
+  kafka.make_request('reviewsTopic', 'REPLYTOREVIEW', request.body, (err, result) => {
+    if (err) {
+      console.log('Reviews ReplyReview Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews addreview Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      // console.log(result.content);
+      response.end(result.content);
     }
   });
 });

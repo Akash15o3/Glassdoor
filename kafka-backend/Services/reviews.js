@@ -12,6 +12,11 @@ client.on('error', (error) => {
   console.error(error);
 });
 
+const options = {
+  useFindAndModify: false,
+  new: true,
+};
+
 function addReview(data, callback) {
   const now = new Date();
   const jsonDate = now.toJSON();
@@ -157,6 +162,28 @@ function getByCompnayId(data, callback) {
   });
 }
 
+function updateReview(data, callback) {
+  const { id, ...updateInfo } = data;
+  Reviews.findByIdAndUpdate(id, updateInfo, options, (error, results) => {
+    console.log("Inside Find by ID reply: ", data)
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error updating Reviews reply',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(results),
+      };
+      callback(null, response);
+    }
+  });
+}
+
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'ADDREVIEW': {
@@ -177,6 +204,14 @@ function handleRequest(msg, callback) {
       getByCompnayId(msg.data, callback);
       break;
     }
+
+    case 'REPLYTOREVIEW' : {
+      console.log('KB: Inside Reply to review');
+      console.log('Message:', msg);
+      updateReview(msg.data, callback);
+      break;
+    }
+
     default: {
       const response = {
         status: 400,
