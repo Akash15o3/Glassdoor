@@ -38,7 +38,7 @@ function App() {
         <Route path="/student/companySearchResults" component={CompanySearchResults} />
         <Route path="/student/jobSearchResults" component={JobSearchResults} />
         <Route path="/student/jobApplications" component={JobApplications} />
-        <Route path="/student/addedPhotos" component={StudentPhotos} />
+        <Route path="/student/photos" component={StudentPhotos} />
         <Route path="/anonymous/companySearchResults" component={CompanySearchResults} />
         <Route path="/anonymous/company" component={CompanyHomePage} />
         <Route path="/anonymous/jobSearchResults" component={JobSearchResults} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 Modal.setAppElement('#root');
 export default class Profile extends Component {
@@ -108,14 +109,8 @@ export default class Profile extends Component {
             <span className="userStat">{`Reviews Added: ${streviews.length}`}</span>
             <span className="userStat">{`Salaries Added: ${stsalaries.length}`}</span>
             <span className="userStat">{`Interviews Added: ${stinterviews.length}`}</span>
-            <span className="userStat">{`Photos Added: ${cphotos.length}`}</span>
+            <Link to="/student/photos" className="userStat">{`Photos Added: ${cphotos.length}`}</Link>
           </div>
-        </div>
-        <div className="profileField">
-          <h1>Photos Added</h1>
-          {cphotos.map((photo) => {
-            return <img className="student-img" src={photo.url} />;
-          })}
         </div>
       </div>
     );

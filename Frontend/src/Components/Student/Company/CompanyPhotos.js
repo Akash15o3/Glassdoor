@@ -6,14 +6,14 @@ export default class CompanyPhotos extends Component {
   constructor(props) {
     console.log(props);
     super(props);
+    this.itemsPerPage = 6;
     this.state = {
       photos: this.props.cphotos,
       upload: false,
       files: [],
-      pageIndex: 0
+      pageIndex: 0,
+      numPages: Math.ceil((this.props.cphotos.length / this.itemsPerPage))
     };
-    this.itemsPerPage = 6;
-    this.numPages = Math.ceil((this.props.cphotos.length / this.itemsPerPage));
   }
 
   handleClick = () => {
@@ -44,18 +44,17 @@ export default class CompanyPhotos extends Component {
       .then((res) => {
         // then print response status
         console.log(res.data);
-        this.setState({ photos: res.data, upload: false });
+        this.setState({ photos: res.data, upload: false, numPages: Math.ceil((res.data.length / this.itemsPerPage)) });
         this.props.updatePhotos(res.data);
-        this.numPages = Math.ceil((res.data.length / this.itemsPerPage));
       });
   }
 
   setPage = (e) => {
     const { className } = e.currentTarget;
-    const { pageIndex } = this.state;
+    const { pageIndex, numPages } = this.state;
     if (className === 'prev' && pageIndex > 0) {
       this.setState({ pageIndex: pageIndex - 1 });
-    } else if (className === 'next' && pageIndex < this.numPages - 1) {
+    } else if (className === 'next' && pageIndex < numPages - 1) {
       this.setState({ pageIndex: pageIndex + 1 });
     } else if (className.includes('page')) {
       this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
@@ -63,9 +62,9 @@ export default class CompanyPhotos extends Component {
   }
 
   render() {
-    const { photos, upload, pageIndex } = this.state;
+    const { photos, upload, pageIndex, numPages } = this.state;
     const { cname } = this.props;
-    const { itemsPerPage, numPages } = this;
+    const { itemsPerPage } = this;
     const numPhotos = photos.length;
     const numItems = numPages === pageIndex + 1 && numPhotos % itemsPerPage !== 0 ? numPhotos % itemsPerPage : itemsPerPage;
     return (
@@ -91,7 +90,7 @@ export default class CompanyPhotos extends Component {
         {[...Array(numItems)].map((e, i) => {
           return <img src={photos[i + (pageIndex * itemsPerPage)].url} />;
         })}
-        <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.numPages} />
+        <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
       </div>
     );
   }
