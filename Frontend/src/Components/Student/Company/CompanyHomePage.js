@@ -16,64 +16,21 @@ class CompanyHomePage extends Component {
     this.state = {
       company: {},
       reviews: [],
-      cphotos: [],
       salaries: [],
       interviews: [],
-      jobs: [],
       tab: 'Overview',
     };
   }
 
   componentDidMount() {
-    let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
+    const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cid } = this.props;
     // let cid;
     axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
           const company = response.data;
-          this.setState({
-            company, cphotos: company.cphotos
-          });
-          console.log(company);
-          url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${company.cname}`;
-          axios.get(url)
-            .then((jobs) => {
-              if (jobs.data) {
-                this.setState({
-                  jobs: jobs.data,
-                });
-              }
-            });
-          url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${company.cname}`;
-          axios.get(url)
-            .then((interviews) => {
-              if (interviews.data) {
-                this.setState({
-                  interviews: interviews.data,
-                });
-              }
-            });
-        }
-      });
-
-    url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-    axios.post(url, { cid })
-      .then((response) => {
-        if (response.data) {
-          this.setState({
-            reviews: response.data,
-          });
-        }
-      });
-
-    url = `${process.env.REACT_APP_BACKEND}/salaries/getSalaries?cid=${cid}`;
-    axios.get(url)
-      .then((response) => {
-        if (response.data) {
-          this.setState({
-            salaries: response.data,
-          });
+          this.setState({ company });
         }
       });
   }
@@ -101,7 +58,7 @@ class CompanyHomePage extends Component {
   }
 
   render() {
-    const { company, tab, reviews, cphotos, jobs, salaries, showAddReview, interviews } = this.state;
+    const { company, tab, reviews, salaries, showAddReview, interviews } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -112,16 +69,16 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyReviews cname={company.cname} cid={company._id} reviews={reviews} updateReviews={this.updateReviews} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Jobs':
-        companyContent = <CompanyJobs jobs={jobs} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyJobs cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries salaries={salaries} cname={company.cname} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
+        companyContent = <CompanySalaries cname={company.cname} cid={company._id} updateSalaries={this.updateSalaries} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
-        companyContent = <CompanyInterviews interviews={interviews} cname={company.cname} updateInterviews={this.updateInterviews} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyInterviews cname={company.cname} updateInterviews={this.updateInterviews} isAuth={this.props.isAuth} />;
         break;
       case 'Photos':
-        companyContent = <CompanyPhotos cphotos={cphotos} updatePhotos={this.updatePhotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyPhotos stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       default:
         console.log('D');
@@ -218,6 +175,7 @@ class CompanyHomePage extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    cname: state.student.cname,
     cid: state.student.cid,
     id: state.student.id,
     name: state.credentials.isAuth ? state.student.user.stname : '',

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { getCid } from '../../../Actions/studentActions';
+import { getCid, getCName } from '../../../Actions/studentActions';
 
 class CompanySearchResults extends Component {
   constructor(props) {
@@ -31,6 +31,7 @@ class CompanySearchResults extends Component {
 
   handleClick = (e) => {
     this.props.getCid(e.target.id);
+    this.props.getCName(e.target.getAttribute('name'));
   }
 
   render() {
@@ -44,7 +45,7 @@ class CompanySearchResults extends Component {
               <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
               <div className="col-9 pr-0">
                 <h2>
-                  <Link id={`${item._id}`} onClick={this.handleClick} to={`/${credentials.role}/company`}>
+                  <Link id={item._id} name={item.cname} onClick={this.handleClick} to={`/${credentials.role}/company`}>
                     {' '}
                     {item.cname}
                     {' '}
@@ -202,7 +203,8 @@ const mapStateToProps = (state) => {
 
 const mapDisptachToProps = (dispatch) => {
   return {
-    getCid: (cid) => dispatch(getCid(cid))
+    getCid: (cid) => dispatch(getCid(cid)),
+    getCName: (cname) => dispatch(getCName(cname))
   };
 };
 

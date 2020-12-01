@@ -26,6 +26,11 @@ const studentReducer = (state = initialState, action) => {
         ...state,
         cid: action.cid,
       };
+    case 'CNAME':
+      return {
+        ...state,
+        cname: action.cname,
+      };
     case 'LOGOUT':
       return {
       };

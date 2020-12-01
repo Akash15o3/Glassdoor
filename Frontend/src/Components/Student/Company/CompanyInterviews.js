@@ -8,7 +8,7 @@ export default class CompanyInterview extends Component {
     super(props);
     this.state = {
       open: false,
-      interviews: this.props.interviews,
+      interviews: [],
       positivePercent: '',
       neutralPercent: '',
       negativePercent: '',
@@ -23,22 +23,28 @@ export default class CompanyInterview extends Component {
   }
 
   componentDidMount() {
-    let negative = 0;
-    let neutral = 0;
-    let positive = 0;
-    const total = this.state.interviews.length;
-    this.state.interviews.forEach(
-      (interview) => {
-        if (interview.overallexp === 'Positive') positive++;
-        else if (interview.overallexp === 'Negative') negative++;
-        else if (interview.overallexp === 'Neutral') neutral++;
-      }
-    );
-    const positivePercent = Math.round((positive / total) * 100);
-    const neutralPercent = Math.round((neutral / total) * 100);
-    const negativePercent = Math.round((negative / total) * 100);
-
-    this.setState({ positivePercent, neutralPercent, negativePercent });
+    const url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${this.props.cname}`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          const interviews = response.data;
+          let negative = 0;
+          let neutral = 0;
+          let positive = 0;
+          const total = interviews.length;
+          interviews.forEach(
+            (interview) => {
+              if (interview.overallexp === 'Positive') positive++;
+              else if (interview.overallexp === 'Negative') negative++;
+              else if (interview.overallexp === 'Neutral') neutral++;
+            }
+          );
+          const positivePercent = Math.round((positive / total) * 100);
+          const neutralPercent = Math.round((neutral / total) * 100);
+          const negativePercent = Math.round((negative / total) * 100);
+          this.setState({ interviews, positivePercent, neutralPercent, negativePercent });
+        }
+      });
   }
 
   openInterviewModal = () => {
@@ -168,7 +174,7 @@ export default class CompanyInterview extends Component {
           </span>
         </div>
         <ol className="empReviews tightLt">
-          {this.props.interviews.map((interview) => {
+          {this.state.interviews.map((interview) => {
             const date = new Date(interview.interviewposted);
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
@@ -248,7 +254,7 @@ export default class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-            </li>,
+                    </li>,
               <div className="hr">
                 <hr />
               </div>];

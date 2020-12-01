@@ -1,51 +1,51 @@
-const express = require("express");
-const kafka = require("../kafka/client");
+const express = require('express');
+const kafka = require('../kafka/client');
 
 const Router = express.Router();
-const upload = require("../Config/s3");
+const upload = require('../Config/s3');
 // Get all companies
-Router.get("/", (request, response) => {
-  console.log("\nEndpoint GET: get all companies");
-  console.log("Req Body: ", request.body);
+Router.get('/', (request, response) => {
+  console.log('\nEndpoint GET: get all companies');
+  console.log('Req Body: ', request.body);
   kafka.make_request(
-    "companiesTopic",
-    "GETALL",
+    'companiesTopic',
+    'GETALL',
     request.body,
     (err, result) => {
-      console.log("Get all result ", result);
+      console.log('Get all result ', result);
       if (err) {
-        console.log("Companies getall Kafka error");
+        console.log('Companies getall Kafka error');
         response.writeHead(401, {
-          "Content-Type": "text/plain",
+          'Content-Type': 'text/plain',
         });
-        response.end("Companies getall Kafka error");
+        response.end('Companies getall Kafka error');
       } else {
         response.writeHead(result.status, {
-          "Content-Type": result.header,
+          'Content-Type': result.header,
         });
         response.end(result.content);
       }
-    }
+    },
   );
 });
 
 // Get one company
-Router.get("/:id", (request, response) => {
-  console.log("\nEndpoint GET: get company");
-  console.log("Req Body: ", request.body);
+Router.get('/:id', (request, response) => {
+  console.log('\nEndpoint GET: get company');
+  console.log('Req Body: ', request.body);
   const data = { ...request.params };
 
-  kafka.make_request("companiesTopic", "GETONE", data, (err, result) => {
-    console.log("Get one company result ", result);
+  kafka.make_request('companiesTopic', 'GETONE', data, (err, result) => {
+    console.log('Get one company result ', result);
     if (err) {
-      console.log("Companies getone Kafka error");
+      console.log('Companies getone Kafka error');
       response.writeHead(401, {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       });
-      response.end("Companies getone Kafka error");
+      response.end('Companies getone Kafka error');
     } else {
       response.writeHead(result.status, {
-        "Content-Type": result.header,
+        'Content-Type': result.header,
       });
       response.end(result.content);
     }
@@ -77,21 +77,21 @@ Router.get("/:id", (request, response) => {
 //   });
 // });
 
-Router.post("/updateProfile", (request, response) => {
-  console.log("\nEndpoint POST: post update Company profile");
-  console.log("Req Body: ", request.body);
+Router.post('/updateProfile', (request, response) => {
+  console.log('\nEndpoint POST: post update Company profile');
+  console.log('Req Body: ', request.body);
   const data = { ...request.body };
-  kafka.make_request("companiesTopic", "UPDATEPROFILE", data, (err, result) => {
-    console.log("Update Company Profile by id result", result);
+  kafka.make_request('companiesTopic', 'UPDATEPROFILE', data, (err, result) => {
+    console.log('Update Company Profile by id result', result);
     if (err) {
-      console.log("Update Company Profile by id Kafka error");
+      console.log('Update Company Profile by id Kafka error');
       response.writeHead(401, {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       });
-      response.end("Update Company Profile by id Kafka error");
+      response.end('Update Company Profile by id Kafka error');
     } else {
       response.writeHead(result.status, {
-        "Content-Type": result.header,
+        'Content-Type': result.header,
       });
       response.end(result.content);
     }
@@ -99,48 +99,48 @@ Router.post("/updateProfile", (request, response) => {
 });
 
 Router.post(
-  "/uploadProfilePicture",
+  '/uploadProfilePicture',
   // upload.array(),
-  upload.single("file"),
+  upload.single('file'),
   (request, response) => {
-    console.log("\nEndpoint POST: post upload Company profile picture");
-    console.log("Req Body: ", request.body);
+    console.log('\nEndpoint POST: post upload Company profile picture');
+    console.log('Req Body: ', request.body);
     const data = { id: request.body.id, cphoto: request.file.location };
-    kafka.make_request("companiesTopic", "ADDPHOTO", data, (err, result) => {
-      console.log("Upload Company Profile Picture by id result", result);
+    kafka.make_request('companiesTopic', 'ADDPHOTO', data, (err, result) => {
+      console.log('Upload Company Profile Picture by id result', result);
       if (err) {
-        console.log("Upload Company Profile Picture by id Kafka error");
+        console.log('Upload Company Profile Picture by id Kafka error');
         response.writeHead(401, {
-          "Content-Type": "text/plain",
+          'Content-Type': 'text/plain',
         });
-        response.end("Upload Company Profile Picture by id Kafka error");
+        response.end('Upload Company Profile Picture by id Kafka error');
       } else {
         response.writeHead(result.status, {
-          "Content-Type": result.header,
+          'Content-Type': result.header,
         });
         response.end(result.content);
       }
     });
-  }
+  },
 );
 
 // Update company--Add review to featured
-Router.put("/profile/addFtReview/:cid", (request, response) => {
-  console.log("\nEndpoint PUT: Add featured review");
-  console.log("Req Body: ", request.body);
+Router.put('/profile/addFtReview/:cid', (request, response) => {
+  console.log('\nEndpoint PUT: Add featured review');
+  console.log('Req Body: ', request.body);
   const data = { ...request.params, ...request.body };
 
-  kafka.make_request("companiesTopic", "ADDFTREVIEW", data, (err, result) => {
-    console.log("Add featured review result ", result);
+  kafka.make_request('companiesTopic', 'ADDFTREVIEW', data, (err, result) => {
+    console.log('Add featured review result ', result);
     if (err) {
-      console.log("Add featured review Kafka error");
+      console.log('Add featured review Kafka error');
       response.writeHead(401, {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       });
-      response.end("Add featured review Kafka error");
+      response.end('Add featured review Kafka error');
     } else {
       response.writeHead(result.status, {
-        "Content-Type": result.header,
+        'Content-Type': result.header,
       });
       response.end(result.content);
     }
@@ -148,22 +148,22 @@ Router.put("/profile/addFtReview/:cid", (request, response) => {
 });
 
 // Delete review from featured
-Router.put("/profile/delFtReview/:cid", (request, response) => {
-  console.log("\nEndpoint PUT: Delete featured review");
-  console.log("Req Body: ", request.body);
+Router.put('/profile/delFtReview/:cid', (request, response) => {
+  console.log('\nEndpoint PUT: Delete featured review');
+  console.log('Req Body: ', request.body);
   const data = { ...request.params, ...request.body };
 
-  kafka.make_request("companiesTopic", "DELFTREVIEW", data, (err, result) => {
-    console.log("Delete featured review result ", result);
+  kafka.make_request('companiesTopic', 'DELFTREVIEW', data, (err, result) => {
+    console.log('Delete featured review result ', result);
     if (err) {
-      console.log("Delete featured review Kafka error");
+      console.log('Delete featured review Kafka error');
       response.writeHead(401, {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       });
-      response.end("Delete featured review Kafka error");
+      response.end('Delete featured review Kafka error');
     } else {
       response.writeHead(result.status, {
-        "Content-Type": result.header,
+        'Content-Type': result.header,
       });
       response.end(result.content);
     }
@@ -194,53 +194,73 @@ Router.put("/profile/delFtReview/:cid", (request, response) => {
 //   });
 // });
 
-Router.post("/specificCompany", (request, response) => {
-  console.log("Req Body: ", request.body);
+Router.post('/specificCompany', (request, response) => {
+  console.log('Req Body: ', request.body);
   const data = { ...request.params, ...request.body };
 
   kafka.make_request(
-    "companiesTopic",
-    "SPECIFICCOMPANY",
+    'companiesTopic',
+    'SPECIFICCOMPANY',
     data,
     (err, result) => {
       if (err) {
-        console.log("Company specific company Kafka error");
+        console.log('Company specific company Kafka error');
         response.writeHead(401, {
-          "Content-Type": "text/plain",
+          'Content-Type': 'text/plain',
         });
-        response.end("Company specific company Kafka error");
+        response.end('Company specific company Kafka error');
       } else {
         response.send(result);
       }
-    }
+    },
   );
 });
 
-Router.get("/specificStudent", (request, response) => {
-  console.log("Req Body: ", request.query);
+Router.get('/specificStudent', (request, response) => {
+  console.log('Req Body: ', request.query);
   const data = { ...request.params, ...request.body };
 
   kafka.make_request(
-    "companiesTopic",
-    "SPECIFICSTUDENT",
+    'companiesTopic',
+    'SPECIFICSTUDENT',
     request.query,
     (err, result) => {
       if (err) {
-        console.log("Get SPECIFIC STUDENT Kafka error");
+        console.log('Get SPECIFIC STUDENT Kafka error');
         response.writeHead(401, {
-          "Content-Type": "text/plain",
+          'Content-Type': 'text/plain',
         });
-        response.end("Get SPECIFIC STUDENT Kafka error");
+        response.end('Get SPECIFIC STUDENT Kafka error');
       } else {
         response.writeHead(result.status, {
-          "Content-Type": result.header,
+          'Content-Type': result.header,
         });
         response.end(result.content);
       }
-    }
+    },
   );
 });
-
+// Get number of reviews
+Router.get('/:id/numPhotos', (request, response) => {
+  console.log('\nEndpoint GET: Get number of company Photos');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.params };
+  kafka.make_request('companiesTopic', 'NUMPHOTOS', data, (err, result) => {
+    console.log('Get number of company Photos result ', result);
+    if (err) {
+      console.log('Get number of company Photos Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Get number of company Photos Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
 /*
 // Get number of reviews
 Router.get('/numReviews', (request, response) => {

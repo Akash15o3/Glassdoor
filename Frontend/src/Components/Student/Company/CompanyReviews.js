@@ -22,46 +22,53 @@ export default class CompanyReviews extends Component {
       rrecommended: 'Yes',
       routlook: 'Positive',
       rceoapprove: 'Yes',
+      reviews: []
     };
   }
 
   componentDidMount() {
-    let average = 0;
-    let recommended = 0;
-    let approve = 0;
-    const arr = [];
-    const { reviews } = this.props;
-    console.log(reviews);
-
-    for (let i = 0; i < reviews.length; i++) {
-      average += reviews[i].overallRating;
-      if (reviews[i].rrecommended === 'Yes') {
-        recommended++;
-      }
-      if (reviews[i].rceoapprove === 'Yes') {
-        approve++;
-      }
-    }
-
-    recommended /= reviews.length;
-    recommended *= 100;
-    recommended = Math.round(recommended);
-    average /= reviews.length;
-    average = average.toFixed(1);
-    approve /= reviews.length;
-    approve *= 100;
-    approve = Math.round(approve);
-    reviews.sort((a, b) => b.rhelpful - a.rhelpful);
-    arr.push(reviews[0]);
-    arr.push(reviews[1]);
-    console.log(arr);
-    this.setState({
-      overallRate: average,
-      recommendedRating: recommended,
-      ceoRating: approve,
-      firstReview: arr[0],
-      secondReview: arr[1],
-    });
+    const { cid } = this.props;
+    const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+    axios.post(url, { cid })
+      .then((response) => {
+        if (response.data) {
+          const reviews = response.data;
+          let average = 0;
+          let recommended = 0;
+          let approve = 0;
+          const arr = [];
+          console.log(reviews);
+          for (let i = 0; i < reviews.length; i++) {
+            average += reviews[i].overallRating;
+            if (reviews[i].rrecommended === 'Yes') {
+              recommended++;
+            }
+            if (reviews[i].rceoapprove === 'Yes') {
+              approve++;
+            }
+          }
+          recommended /= reviews.length;
+          recommended *= 100;
+          recommended = Math.round(recommended);
+          average /= reviews.length;
+          average = average.toFixed(1);
+          approve /= reviews.length;
+          approve *= 100;
+          approve = Math.round(approve);
+          reviews.sort((a, b) => b.rhelpful - a.rhelpful);
+          arr.push(reviews[0]);
+          arr.push(reviews[1]);
+          console.log(arr);
+          this.setState({
+            overallRate: average,
+            recommendedRating: recommended,
+            ceoRating: approve,
+            firstReview: arr[0],
+            secondReview: arr[1],
+            reviews: response.data
+          });
+        }
+      });
   }
 
   toggleAddReview = () => {
