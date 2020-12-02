@@ -197,7 +197,7 @@ const updateStudent = function update(stid, review) {
     if (error) {
       return false;
     }
-    student.streviews.push(review);
+    student.streviewsaccepted++;
     student.save();
     return true;
   });
@@ -230,7 +230,7 @@ function approveReview(data, callback) {
         return pipeline.exec();
       });
       updateCompany(review.cid, review.overallRating);
-      // updateStudent(review.rstudent.stid, review);
+      updateStudent(review.rstudent.stid, review);
       const response = {
         status: 200,
         header: 'application/json',
@@ -454,7 +454,7 @@ function getTopCEO(data, callback) {
   Companies.find({})
     .sort({ averageRating: -1 })
     .limit(10)
-    .select({ cceo: 1 })
+    .select({ cname: 1, cceo: 1 })
     .exec((error, companies) => {
       if (error) {
         const response = {
@@ -468,6 +468,67 @@ function getTopCEO(data, callback) {
           status: 200,
           header: 'application/json',
           content: JSON.stringify(companies),
+        };
+        callback(null, response);
+      }
+    });
+}
+
+function getTopViewed(data, callback) {
+  const ioredis = new Ioredis(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
+
+  // const keys = await ioredis.collection.keys('*');
+  // const values = await ioredis.collection.mget(keys);
+  ioredis.keys('Views_*').then((keys) => {
+    const promiseArray = keys.map((key) => ioredis.get(key));
+    Promise.all(promiseArray)
+      .then((values) => {
+        console.log('values:', values);
+        let kv = [];
+        // keys.forEach((key, i) => kv[values[i]] = key);
+        for (let i = 0; i < keys.length; i++) {
+          const temp = {
+            key: keys[i].split('_')[1],
+            value: values[i],
+          };
+          kv.push(temp);
+        }
+        kv.sort((a, b) => b.value - a.value);
+        console.log('kv:', kv);
+        if (kv.length > 10) {
+          kv = kv.slice(0, 10);
+        }
+        const promiseArr = kv.map((kvpair) => Companies.findById(kvpair.key));
+        Promise.all(promiseArr)
+          .then((companies) => {
+            const response = {
+              status: 200,
+              header: 'application/json',
+              content: JSON.stringify(companies),
+            };
+            callback(null, response);
+          });
+      });
+  });
+}
+
+function getTopStudents(data, callback) {
+  Students.find({})
+    .sort({ streviewsaccepted: -1 })
+    .limit(5)
+    .exec((error, students) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error fetching companies',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(students),
         };
         callback(null, response);
       }
@@ -534,6 +595,17 @@ function handleRequest(msg, callback) {
       console.log('KB: Inside top ceo');
       console.log('Message:', msg);
       getTopCEO(msg.data, callback);
+      break;
+    }
+    case 'TOPVIEWEDPERDAY': {
+      console.log('KB: Inside top viewed per day');
+      console.log('Message:', msg);
+      getTopViewed(msg.data, callback);
+      break;
+    }
+    case 'TOPSTUDENTS': {
+      console.log('KB: Inside top viewed per day');
+      getTopStudents(msg.data, callback);
       break;
     }
     default: {

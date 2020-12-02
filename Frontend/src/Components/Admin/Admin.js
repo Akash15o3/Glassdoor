@@ -8,6 +8,10 @@ class AdminTabs extends Component {
     this.state = {
       reviews: '',
       companies: [],
+      students: [],
+      topCEOs: [],
+      topCEOsHit: false,
+      studentsHit: false,
       reviewsHit: false,
       companiesHit: false,
       display: ''
@@ -65,15 +69,46 @@ class AdminTabs extends Component {
   }
 
   topStudents = (event) => {
-
+    const url = `${process.env.REACT_APP_BACKEND}/admin/topStudents`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            students: [ ...response.data ],
+            studentsHit: true,
+            display: 'Showing 1-5 of 5 Students with highest accepted reviews'
+          });
+        }
+      });
   }
 
   topCEOs = (event) => {
-
+    alert('here')
+    const url = `${process.env.REACT_APP_BACKEND}/admin/topCEO`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            topCEOs: [ ...response.data ],
+            topCEOsHit: true,
+            display: 'Showing 1-10 of 10 Top CEOs'
+          });
+        }
+      });
   }
 
   topViewedCompanies = (event) => {
-
+    const url = `${process.env.REACT_APP_BACKEND}/admin/topViewed`;
+    axios.get(url)
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            companies: [ ...response.data ],
+            companiesHit: true,
+            display: 'Showing 1-10 of 10 Top Viewed Companies in last 24 hours'
+          });
+        }
+      });
   }
 
 
@@ -93,7 +128,7 @@ class AdminTabs extends Component {
                 <div className="col-3 logo-and-ratings-wrap">
                   <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
                     <span>
-                      <img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" />
+                      <img src={item.cphoto} class="img-thumbnail" alt="photo" width = "300" />
                     </span>
                   </a>
                 </div>
@@ -170,6 +205,111 @@ class AdminTabs extends Component {
       ));
     }
 
+    if(this.state.studentsHit === true) {
+      displayElement = this.state.students.map((item) => (
+        <div className="single-company-result module ">
+          <div className="row justify-content-between">
+            <div className="col-lg-7">
+              <div className="row justify-content-start">
+                <div className="col-3 logo-and-ratings-wrap">
+                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                    <span>
+                      <img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" />
+                    </span>
+                  </a>
+                </div>
+                <div className="col-9 pr-0">
+                  <h2>
+                    <Link to={{
+                      pathname: '/admin/company',
+                      query: {
+                        cid: `${item._id}`,
+                      },
+                    }}
+                    >
+                      {' '}
+                      {item.stname}
+                      {' '}
+                    </Link>
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-5 ei-contributions-count-wrap mt-std">
+              <div className="row justify-content-between">
+                <div className="ei-contribution-wrap col-4 pl-lg-0 pr-0">
+                  <a className="eiCell cell reviews d-inline-block py-sm" href="/Reviews/McDonald-s-San-Francisco-Reviews-EI_IE432.0,10_IL.11,24_IM759.htm">
+                    <span className="num h2">
+                      {' '}
+                      { item.streviews.length }
+                    </span>
+                    <span className="subtle"> Reviews Submitted</span>
+                  </a>
+                </div>
+                <div className="ei-contribution-wrap col-4 p-0">
+                  <a className="eiCell cell salaries d-inline-block py-sm" href="/Salary/McDonald-s-San-Francisco-Salaries-EI_IE432.0,10_IL.11,24_IM759.htm">
+                    <span className="num h2">
+                      {' '}
+                      { item.streviewsaccepted }
+                    </span>
+                    <span className="subtle">Reviews Accepted</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ));
+    }
+
+    if(this.state.topCEOsHit === true) {
+      displayElement = this.state.topCEOs.map((item) => (
+        <div className="single-company-result module ">
+          <div className="row justify-content-between">
+            <div className="col-lg-7">
+              <div className="row justify-content-start">
+                <div className="col-3 logo-and-ratings-wrap">
+                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                    <span>
+                      <img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" />
+                    </span>
+                  </a>
+                </div>
+                <div className="col-9 pr-0">
+                  <h2>
+                    <Link to={{
+                      pathname: '/admin/company',
+                      query: {
+                        cid: `${item._id}`,
+                      },
+                    }}
+                    >
+                      {' '}
+                      {item.cceo}
+                      {' '}
+                    </Link>
+                  </h2>
+                  <h4>
+                    <Link to={{
+                      pathname: '/admin/company',
+                      query: {
+                        cid: `${item._id}`,
+                      },
+                    }}
+                    >
+                      {' '}
+                      {item.cname}
+                      {' '}
+                    </Link>
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ));
+    }
+
     return (
       <React.Fragment>
         <div>
@@ -207,7 +347,7 @@ class AdminTabs extends Component {
             </svg>
             <h3 className="studentTabTitle">Top Rated Companies</h3>
           </button>
-          <button id="adminButton" >
+          <button id="adminButton" onClick={this.topStudents}>
             <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
               <g fill="none" fillRule="evenodd">
                 <path fill="#0CAA41" fillRule="nonzero" d="M10 22c0 .295.011.588.033.879C8.755 24.165 8 25.779 8 27.5c0 2.192 1.218 4.267 3.35 5.704l.741.5.122.885c.053.386.089.772.107 1.158.398-.226.765-.457 1.1-.693l.717-.505.859.186c.808.175 1.648.265 2.504.265.853 0 1.676-.089 2.458-.254 1.076.404 2.214.719 3.398.932C21.64 36.518 19.639 37 17.5 37c-1.012 0-1.993-.108-2.928-.31-1.206.849-2.73 1.62-4.572 2.31.345-1.38.422-2.758.232-4.137C7.649 33.12 6 30.469 6 27.5c0-2.934 1.61-5.557 4.14-7.3-.093.59-.14 1.19-.14 1.8z" />
@@ -220,7 +360,7 @@ class AdminTabs extends Component {
             </svg>
             <h3 className="studentTabTitle">Top Students</h3>
           </button>
-          <button id="adminButton" >
+          <button id="adminButton" onClick={this.topCEOs}>
             <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
               <g fill="none" fillRule="evenodd">
                 <path fill="#0CAA41" d="M12 36h24a2 2 0 01-2 2H14a2 2 0 01-2-2zm-2-4h28a2 2 0 01-2 2H12a2 2 0 01-2-2zM9 10h30a2 2 0 012 2v16a2 2 0 01-2 2H9a2 2 0 01-2-2V12a2 2 0 012-2zm5 2a5 5 0 01-5 5v6a5 5 0 015 5h20a5 5 0 015-5v-6a5 5 0 01-5-5H14zm10 12a4 4 0 110-8 4 4 0 010 8zm0-2a2 2 0 100-4 2 2 0 000 4z" />
@@ -229,7 +369,7 @@ class AdminTabs extends Component {
             </svg>
             <h3 className="studentTabTitle">Top CEOs</h3>
           </button>
-          <button id="adminButton" >
+          <button id="adminButton" onClick={this.topViewedCompanies}>
             <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
               <g fill="none" fillRule="evenodd">
                 <path fill="#0CAA41" fillRule="nonzero" d="M10 22c0 .295.011.588.033.879C8.755 24.165 8 25.779 8 27.5c0 2.192 1.218 4.267 3.35 5.704l.741.5.122.885c.053.386.089.772.107 1.158.398-.226.765-.457 1.1-.693l.717-.505.859.186c.808.175 1.648.265 2.504.265.853 0 1.676-.089 2.458-.254 1.076.404 2.214.719 3.398.932C21.64 36.518 19.639 37 17.5 37c-1.012 0-1.993-.108-2.928-.31-1.206.849-2.73 1.62-4.572 2.31.345-1.38.422-2.758.232-4.137C7.649 33.12 6 30.469 6 27.5c0-2.934 1.61-5.557 4.14-7.3-.093.59-.14 1.19-.14 1.8z" />

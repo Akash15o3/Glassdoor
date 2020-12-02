@@ -33,6 +33,7 @@ class Navbar extends Component {
         break;
       case 'admin':
         searchBar = <AdminSearch history={this.props.history} />;
+        break;
       default:
         searchBar = <SearchBar history={this.props.history} />;
         break;

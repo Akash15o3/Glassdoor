@@ -218,6 +218,7 @@ function deleteFtReview(data, callback) {
 }
 
 function specificCompany(data, callback) {
+  console.log('Specific company hit');
   Companies.findById(data.cid, (error, company) => {
     if (error) {
       console.log(error);
@@ -234,7 +235,7 @@ function specificCompany(data, callback) {
         const updatedReply = +reply + 1;
         client.set(redisKey, updatedReply, 'EX', 86400, (e, r) => {
           if (e) {
-            console.log(e);
+            console.log('Could not cache');
           } else {
             console.log('Cache successful: ', r);
           }
@@ -243,7 +244,7 @@ function specificCompany(data, callback) {
         // set timeout to 24h x 60m x 60s (24 h)
         client.set(redisKey, 1, 'EX', 86400, (e, r) => {
           if (e) {
-            console.log(e);
+            console.log('Could not cache');
           } else {
             console.log('Cache successful: ', r);
           }
