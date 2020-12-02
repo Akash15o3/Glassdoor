@@ -19,7 +19,7 @@ export default class Demographics extends Component {
     axios.post(url, { race_ethnicity, key: 'race_ethnicity', id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stdemographics: res.data });
+        this.props.updateStudent({ stdemographics: res.data });
       });
     this.setState({ race_ethnicity });
   }
@@ -30,7 +30,7 @@ export default class Demographics extends Component {
     axios.post(url, { gender, key: 'gender', id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stdemographics: res.data });
+        this.props.updateStudent({ stdemographics: res.data });
       });
     this.setState({ gender });
   }
@@ -41,7 +41,7 @@ export default class Demographics extends Component {
     axios.post(url, { disability, key: 'disability', id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stdemographics: res.data });
+        this.props.updateStudent({ stdemographics: res.data });
       });
     this.setState({ disability });
   }
@@ -52,7 +52,7 @@ export default class Demographics extends Component {
     axios.post(url, { veteran, key: 'veteran', id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stdemographics: res.data });
+        this.props.updateStudent({ stdemographics: res.data });
       });
     this.setState({ veteran });
   }

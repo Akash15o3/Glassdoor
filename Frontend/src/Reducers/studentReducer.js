@@ -13,7 +13,7 @@ const studentReducer = (state = initialState, action) => {
         ...state,
         searchQuery: action.searchQuery,
       };
-    case 'UPDATE_PROFILE':
+    case 'UPDATE_STUDENT':
       return {
         ...state,
         user: {

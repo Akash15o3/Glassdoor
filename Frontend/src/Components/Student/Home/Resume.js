@@ -28,7 +28,7 @@ export default class Resume extends Component {
       .then((res) => { // then print response status
         console.log(res.data);
         this.setState({ stresumes: res.data });
-        this.props.updateProfile({ stresumes: res.data });
+        this.props.updateStudent({ stresumes: res.data });
       });
   }
 

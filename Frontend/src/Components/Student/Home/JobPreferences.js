@@ -23,7 +23,7 @@ export default class JobPreferences extends Component {
     axios.post(url, { searchstatus, id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stjobpref: res.data });
+        this.props.updateStudent({ stjobpref: res.data });
       });
     this.setState({ searchstatus });
   }
@@ -35,7 +35,7 @@ export default class JobPreferences extends Component {
       axios.post(url, { title, id: this.props.id })
         .then((res) => { // then print response status
           console.log(res.data);
-          this.props.updateProfile({ stjobpref: res.data });
+          this.props.updateStudent({ stjobpref: res.data });
         });
     }
     this.setState({ editTitle: !editTitle });
@@ -54,7 +54,7 @@ export default class JobPreferences extends Component {
       axios.post(url, { targetsalary, salarypayperiod, id: this.props.id })
         .then((res) => { // then print response status
           console.log(res.data);
-          this.props.updateProfile({ stjobpref: res.data });
+          this.props.updateStudent({ stjobpref: res.data });
         });
     }
     this.setState({ editSalary: !editSalary });
@@ -78,7 +78,7 @@ export default class JobPreferences extends Component {
     axios.post(url, { relocation, id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stjobpref: res.data });
+        this.props.updateStudent({ stjobpref: res.data });
       });
     this.setState({ relocation });
   }
@@ -89,7 +89,7 @@ export default class JobPreferences extends Component {
     axios.post(url, { industry, id: this.props.id })
       .then((res) => { // then print response status
         console.log(res.data);
-        this.props.updateProfile({ stjobpref: res.data });
+        this.props.updateStudent({ stjobpref: res.data });
       });
     this.setState({ industry });
   }

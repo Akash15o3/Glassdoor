@@ -367,3 +367,10 @@ background-color: powderblue;
   margin-right: 25px;
   font-weight: bold;
 }
+
+.reviewCard{
+  text-align: left;
+    background-color: white;
+    width: 55%;
+    padding: 20px
+}

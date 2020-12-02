@@ -17,7 +17,7 @@ export default class Profile extends Component {
     };
   }
 
-  updateProfile = () => {
+  openModal = () => {
     this.setState({ open: true });
   }
 
@@ -58,7 +58,7 @@ export default class Profile extends Component {
       .then((response) => {
         console.log(response);
       });
-    this.props.updateProfile({ stname, stemail });
+    this.props.updateStudent({ stname, stemail });
     this.setState({ open: false });
   }
 
@@ -96,19 +96,19 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <button onClick={this.updateProfile} className="home-btn info">{stname === '' ? 'Add Name' : stname}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{stemail === '' ? 'Add email' : stemail}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{title === '' ? 'Add job title' : title}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{location === '' ? 'Add location' : location}</button>
+            <button onClick={this.openModal} className="home-btn info">{stname === '' ? 'Add Name' : stname}</button>
+            <button onClick={this.openModal} className="home-btn info">{stemail === '' ? 'Add email' : stemail}</button>
+            <button onClick={this.openModal} className="home-btn info">{title === '' ? 'Add job title' : title}</button>
+            <button onClick={this.openModal} className="home-btn info">{location === '' ? 'Add location' : location}</button>
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
         <div className="profileField">
           <h1>User Statistics</h1>
           <div>
-            <span className="userStat">{`Reviews Added: ${streviews.length}`}</span>
-            <span className="userStat">{`Salaries Added: ${stsalaries.length}`}</span>
-            <span className="userStat">{`Interviews Added: ${stinterviews.length}`}</span>
+            <Link to="/student/reviews" className="userStat">{`Reviews Added: ${streviews.length}`}</Link>
+            <Link to="/student/salaries" className="userStat">{`Salaries Added: ${stsalaries.length}`}</Link>
+            <Link to="/student/interviews" className="userStat">{`Interviews Added: ${stinterviews.length}`}</Link>
             <Link to="/student/photos" className="userStat">{`Photos Added: ${cphotos.length}`}</Link>
           </div>
         </div>
