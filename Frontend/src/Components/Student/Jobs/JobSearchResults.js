@@ -207,7 +207,7 @@ class JobSearchResults extends Component {
             <label style={{ marginRight: '10px' }}>Resume: </label>
             <select onChange={this.resumeChangeHandler} className="filter">
               {this.props.resumes.map((resume, i) => {
-                return <option value={resume.stresume}>{`Resume #${i + 1}`}</option>;
+                return <option selected={resume.stselect === 'Primary'} value={resume.stresume}>{`Resume #${i + 1}`}</option>;
               })}
             </select>
           </div>
