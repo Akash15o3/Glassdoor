@@ -27,7 +27,6 @@ export default class Profile extends Component {
       cfeat: [],
     };
     sessionStorage.setItem("cname", cname);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -78,55 +77,7 @@ export default class Profile extends Component {
       });
   }
 
-  onSubmit() {
-    const url = `${
-      process.env.REACT_APP_BACKEND
-    }/companies/${sessionStorage.getItem("cid")}`;
-    console.log("Inside for loop reviews feat");
-    // const data = { cid: sessionStorage.getItem('cid') };
-    axios
-      .get(url)
-      .then((response) => {
-        if (response.data) {
-          console.log("company response: ");
-          console.log(response.data);
-
-          const cfeatarray = [...response.data.cfeatured];
-          this.setState({
-            companydetails: response.data,
-          });
-          const promiseArray = cfeatarray.map((dataarr) =>
-            axios.get(
-              `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`
-            )
-          );
-
-          Promise.all(promiseArray)
-            .then((results) => {
-              // let responses = results.filter(entry =>
-              //   entry.status === 200
-              // )
-              const responses = results;
-
-              const restaurants = [];
-              responses.forEach((response) => {
-                restaurants.push(response.data);
-              });
-              if (restaurants.length > 0) {
-                this.setState({
-                  reviews: restaurants,
-                });
-              }
-            })
-            .catch(console.log);
-        }
-      })
-      .catch((err) => {
-        console.log("No response");
-      });
-  }
-
-  updateProfileEm = () => {
+  openModal = () => {
     this.setState({ open: true });
   };
 
@@ -209,7 +160,20 @@ export default class Profile extends Component {
 
   saveUpdates = () => {
     const { id } = this.props;
-    const { cname, cemail } = this.state;
+    const {
+      cname,
+      cemail,
+      cceo,
+      csize,
+      ctype,
+      crevenue,
+      cheadquarters,
+      cindustry,
+      cfounded,
+      cmission,
+      clocation,
+      cwebsite,
+    } = this.state;
     const url = `${process.env.REACT_APP_BACKEND}/companies/updateProfile`;
     const data = {
       id,
@@ -275,7 +239,20 @@ export default class Profile extends Component {
       }
       console.log(response);
     });
-    this.props.updateProfileEm({ cname, cemail });
+    this.props.updateProfileEm({
+      cname,
+      cemail,
+      cceo,
+      cwebsite,
+      csize,
+      ctype,
+      crevenue,
+      cheadquarters,
+      cindustry,
+      cfounded,
+      cmission,
+      clocation,
+    });
     this.setState({ open: false });
 
     // const url1 = `${
@@ -555,28 +532,28 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: "center" }}>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cname === ""
                 ? "Add Name"
                 : this.state.companydetails.cname}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cwebsite === ""
                 ? "Add Website"
                 : this.state.companydetails.cwebsite}
             </button>
 
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.clocation === ""
                 ? "Add location"
                 : this.state.companydetails.clocation}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cheadquarters === ""
                 ? "Add Headquarters"
                 : this.state.companydetails.cheadquarters}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cemail === "" ? "Add email" : cemail}
             </button>
 
@@ -603,32 +580,32 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: "center" }}>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cceo === ""
                 ? "CEO"
                 : this.state.companydetails.cceo}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cfounded === ""
                 ? "Founded in"
                 : this.state.companydetails.cfounded}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cindustry === ""
                 ? "Industry"
                 : this.state.companydetails.cindustry}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.ctype === ""
                 ? "Add Type"
                 : this.state.companydetails.ctype}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.csize === ""
                 ? "Add Company Size"
                 : this.state.companydetails.csize}
             </button>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.crevenue === ""
                 ? "Add Revenue"
                 : this.state.companydetails.crevenue}
@@ -655,7 +632,7 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: "center" }}>
-            <button onClick={this.updateProfileEm} className="home-btn info">
+            <button onClick={this.openModal} className="home-btn info">
               {this.state.companydetails.cmission === ""
                 ? "Mission of the Company"
                 : this.state.companydetails.cmission}
