@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Modal from 'react-modal';
-import axios from 'axios';
+import React, { Component } from "react";
+import Modal from "react-modal";
+import axios from "axios";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export default class Profile extends Component {
   constructor(props) {
@@ -11,102 +11,119 @@ export default class Profile extends Component {
     this.state = {
       open: false,
       cname,
-      cwebsite: '',
-      csize: '',
-      ctype: '',
-      crevenue: '',
-      cheadquarters: '',
-      cindustry: '',
-      cfounded: '',
-      cmission: '',
-      cceo: '',
-      clocation: '',
+      cwebsite: "",
+      csize: "",
+      ctype: "",
+      crevenue: "",
+      cheadquarters: "",
+      cindustry: "",
+      cfounded: "",
+      cmission: "",
+      cceo: "",
+      clocation: "",
       cemail,
       reviews: [],
       companydetails: [],
       cfeat: [],
     };
-    sessionStorage.setItem('cname', cname);
+    sessionStorage.setItem("cname", cname);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
     const url = `${
       process.env.REACT_APP_BACKEND
-    }/companies/${sessionStorage.getItem('cid')}`;
-    console.log('Inside for loop reviews feat');
+    }/companies/${sessionStorage.getItem("cid")}`;
+    console.log("Inside for loop reviews feat");
     // const data = { cid: sessionStorage.getItem('cid') };
-    axios.get(url)
+    axios
+      .get(url)
       .then((response) => {
         if (response.data) {
-          console.log('company response: ');
+          console.log("company response: ");
           console.log(response.data);
 
           const cfeatarray = [...response.data.cfeatured];
-
-          const promiseArray = cfeatarray.map((dataarr) => axios.get(`${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`));
+          this.setState({
+            companydetails: response.data,
+          });
+          const promiseArray = cfeatarray.map((dataarr) =>
+            axios.get(
+              `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`
+            )
+          );
 
           Promise.all(promiseArray)
-            .then(
-              (results) => {
-                // let responses = results.filter(entry =>
-                //   entry.status === 200
-                // )
-                const responses = results;
+            .then((results) => {
+              // let responses = results.filter(entry =>
+              //   entry.status === 200
+              // )
+              const responses = results;
 
-                const restaurants = [];
-                responses.forEach((response) => {
-                  restaurants.push(response.data);
+              const restaurants = [];
+              responses.forEach((response) => {
+                restaurants.push(response.data);
+              });
+              if (restaurants.length > 0) {
+                this.setState({
+                  reviews: restaurants,
                 });
-                if (restaurants.length > 0) {
-                  this.setState({
-                    reviews: restaurants,
-                  });
-                }
               }
-            )
+            })
             .catch(console.log);
         }
-      }).catch((err) => {
-        console.log('No response');
+      })
+      .catch((err) => {
+        console.log("No response");
       });
+  }
 
-    // const url = `${
-    //   process.env.REACT_APP_BACKEND
-    // }/companies/${sessionStorage.getItem('cid')}`;
-    // console.log('Inside for loop reviews feat');
-    // // const data = { cid: sessionStorage.getItem('cid') };
-    // axios.get(url)
-    //   .then((response) => {
-    //     if (response.data) {
-    //       console.log('company response: ');
-    //       console.log(response.data);
-    //       this.setState({
-    //         companydetails: response.data,
-    //         cfeat: response.data.cfeatured,
-    //       });
-    //       for (let i = 0; i < this.state.cfeat.length; ++i) {
-    //         const url1 = `${
-    //           process.env.REACT_APP_BACKEND
-    //         }/reviews/getFeatReviews?rid=${this.state.cfeat[i]}`;
-    //         console.log('Inside for loop reviews feat');
-    //         // const data = { cid: sessionStorage.getItem('cid') };
-    //         axios.get(url1)
-    //           .then((res) => {
-    //             if (res.data) {
-    //               console.log('Review response: ');
-    //               console.log(res.data);
-    //               // let temp = []
-    //               // this.state.reviews.push(res.data);
-    //               this.setState({
-    //                 reviews: { ...res.data },
-    //               });
-    //             }
-    //           });
-    //       }
-    //     }
-    //   });
+  onSubmit() {
+    const url = `${
+      process.env.REACT_APP_BACKEND
+    }/companies/${sessionStorage.getItem("cid")}`;
+    console.log("Inside for loop reviews feat");
+    // const data = { cid: sessionStorage.getItem('cid') };
+    axios
+      .get(url)
+      .then((response) => {
+        if (response.data) {
+          console.log("company response: ");
+          console.log(response.data);
 
-    // console.log('cfeat', this.state.companydetails, this.state.cfeat);
+          const cfeatarray = [...response.data.cfeatured];
+          this.setState({
+            companydetails: response.data,
+          });
+          const promiseArray = cfeatarray.map((dataarr) =>
+            axios.get(
+              `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`
+            )
+          );
+
+          Promise.all(promiseArray)
+            .then((results) => {
+              // let responses = results.filter(entry =>
+              //   entry.status === 200
+              // )
+              const responses = results;
+
+              const restaurants = [];
+              responses.forEach((response) => {
+                restaurants.push(response.data);
+              });
+              if (restaurants.length > 0) {
+                this.setState({
+                  reviews: restaurants,
+                });
+              }
+            })
+            .catch(console.log);
+        }
+      })
+      .catch((err) => {
+        console.log("No response");
+      });
   }
 
   updateProfileEm = () => {
@@ -194,11 +211,118 @@ export default class Profile extends Component {
     const { id } = this.props;
     const { cname, cemail } = this.state;
     const url = `${process.env.REACT_APP_BACKEND}/companies/updateProfile`;
-    axios.post(url, { id, cname, cemail }).then((response) => {
+    const data = {
+      id,
+      cwebsite: this.state.cwebsite,
+      csize: this.state.csize,
+      ctype: this.state.ctype,
+      crevenue: this.state.crevenue,
+      cheadquarters: this.state.cheadquarters,
+      cindustry: this.state.cindustry,
+      cfounded: this.state.cfounded,
+      cmission: this.state.cmission,
+      cceo: this.state.cceo,
+      clocation: this.state.clocation,
+      cemail,
+    };
+    axios.post(url, data).then((response) => {
+      if (response) {
+        const url1 = `${
+          process.env.REACT_APP_BACKEND
+        }/companies/${sessionStorage.getItem("cid")}`;
+        console.log("Inside for loop reviews feat");
+        // const data = { cid: sessionStorage.getItem('cid') };
+        axios
+          .get(url1)
+          .then((response) => {
+            if (response.data) {
+              console.log("company response: ");
+              console.log(response.data);
+
+              const cfeatarray = [...response.data.cfeatured];
+              this.setState({
+                companydetails: response.data,
+              });
+              const promiseArray = cfeatarray.map((dataarr) =>
+                axios.get(
+                  `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`
+                )
+              );
+
+              Promise.all(promiseArray)
+                .then((results) => {
+                  // let responses = results.filter(entry =>
+                  //   entry.status === 200
+                  // )
+                  const responses = results;
+
+                  const restaurants = [];
+                  responses.forEach((response) => {
+                    restaurants.push(response.data);
+                  });
+                  if (restaurants.length > 0) {
+                    this.setState({
+                      reviews: restaurants,
+                    });
+                  }
+                })
+                .catch(console.log);
+            }
+          })
+          .catch((err) => {
+            console.log("No response");
+          });
+      }
       console.log(response);
     });
     this.props.updateProfileEm({ cname, cemail });
     this.setState({ open: false });
+
+    // const url1 = `${
+    //   process.env.REACT_APP_BACKEND
+    // }/companies/${sessionStorage.getItem("cid")}`;
+    // console.log("Inside for loop reviews feat");
+    // // const data = { cid: sessionStorage.getItem('cid') };
+    // axios
+    //   .get(url1)
+    //   .then((response) => {
+    //     if (response.data) {
+    //       console.log("company response: ");
+    //       console.log(response.data);
+
+    //       const cfeatarray = [...response.data.cfeatured];
+    //       this.setState({
+    //         companydetails: response.data,
+    //       });
+    //       const promiseArray = cfeatarray.map((dataarr) =>
+    //         axios.get(
+    //           `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${dataarr}`
+    //         )
+    //       );
+
+    //       Promise.all(promiseArray)
+    //         .then((results) => {
+    //           // let responses = results.filter(entry =>
+    //           //   entry.status === 200
+    //           // )
+    //           const responses = results;
+
+    //           const restaurants = [];
+    //           responses.forEach((response) => {
+    //             restaurants.push(response.data);
+    //           });
+    //           if (restaurants.length > 0) {
+    //             this.setState({
+    //               reviews: restaurants,
+    //             });
+    //           }
+    //         })
+    //         .catch(console.log);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("No response");
+    //   });
   };
 
   // <h1>Photos Added</h1>
@@ -207,26 +331,34 @@ export default class Profile extends Component {
   // })}
 
   render() {
-    console.log('all reviews using promise', this.state.reviews);
+    console.log("all reviews using promise", this.state.reviews);
     const { reviews } = this.state;
     const details = reviews.map(
-      ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
+      ({
+        rheadline,
+        rrecommended,
+        rceoapprove,
+        rdescription,
+        rpros,
+        rcons,
+        rreply,
+      }) => {
         return (
           <div>
             <div>
               <div>
-                <div style={{ marginLeft: '50px' }}>
+                <div style={{ marginLeft: "50px" }}>
                   <h2>
                     {/* <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm"> */}
-                    "
-                    {rheadline}
-                    "
-                    {/* </a> */}
+                    "{rheadline}"{/* </a> */}
                   </h2>
                   <div>
                     <div>
                       <div>
-                        <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+                        <aside
+                          className="gd-ui-tooltip-info toolTip tooltip css-1xincmn"
+                          width="initial"
+                        >
                           <div className="tooltipContainer">
                             <span className="pointer" />
                             <div className="content">
@@ -238,11 +370,13 @@ export default class Profile extends Component {
                       {/* <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span> */}
                     </div>
                   </div>
-                  <div style={{ display: 'inline-block' }}>
-                    <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
+                  <div style={{ display: "inline-block" }}>
+                    <p className="mb-0 mt-xsm strong ">
+                      Recommended to a Friend
+                    </p>
                     <p>{rrecommended}</p>
                   </div>
-                  <div style={{ display: 'inline-block', marginLeft: '50px' }}>
+                  <div style={{ display: "inline-block", marginLeft: "50px" }}>
                     <p className="mb-0 mt-xsm strong ">CEO Approval</p>
                     <p>{rceoapprove}</p>
                   </div>
@@ -253,14 +387,14 @@ export default class Profile extends Component {
                   <p className="mb-0 mt-xsm strong ">Cons</p>
                   <p>{rcons}</p>
                 </div>
-                <hr style={{ backgroundColor: 'black' }} />
+                <hr style={{ backgroundColor: "black" }} />
               </div>
             </div>
           </div>
         );
       }
     );
-    console.log('*****ALL FEAT REVIEWS*****');
+    console.log("*****ALL FEAT REVIEWS*****");
     const templist = [];
     templist.push(this.state.reviews);
     console.log(templist[0]);
@@ -285,9 +419,9 @@ export default class Profile extends Component {
           onRequestClose={this.closeWithoutSaving}
           style={{
             content: {
-              width: '55%',
-              margin: 'auto',
-              border: '2px solid black',
+              width: "55%",
+              margin: "auto",
+              border: "2px solid black",
             },
           }}
         >
@@ -310,7 +444,7 @@ export default class Profile extends Component {
               />
             </svg>
           </span>
-          <h1 style={{ textAlign: 'center' }}>Company Information</h1>
+          <h1 style={{ textAlign: "center" }}>Company Information</h1>
           <label className="modalLabel"> Name</label>
           <input
             onChange={this.nameChangeHandler}
@@ -402,11 +536,11 @@ export default class Profile extends Component {
           </button>
         </Modal>
         <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Info</h1>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ display: "inline-block" }}>Info</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
+              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -420,33 +554,41 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cname === '' ? 'Add Name' : cname}
+              {this.state.companydetails.cname === ""
+                ? "Add Name"
+                : this.state.companydetails.cname}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cwebsite === '' ? 'Add Website' : cwebsite}
+              {this.state.companydetails.cwebsite === ""
+                ? "Add Website"
+                : this.state.companydetails.cwebsite}
             </button>
 
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {clocation === '' ? 'Add location' : clocation}
+              {this.state.companydetails.clocation === ""
+                ? "Add location"
+                : this.state.companydetails.clocation}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cheadquarters === '' ? 'Add Headquarters' : cheadquarters}
+              {this.state.companydetails.cheadquarters === ""
+                ? "Add Headquarters"
+                : this.state.companydetails.cheadquarters}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cemail === '' ? 'Add email' : cemail}
+              {this.state.companydetails.cemail === "" ? "Add email" : cemail}
             </button>
 
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>About Company</h1>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ display: "inline-block" }}>About Company</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
+              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -460,33 +602,45 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cceo === '' ? 'CEO' : cceo}
+              {this.state.companydetails.cceo === ""
+                ? "CEO"
+                : this.state.companydetails.cceo}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cfounded === '' ? 'Founded in' : cfounded}
+              {this.state.companydetails.cfounded === ""
+                ? "Founded in"
+                : this.state.companydetails.cfounded}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cindustry === '' ? 'Industry' : cindustry}
+              {this.state.companydetails.cindustry === ""
+                ? "Industry"
+                : this.state.companydetails.cindustry}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {ctype === '' ? 'Add Type' : ctype}
+              {this.state.companydetails.ctype === ""
+                ? "Add Type"
+                : this.state.companydetails.ctype}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {csize === '' ? 'Add Company Size' : csize}
+              {this.state.companydetails.csize === ""
+                ? "Add Company Size"
+                : this.state.companydetails.csize}
             </button>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {crevenue === '' ? 'Add Revenue' : crevenue}
+              {this.state.companydetails.crevenue === ""
+                ? "Add Revenue"
+                : this.state.companydetails.crevenue}
             </button>
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Mission</h1>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ display: "inline-block" }}>Mission</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
+              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -500,18 +654,20 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: "center" }}>
             <button onClick={this.updateProfileEm} className="home-btn info">
-              {cmission === '' ? 'Mission of the Company' : cmission}
+              {this.state.companydetails.cmission === ""
+                ? "Mission of the Company"
+                : this.state.companydetails.cmission}
             </button>
           </div>
         </div>
         <div className="profileField">
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ display: 'inline-block' }}>Featured Reviews</h1>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ display: "inline-block" }}>Featured Reviews</h1>
             <svg
               className="SVGInline-svg"
-              style={{ width: '24px', height: '24px', marginLeft: '5px' }}
+              style={{ width: "24px", height: "24px", marginLeft: "5px" }}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -525,11 +681,8 @@ export default class Profile extends Component {
               </g>
             </svg>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <p>
-
-              {details}
-            </p>
+          <div style={{ textAlign: "center" }}>
+            <p>{details}</p>
             {
               // this.state.reviews.map(
               //   ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
@@ -585,7 +738,6 @@ export default class Profile extends Component {
               //   }
               // )
             }
-
           </div>
         </div>
       </div>
