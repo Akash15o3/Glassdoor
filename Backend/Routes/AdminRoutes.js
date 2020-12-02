@@ -130,7 +130,7 @@ Router.put('/photo/reject', (request, response) => {
   });
 });
 
-// Approve/Reject a photo
+// Get reviews per day
 Router.get('/reviewsPerDay', (request, response) => {
   console.log('\nEndpoint GET: Reviews per day');
   // console.log('Req Body: ', request.body);
