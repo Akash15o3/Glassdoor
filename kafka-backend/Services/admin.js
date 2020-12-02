@@ -379,6 +379,7 @@ function rejectPhoto(data, callback) {
 
 function getReviewsPerDay(data, callback) {
   console.log('here');
+  
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);

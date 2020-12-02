@@ -7,7 +7,6 @@ import SearchBar from './Student/SearchBar';
 import StudentTabs from './Student/StudentTabs';
 // import logo from '../Static/Images/navbarLogo.PNG';
 import EmployerTabs from './Employer/EmployerTab';
-import AdminTabs from './Admin/AdminTabs';
 import AdminSearch from './Admin/AdminSearch';
 
 class Navbar extends Component {
@@ -20,9 +19,6 @@ class Navbar extends Component {
         break;
       case 'employer':
         tabs = <EmployerTabs />;
-        break;
-      case 'admin':
-        tabs = <AdminTabs />;
         break;
       default:
         break;

@@ -374,3 +374,23 @@ background-color: powderblue;
     width: 55%;
     padding: 20px
 }
+.sr-only{
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+#adminButton{
+  height: 80px;
+  width: absolute;
+  border: none;
+  background: none;
+  cursor: pointer;
+  &:focus {
+    outline: 2px dashed #17171D;
+  }
+  svg{
+    outline: none;
+  }
+}
