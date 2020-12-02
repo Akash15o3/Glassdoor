@@ -116,7 +116,8 @@ Router.post('/replyReviews', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      // console.log(result.content);
+      console.log("response backend reply review:")
+      console.log(result.content);
       response.end(result.content);
     }
   });

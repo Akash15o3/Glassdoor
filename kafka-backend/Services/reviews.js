@@ -176,9 +176,19 @@ function getByCompnayId(data, callback) {
 }
 
 function updateReview(data, callback) {
+
+  var updateStatus = {
+    rreply: data.rreply,
+  };
+
   const { id, ...updateInfo } = data;
-  Reviews.findByIdAndUpdate(id, updateInfo, options, (error, results) => {
-    console.log('Inside Find by ID reply: ', data);
+  console.log('update info spread operator', data.rreply)
+  Reviews.updateOne(
+    { _id: data.rreplyid },
+    { $set: updateStatus },
+    options, 
+    (error, results) => {
+    console.log('Inside Find by ID reply: ', results);
     if (error) {
       const response = {
         status: 401,
@@ -192,6 +202,7 @@ function updateReview(data, callback) {
         header: 'application/json',
         content: JSON.stringify(results),
       };
+      console.log("response content reply: ", response.content)
       callback(null, response);
     }
   });
