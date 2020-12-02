@@ -122,6 +122,7 @@ export default class CompanyReviews extends Component {
       .then((response) => {
         if (response.data) {
           const reviews = [...this.state.reviews, response.data];
+          this.props.updateReviews(reviews);
           // this.setState({ reviews });
           this.toggleAddReview();
         }
@@ -132,6 +133,85 @@ export default class CompanyReviews extends Component {
     const { showAddReview } = this.state;
     const { overallRate, recommendedRating, ceoRating, firstReview, secondReview } = this.state;
     const { cname } = this.props;
+    const contents = this.state.reviews.map((item) => (
+      <div>
+        <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
+        <div>
+          <div>
+            <div style={{ marginLeft: '50px' }}>
+              <h2>
+                <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
+                  "
+                  {item === undefined ? null : item.rheadline}
+                  "
+                </a>
+              </h2>
+              <div>
+                <div style={{ marginBottom: '50px' }}>
+                  <div>
+                    <div>
+                      <span className="fa fa-star checked" />
+                      <span className="fa fa-star checked" />
+                      <span className="fa fa-star-half-o" />
+                      <span className="fa fa-star" />
+                      <span className="fa fa-star" />
+                    </div>
+                    <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+                      <div className="tooltipContainer">
+                        <span className="pointer" />
+                        <div className="content">
+                          <ul className="pl-0" />
+                        </div>
+                      </div>
+                    </aside>
+                  </div>
+                  <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{item === undefined ? null : item.rwriter}</span>
+                </div>
+              </div>
+              <div className="interviewOutcomes">
+                <div className="flex-grid">
+                  <div className="tightLt col span-1-3">
+                    <div className="middle">
+                      <div className="cell"><i className={item.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                      <div className="cell">
+                        <span className="middle">
+                          {item.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tightLt col span-1-3">
+                    <div className="middle">
+                      <div className="cell"><i className={item.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                      <div className="cell"><span className="middle">{item.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
+                    </div>
+                  </div>
+                  <div className="tightLt col span-1-3">
+                    <div className="middle">
+                      <div className="cell"><i className={item.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                      <div className="cell"><span className="middle">{item.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p className="mb-0 mt-xsm strong ">Description</p>
+              <p>{item === undefined ? null : item.rdescription}</p>
+              <p className="mb-0 mt-xsm strong ">Pros</p>
+              <p>{item === undefined ? null : item.rpros}</p>
+              <p className="mb-0 mt-xsm strong ">Cons</p>
+              <p>
+                {item === undefined ? null : item.rcons}
+                {' '}
+                <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '5px', textAlign: 'center' }}>
+                  <span>Helpful</span>
+                </button>
+              </p>
+            </div>
+            <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+          </div>
+        </div>
+      </div>
+    ));
     return (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
         <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
@@ -345,6 +425,9 @@ export default class CompanyReviews extends Component {
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
               </div>
+            </div>
+            <div>
+              {contents}
             </div>
           </div>
         </div>

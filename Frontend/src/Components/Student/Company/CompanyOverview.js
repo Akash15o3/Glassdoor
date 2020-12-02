@@ -24,56 +24,56 @@ export default class CompanyOverview extends Component {
     };
   }
 
-  componentDidMount() {
-    const { cid } = this.props;
-    console.log(cid);
-    const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-    axios.post(url, { cid })
-      .then((response) => {
-        if (response.data) {
-          const reviews = response.data;
-          let average = 0;
-          let recommended = 0;
-          let approve = 0;
-          const arr = [];
-          console.log(reviews);
-          for (let i = 0; i < reviews.length; i++) {
-            average += reviews[i].overallRating;
-            if (reviews[i].rrecommended === 'Yes') {
-              recommended++;
-            }
-            if (reviews[i].rceoapprove === 'Yes') {
-              approve++;
-            }
-          }
-          recommended /= reviews.length;
-          recommended *= 100;
-          recommended = Math.round(recommended);
-          average /= reviews.length;
-          average = average.toFixed(1);
-          approve /= reviews.length;
-          approve *= 100;
-          approve = Math.round(approve);
-          reviews.sort((a, b) => b.rhelpful - a.rhelpful);
-          arr.push(reviews[0]);
-          arr.push(reviews[1]);
-          console.log(arr);
-          this.setState({
-            overallRate: average,
-            recommendedRating: recommended,
-            ceoRating: approve,
-            firstReview: arr[0],
-            secondReview: arr[1],
-            reviews: response.data
-          });
-        }
-      });
-  }
+  // componentDidMount() {
+  //   const { cid } = this.props;
+  //   console.log(cid);
+  // const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+  //   axios.post(url, { cid })
+  //     .then((response) => {
+  //       if (response.data) {
+  //         const reviews = response.data;
+  //         let average = 0;
+  //         let recommended = 0;
+  //         let approve = 0;
+  //         const arr = [];
+  //         console.log(reviews);
+  //         for (let i = 0; i < reviews.length; i++) {
+  //           average += reviews[i].overallRating;
+  //           if (reviews[i].rrecommended === 'Yes') {
+  //             recommended++;
+  //           }
+  //           if (reviews[i].rceoapprove === 'Yes') {
+  //             approve++;
+  //           }
+  //         }
+  //         recommended /= reviews.length;
+  //         recommended *= 100;
+  //         recommended = Math.round(recommended);
+  //         average /= reviews.length;
+  //         average = average.toFixed(1);
+  //         approve /= reviews.length;
+  //         approve *= 100;
+  //         approve = Math.round(approve);
+  //         reviews.sort((a, b) => b.rhelpful - a.rhelpful);
+  //         arr.push(reviews[0]);
+  //         arr.push(reviews[1]);
+  //         console.log(arr);
+  //         this.setState({
+  //           overallRate: average,
+  //           recommendedRating: recommended,
+  //           ceoRating: approve,
+  //           firstReview: arr[0],
+  //           secondReview: arr[1],
+  //           reviews: response.data
+  //         });
+  //       }
+  //     });
+  // }
 
   render() {
     const { company } = this.props;
     const { showAddReview } = this.state;
-    const { overallRate, recommendedRating, ceoRating, firstReview, secondReview } = this.state;
+    const { overallRate, recommendedRating, ceoRating, firstReview, secondReview } = this.props;
     const { cname } = this.props;
     return (
       <div id="companyHomeContent">
@@ -182,7 +182,7 @@ export default class CompanyOverview extends Component {
             <div>Approve of CEO</div>
           </div>
           <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-          <div>
+          <div style={{ textAlign: 'left' }}>
             <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
             <div>
               <div>
@@ -216,21 +216,44 @@ export default class CompanyOverview extends Component {
                       <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview === undefined ? null : firstReview.rwriter}</span>
                     </div>
                   </div>
-                  <div style={{ display: 'inline-block' }}>
-                    <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>{firstReview === undefined ? null : firstReview.rrecommended}</p>
-                  </div>
-                  <div style={{ display: 'inline-block', marginLeft: '50px' }}>
-                    <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>{firstReview === undefined ? null : firstReview.rceoapprove}</p>
+                  <div className="interviewOutcomes">
+                    <div className="flex-grid">
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={firstReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell">
+                            <span className="middle">
+                              {firstReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={firstReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell"><span className="middle">{firstReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
+                        </div>
+                      </div>
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={firstReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell"><span className="middle">{firstReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
                   <p>{firstReview === undefined ? null : firstReview.rdescription}</p>
                   <p className="mb-0 mt-xsm strong ">Pros</p>
                   <p>{firstReview === undefined ? null : firstReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>{firstReview === undefined ? null : firstReview.rcons}</p>
-                  <button className="gd-ui-button  css-glrvaa">Helpful</button>
+                  <p>
+                    {firstReview === undefined ? null : firstReview.rcons}
+                    {' '}
+                    <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '5px', textAlign: 'center' }}>
+                      <span>Helpful</span>
+                    </button>
+                  </p>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
               </div>
@@ -268,13 +291,31 @@ export default class CompanyOverview extends Component {
                       <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview === undefined ? null : secondReview.rwriter}</span>
                     </div>
                   </div>
-                  <div style={{ display: 'inline-block' }}>
-                    <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-                    <p>{secondReview === undefined ? null : secondReview.rrecommended}</p>
-                  </div>
-                  <div style={{ display: 'inline-block', marginLeft: '50px' }}>
-                    <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-                    <p>{secondReview === undefined ? null : secondReview.rceoapprove}</p>
+                  <div className="interviewOutcomes">
+                    <div className="flex-grid">
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={secondReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell">
+                            <span className="middle">
+                              {secondReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={secondReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell"><span className="middle">{secondReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
+                        </div>
+                      </div>
+                      <div className="tightLt col span-1-3">
+                        <div className="middle">
+                          <div className="cell"><i className={secondReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                          <div className="cell"><span className="middle">{secondReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <p className="mb-0 mt-xsm strong ">Description</p>
                   <p>{secondReview === undefined ? null : secondReview.rdescription}</p>
