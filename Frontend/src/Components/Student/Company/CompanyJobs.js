@@ -25,7 +25,7 @@ class CompanyJobs extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${this.props.cname}`;
     axios.get(url)
       .then((response) => {
-        if (response.data) {
+        if (response.data && response.data > 0) {
           this.allJobs = response.data;
           this.setState({
             jobs: response.data, loading: false
@@ -248,7 +248,7 @@ class CompanyJobs extends Component {
                           <div className="employerName">
                             {selectedJob ? selectedJob.cname : ''}
                             <span className="rating">
-                              3.5
+                              {selectedJob ? selectedJob.crating : ''}
                               <span className="ratingStar" />
                             </span>
                           </div>

@@ -289,7 +289,7 @@ class JobSearchResults extends Component {
                           <div className="employerName">
                             {selectedJob ? selectedJob.cname : ''}
                             <span className="rating">
-                              {selectedJob.crating}
+                              {selectedJob ? selectedJob.crating : ''}
                               <span className="ratingStar" />
                             </span>
                           </div>
@@ -337,6 +337,7 @@ class JobSearchResults extends Component {
 const mapStateToProps = (state) => {
   if (state.credentials.isAuth) {
     return {
+      isAuth: state.credentials.isAuth,
       searchQuery: state.student.searchQuery,
       resumes: state.student.user.stresumes,
       name: state.student.user.stname,
