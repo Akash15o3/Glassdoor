@@ -83,7 +83,6 @@ class AdminTabs extends Component {
   }
 
   topCEOs = (event) => {
-    alert('here')
     const url = `${process.env.REACT_APP_BACKEND}/admin/topCEO`;
     axios.get(url)
       .then((response) => {
@@ -214,7 +213,7 @@ class AdminTabs extends Component {
                 <div className="col-3 logo-and-ratings-wrap">
                   <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
                     <span>
-                      <img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" />
+                      <img src={item.stphoto} class="img-thumbnail" alt="photo" width = "300" />
                     </span>
                   </a>
                 </div>
@@ -271,7 +270,7 @@ class AdminTabs extends Component {
                 <div className="col-3 logo-and-ratings-wrap">
                   <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
                     <span>
-                      <img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" />
+                      <img src="https://thumbs.dreamstime.com/z/ceo-looking-city-planning-rear-view-company-large-buildings-his-office-window-d-rendering-mock-up-toned-82642174.jpg" class="img-thumbnail" alt="photo" width = "300" />
                     </span>
                   </a>
                 </div>
