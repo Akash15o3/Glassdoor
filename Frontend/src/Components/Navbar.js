@@ -23,7 +23,9 @@ class Navbar extends Component {
         tabs = <EmployerTabs />;
         searchBar = (
           <nav className="navbar navbar-inverse" style={{ backgroundColor: 'white', margin: '0', border: 'none' }}>
-            <img id="logo" src={logo} />
+            <Link to="/employer" class="nav-link">
+              <img id="logo" src={logo} />
+            </Link>
             <Link style={{ marginLeft: 'auto' }} to="/" onClick={this.props.logout} style={{ marginTop: '20px', fontSize: '20px', float: 'right' }}>
               <span className="glyphicon glyphicon-user" />
               Logout
