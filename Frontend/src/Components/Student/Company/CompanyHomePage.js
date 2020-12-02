@@ -15,6 +15,12 @@ class CompanyHomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      overallRate: Number,
+      recommendedRating: Number,
+      ceoRating: Number,
+      firstReview: [],
+      secondReview: [],
+      reviews: [],
       company: {},
       cphotos: [],
       tab: 'Overview',
@@ -23,9 +29,70 @@ class CompanyHomePage extends Component {
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
+    let url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
     const { cid } = this.props;
     // let cid;
+    axios.post(url, { cid })
+      .then((response) => {
+        if (response.data && response.data.length > 0) {
+          console.log(response.data);
+          const reviews = response.data;
+          let average = 0;
+          let recommended = 0;
+          let approve = 0;
+          const arr = [];
+          console.log(response.data);
+          for (let i = 0; i < response.data.length; i++) {
+            average += response.data[i].overallRating;
+            if (response.data[i].rrecommended === 'Yes') {
+              recommended++;
+            }
+            if (response.data[i].rceoapprove === 'Yes') {
+              approve++;
+            }
+          }
+          recommended /= response.data.length;
+          recommended *= 100;
+          recommended = Math.round(recommended);
+          average /= response.data.length;
+          average = average.toFixed(1);
+          approve /= response.data.length;
+          approve *= 100;
+          approve = Math.round(approve);
+          reviews.sort((a, b) => b.rhelpful - a.rhelpful);
+          let isPos = false;
+          let isNeg = false;
+          for (let i = 0; i < reviews.length; i++) {
+            if (reviews[i].routlook === 'Positive' && !isPos) {
+              arr.push(reviews[i]);
+              isPos = true;
+            }
+
+            if (reviews[i].routlook === 'Negative' && !isNeg) {
+              arr.push(reviews[i]);
+              isNeg = true;
+            }
+
+            if (isNeg && isPos) {
+              break;
+            }
+          }
+          arr.push(response.data[0]);
+          arr.push(response.data[1]);
+          console.log(arr);
+          this.setState({
+            overallRate: average,
+            recommendedRating: recommended,
+            ceoRating: approve,
+            firstReview: arr[0],
+            secondReview: arr[1],
+            reviews: response.data
+          });
+        }
+      });
+
+    url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
+
     axios.post(url, { cid })
       .then((response) => {
         if (response.data) {
@@ -45,16 +112,20 @@ class CompanyHomePage extends Component {
     this.setState({ cphotos });
   }
 
+  updateReviews = (reviews) => {
+    this.setState({ reviews });
+  }
+
   render() {
-    const { company, tab, cphotos, loading } = this.state;
+    const { company, tab, cphotos, overallRate, recommendedRating, ceoRating, firstReview, secondReview, reviews, loading } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
       case 'Overview':
-        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
+        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} overallRate={overallRate} recommendedRating={recommendedRating} ceoRating={ceoRating} firstReview={firstReview} secondReview={secondReview} reviews={reviews} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
+        companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} updateReviews={this.updateReviews} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs cname={company.cname} isAuth={this.props.isAuth} />;
