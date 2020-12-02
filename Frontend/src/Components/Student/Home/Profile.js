@@ -7,23 +7,23 @@ Modal.setAppElement('#root');
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    const { stname, stemail } = this.props.student;
+    const { stname, stemail, stjobtitle, stlocation } = this.props.student;
     this.state = {
       open: false,
       stname,
-      title: '',
-      location: '',
+      stjobtitle,
+      stlocation,
       stemail,
     };
   }
 
-  updateProfile = () => {
+  openModal = () => {
     this.setState({ open: true });
   }
 
   closeWithoutSaving = () => {
-    const { stname, stemail } = this.props.student;
-    this.setState({ stname, stemail, open: false });
+    const { stname, stemail, stjobtitle, stlocation } = this.props.student;
+    this.setState({ stname, stemail, stjobtitle, stlocation, open: false });
   }
 
   nameChangeHandler = (e) => {
@@ -34,13 +34,13 @@ export default class Profile extends Component {
 
   titleChangeHandler = (e) => {
     this.setState({
-      title: e.target.value
+      stjobtitle: e.target.value
     });
   }
 
   locationChangeHandler = (e) => {
     this.setState({
-      location: e.target.value
+      stlocation: e.target.value
     });
   }
 
@@ -52,19 +52,19 @@ export default class Profile extends Component {
 
   saveUpdates = () => {
     const { id } = this.props;
-    const { stname, stemail } = this.state;
+    const { stname, stemail, stjobtitle, stlocation } = this.state;
     const url = `${process.env.REACT_APP_BACKEND}/students/updateProfile`;
-    axios.post(url, { id, stname, stemail })
+    axios.post(url, { id, stname, stemail, stjobtitle, stlocation })
       .then((response) => {
         console.log(response);
       });
-    this.props.updateProfile({ stname, stemail });
+    this.props.updateStudent({ stname, stemail, stjobtitle, stlocation });
     this.setState({ open: false });
   }
 
   render() {
     const { streviews, stinterviews, stsalaries, cphotos } = this.props.student;
-    const { stname, title, location, stemail } = this.state;
+    const { stname, stjobtitle, stlocation, stemail } = this.state;
     return (
       <div className="studentHomeContent">
         <Modal isOpen={this.state.open} onRequestClose={this.closeWithoutSaving} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
@@ -79,9 +79,9 @@ export default class Profile extends Component {
           <label className="modalLabel"> Name</label>
           <input onChange={this.nameChangeHandler} value={stname} type="username" name="name" className="modalInput" />
           <label className="modalLabel">Title</label>
-          <input onChange={this.titleChangeHandler} value={title} className="modalInput" />
+          <input onChange={this.titleChangeHandler} value={stjobtitle} className="modalInput" />
           <label className="modalLabel">Location</label>
-          <input onChange={this.locationChangeHandler} value={location} className="modalInput" />
+          <input onChange={this.locationChangeHandler} value={stlocation} className="modalInput" />
           <label className="modalLabel">Email Address</label>
           <input onChange={this.emailChangeHandler} value={stemail} type="email" name="email" className="modalInput" />
           <button className="save" onClick={this.saveUpdates}>Save</button>
@@ -96,19 +96,19 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <button onClick={this.updateProfile} className="home-btn info">{stname === '' ? 'Add Name' : stname}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{stemail === '' ? 'Add email' : stemail}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{title === '' ? 'Add job title' : title}</button>
-            <button onClick={this.updateProfile} className="home-btn info">{location === '' ? 'Add location' : location}</button>
+            <button onClick={this.openModal} className="home-btn info">{stname === '' ? 'Add Name' : stname}</button>
+            <button onClick={this.openModal} className="home-btn info">{stemail === '' ? 'Add email' : stemail}</button>
+            <button onClick={this.openModal} className="home-btn info">{!stjobtitle || stjobtitle === '' ? 'Add job title' : stjobtitle}</button>
+            <button onClick={this.openModal} className="home-btn info">{!stlocation || stlocation === '' ? 'Add location' : stlocation}</button>
             {/* <button className="home-btn info">Add phone number</button> */}
           </div>
         </div>
         <div className="profileField">
           <h1>User Statistics</h1>
           <div>
-            <span className="userStat">{`Reviews Added: ${streviews.length}`}</span>
-            <span className="userStat">{`Salaries Added: ${stsalaries.length}`}</span>
-            <span className="userStat">{`Interviews Added: ${stinterviews.length}`}</span>
+            <Link to="/student/reviews" className="userStat">{`Reviews Added: ${streviews.length}`}</Link>
+            <Link to="/student/salaries" className="userStat">{`Salaries Added: ${stsalaries.length}`}</Link>
+            <Link to="/student/interviews" className="userStat">{`Interviews Added: ${stinterviews.length}`}</Link>
             <Link to="/student/photos" className="userStat">{`Photos Added: ${cphotos.length}`}</Link>
           </div>
         </div>

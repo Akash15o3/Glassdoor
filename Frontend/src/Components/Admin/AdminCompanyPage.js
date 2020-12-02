@@ -17,7 +17,6 @@ class AdminCompanyPage extends Component {
   componentDidMount() {
 
     console.log('AdminCompanyPage location query: ', this.props.location.query);
-
     const url = `${process.env.REACT_APP_BACKEND}/companies/${this.props.location.query.cid}`;
 
     axios.get(url)
@@ -67,10 +66,12 @@ class AdminCompanyPage extends Component {
               <div className="lbSlideFrame">
                 <div className="titleBar">
                   <span className="viewAll">
-                    <a href="/Photos/McDonald-s-Office-Photos-E432.htm">
-                      <i />
-                      <span>View All</span>
-                    </a>
+                    <span>
+                      { company.cphoto !== undefined ? 
+                        <img src={company.cphotos[0]} class="img-thumbnail" alt="photo" width = "300" />
+                        : null
+                      }
+                    </span>
                   </span>
                   <span className="counter">
                     <span className="current">num</span>
@@ -113,13 +114,9 @@ class AdminCompanyPage extends Component {
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell photos " onClick={this.tabChangeHandler} data-label="Photos">
-
                         <span className="subtle"> Photos</span>
                       </a>
                       <div className="vline cell"><i /></div>
-                      <a className="eiCell cell salaries " onClick={this.tabChangeHandler} data-label="Salaries">
-                        <span className="subtle"> Job Statistics</span>
-                      </a>
                     </div>
                   </div>
                   <div className="buttons cell showDesk padRt alignRt">

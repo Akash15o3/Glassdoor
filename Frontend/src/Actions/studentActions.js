@@ -13,9 +13,9 @@ export const search = (searchQuery) => {
   };
 };
 
-export const updateProfile = (updateInfo) => {
+export const updateStudent = (updateInfo) => {
   return {
-    type: 'UPDATE_PROFILE',
+    type: 'UPDATE_STUDENT',
     updateInfo
   };
 };

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateStudent } from '../../../Actions/studentActions';
 
 Modal.setAppElement('#root');
-export default class CompanyInterview extends Component {
+class CompanyInterview extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,6 +95,7 @@ export default class CompanyInterview extends Component {
         if (response.data) {
           const interviews = [...this.state.interviews, response.data];
           this.setState({ interviews });
+          this.props.updateStudent({ stinterviews: [...this.props.stinterviews, response.data] });
           this.closeInterviewModal();
         }
       });
@@ -233,17 +236,28 @@ export default class CompanyInterview extends Component {
                         </div>
                       </div>
                     </div>
-                    <div className="description ">
+                    <div style={{ textAlign: 'left' }} className="description ">
                       <div className="interviewReviewDetails truncateData" data-animate-after-less="true" data-click-anywhere="true" data-less-str="Show Less" data-more-str="Show More" data-truncate-toggle="true" data-truncate-words={70}>
-                        <p className="strong margTopMd tightBot">Interview Questions</p>
+                        <p className="strong margTopMd tightBot">Interview Question</p>
                         <div className="interviewQuestions">
                           <ul className="undecorated">
                             <li>
                               <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
-                                {' '}
-                                What is your availability to work? &nbsp;
-                                {' '}
-                                <a href="/Interview/What-is-your-availability-to-work-QTN_4027130.htm" className="questionResponse">Answer Question</a>
+                                {interview.interviewqna[0].question}
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'left' }} className="description ">
+                      <div className="interviewReviewDetails truncateData" data-animate-after-less="true" data-click-anywhere="true" data-less-str="Show Less" data-more-str="Show More" data-truncate-toggle="true" data-truncate-words={70}>
+                        <p className="strong margTopMd tightBot">Answer</p>
+                        <div className="interviewQuestions">
+                          <ul className="undecorated">
+                            <li>
+                              <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
+                                {interview.interviewqna[0].answers[0]}
                               </span>
                             </li>
                           </ul>
@@ -253,7 +267,7 @@ export default class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-                    </li>,
+            </li>,
               <div className="hr">
                 <hr />
               </div>];
@@ -263,3 +277,17 @@ export default class CompanyInterview extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    stinterviews: state.student.user.stinterviews,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStudent: (updateInfo) => dispatch(updateStudent(updateInfo)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyInterview);

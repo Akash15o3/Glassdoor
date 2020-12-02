@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import { updateStudent } from '../../../Actions/studentActions';
 
 Modal.setAppElement('#root');
-export default class CompanyReviews extends Component {
+class CompanyReviews extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,6 +126,7 @@ export default class CompanyReviews extends Component {
           const reviews = [...this.state.reviews, response.data];
           this.props.updateReviews(reviews);
           // this.setState({ reviews });
+          this.props.updateStudent({ streviews: [...this.props.streviews, response.data] });
           this.toggleAddReview();
         }
       });
@@ -435,3 +438,17 @@ export default class CompanyReviews extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    streviews: state.student.user.streviews,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStudent: (updateInfo) => dispatch(updateStudent(updateInfo)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyReviews);

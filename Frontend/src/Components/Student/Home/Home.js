@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { updateProfile } from '../../../Actions/studentActions';
+import { updateStudent } from '../../../Actions/studentActions';
 import Profile from './Profile';
 import Resume from './Resume';
 import JobPreferences from './JobPreferences';
@@ -36,7 +36,7 @@ class Home extends Component {
       .then((res) => { // then print response status
         console.log(res.data);
         this.setState({ stphoto: res.data });
-        this.props.updateProfile({ stphoto: res.data });
+        this.props.updateStudent({ stphoto: res.data });
       });
   }
 
@@ -52,7 +52,7 @@ class Home extends Component {
   //     .then((res) => { // then print response status
   //       console.log(res.data);
   //       this.setState({ stphoto: res.data });
-  //       this.props.updateProfile({ stphoto: res.data });
+  //       this.props.updateStudent({ stphoto: res.data });
   //     });
   // }
 
@@ -68,16 +68,16 @@ class Home extends Component {
     let homeView = null;
     switch (tab) {
       case 'Profile':
-        homeView = <Profile id={this.props.id} student={this.props.student} updateProfile={this.props.updateProfile} />;
+        homeView = <Profile id={this.props.id} student={this.props.student} updateStudent={this.props.updateStudent} />;
         break;
       case 'Resume':
-        homeView = <Resume id={this.props.id} student={this.props.student} updateProfile={this.props.updateProfile} />;
+        homeView = <Resume id={this.props.id} student={this.props.student} updateStudent={this.props.updateStudent} />;
         break;
       case 'Job Preferences':
-        homeView = <JobPreferences id={this.props.id} stjobpref={this.props.student.stjobpref} updateProfile={this.props.updateProfile} />;
+        homeView = <JobPreferences id={this.props.id} stjobpref={this.props.student.stjobpref} updateStudent={this.props.updateStudent} />;
         break;
       case 'Demographics':
-        homeView = <Demographics id={this.props.id} stdemographics={this.props.student.stdemographics} updateProfile={this.props.updateProfile} />;
+        homeView = <Demographics id={this.props.id} stdemographics={this.props.student.stdemographics} updateStudent={this.props.updateStudent} />;
         break;
       default:
         homeView = null;
@@ -115,7 +115,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateProfile: (updateInfo) => dispatch(updateProfile(updateInfo)),
+    updateStudent: (updateInfo) => dispatch(updateStudent(updateInfo)),
   };
 };
 

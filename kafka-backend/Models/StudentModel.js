@@ -6,9 +6,10 @@ const { Schema } = mongoose;
 const studentSchema = new Schema(
   {
     stname: String,
-
     stemail: String,
     stpassword: String,
+    stjobtitle: String,
+    stlocation: String,
     stphoto: {
       type: String,
       default:
@@ -58,6 +59,10 @@ const studentSchema = new Schema(
     },
     // If reviews > 0, only then show more than 5 reviews on fronntend
     streviews: [],
+    streviewsaccepted: {
+      type: Number,
+      default: 0,
+    },
     stsalaries: [],
     stinterviews: [],
     stdemographics: {

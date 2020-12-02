@@ -60,7 +60,7 @@ class CompanySearchResults extends Component {
                   </Link>
                   <div>
                     <span>
-                      <span className="bigRating strong margRtSm h2">3.5</span>
+                      <span className="bigRating strong margRtSm h2">{item.averageRating}</span>
                       <span className="gdStars gdRatings sm ">
                         <i>
                           <i />

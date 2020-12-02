@@ -97,14 +97,14 @@ export default class CompanyReviews extends Component {
   submitReview = () => {
     const { rreply, rreplyid } = this.state;
     // const { cname, cid, stname, stid } = this.props;
-
+    console.log('rwply to review: ', rreply);
     const url = `${process.env.REACT_APP_BACKEND}/reviews/replyReviews`;
     axios.post(url, { rreplyid, rreply })
       .then((response) => {
         if (response.data) {
-          const reviews = [...this.props.reviews, response.data];
+          // const reviews = [...this.props.reviews, response.data];
           // this.setState({ reviews });
-          this.props.updateReviews(reviews);
+          // this.props.updateReviews(reviews);
           this.toggleAddReview();
         }
       });
@@ -129,10 +129,23 @@ export default class CompanyReviews extends Component {
     axios.post(url, data)
       .then((response) => {
         if (response.data) {
-        //   const reviews = [...this.props.reviews, response.data];
+          const url1 = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+          const data1 = { cid: sessionStorage.getItem('cid') };
+          axios.post(url1, data1)
+            .then((res) => {
+              if (res.data) {
+                console.log('Review response: ');
+                console.log(res.data);
+                //   console.log(response.data._id, '||||', response.data[0]._id);
+                this.setState({
+                  reviews: res.data,
+                });
+              }
+            });
+          //   const reviews = [...this.props.reviews, response.data];
           // this.setState({ reviews });
-        //   this.props.updateReviews(reviews);
-        //   this.toggleAddReview();
+          //   this.props.updateReviews(reviews);
+          //   this.toggleAddReview();
           console.log(response.data);
         }
       });

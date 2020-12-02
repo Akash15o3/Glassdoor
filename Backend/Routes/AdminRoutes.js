@@ -130,7 +130,7 @@ Router.put('/photo/reject', (request, response) => {
   });
 });
 
-// Approve/Reject a photo
+// Get reviews per day
 Router.get('/reviewsPerDay', (request, response) => {
   console.log('\nEndpoint GET: Reviews per day');
   // console.log('Req Body: ', request.body);
@@ -205,6 +205,47 @@ Router.get('/topCEO', (request, response) => {
         'Content-Type': 'text/plain',
       });
       response.end('Reviews: Top 10 CEOs Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+
+// Top 10 most viewed companies
+Router.get('/topViewed', (request, response) => {
+  console.log('\nEndpoint GET: Top 10 companies viewed per day');
+  // console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('adminsTopic', 'TOPVIEWEDPERDAY', data, (err, result) => {
+    if (err) {
+      console.log('Reviews: Top 10 companies viewed per day Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews: Top 10 companies viewed per day Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+
+Router.get('/topStudents', (request, response) => {
+  console.log('\nEndpoint GET: Top 5 students');
+  // console.log('Req Body: ', request.body);
+  const data = { ...request.body };
+  kafka.make_request('adminsTopic', 'TOPSTUDENTS', data, (err, result) => {
+    if (err) {
+      console.log('Reviews: Top 5 students Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Reviews: Top 5 students Kafka error');
     } else {
       response.writeHead(result.status, {
         'Content-Type': result.header,
