@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { BeatLoader } from 'react-spinners';
 import { updateStudent } from '../../../Actions/studentActions';
 
 Modal.setAppElement('#root');
@@ -15,7 +16,8 @@ class CompanySalaries extends Component {
       salexperience: '',
       sallocation: '',
       salbonus: '',
-      salaries: []
+      salaries: [],
+      loading: true
     };
   }
 
@@ -25,7 +27,7 @@ class CompanySalaries extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            salaries: response.data,
+            salaries: response.data, loading: false
           });
         }
       });
@@ -77,8 +79,8 @@ class CompanySalaries extends Component {
 
   render() {
     const { cname } = this.props;
-    const { salaries } = this.state;
-    return (
+    const { salaries, loading } = this.state;
+    return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div id="companySalariesContainer">
         <Modal isOpen={this.state.open} onRequestClose={this.closeSalaryModal} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.closeSalaryModal}>

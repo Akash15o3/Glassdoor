@@ -26,6 +26,7 @@ class SearchBar extends Component {
     }
     const { search, type } = this.state;
     this.props.search(search);
+    console.log(this.props);
     this.props.history.push(`/${this.props.role}/${type}SearchResults`);
   }
 

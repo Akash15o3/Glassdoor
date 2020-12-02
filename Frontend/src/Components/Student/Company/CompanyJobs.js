@@ -17,6 +17,7 @@ class CompanyJobs extends Component {
       coverLetter: '',
       showJobApplication: false,
       address: '',
+      loading: true
     };
   }
 
@@ -27,7 +28,7 @@ class CompanyJobs extends Component {
         if (response.data) {
           this.allJobs = response.data;
           this.setState({
-            jobs: response.data,
+            jobs: response.data, loading: false
           });
         }
       });
@@ -121,7 +122,7 @@ class CompanyJobs extends Component {
   }
 
   render() {
-    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication } = this.state;
+    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, loading } = this.state;
     const selectedJob = jobs[selectedIndex];
     const jobSearchResults = jobs.map((job, i) => {
       const date = new Date(job.jposted);
@@ -157,7 +158,7 @@ class CompanyJobs extends Component {
       );
     });
 
-    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
+    return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div style={{ marginTop: '15px' }}>
         <Modal isOpen={showJobApplication} onRequestClose={this.toggleJobApplication} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black', padding: 0, textAlign: 'center' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleJobApplication}>

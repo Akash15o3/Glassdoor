@@ -46,8 +46,9 @@ class CompanyInterview extends Component {
           const positivePercent = Math.round((positive / total) * 100);
           const neutralPercent = Math.round((neutral / total) * 100);
           const negativePercent = Math.round((negative / total) * 100);
-          this.setState({ interviews, positivePercent, neutralPercent, negativePercent, loading: false });
+          this.setState({ interviews, positivePercent, neutralPercent, negativePercent });
         }
+        this.setState({ loading: false });
       });
   }
 
@@ -105,7 +106,7 @@ class CompanyInterview extends Component {
 
   render() {
     const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer, loading } = this.state;
-    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
+    return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div style={{ width: '65%', margin: 'auto', backgroundColor: 'white' }}>
         <Modal isOpen={this.state.open} onRequestClose={this.closeInterviewModal} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.closeInterviewModal}>

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { BeatLoader } from 'react-spinners';
 
 class JobApplications extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      applications: []
+      applications: [],
+      loading: true
     };
   }
 
@@ -14,7 +16,7 @@ class JobApplications extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/students/applications`;
     axios.post(url, { aapplierid: this.props.id })
       .then((response) => {
-        this.setState({ applications: response.data });
+        this.setState({ applications: response.data, loading: false });
       });
   }
 
@@ -32,7 +34,8 @@ class JobApplications extends Component {
   }
 
   render() {
-    return (
+    const { applications, loading } = this.state;
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div>
         <h1 style={{ textAlign: 'center' }}>Job Applications</h1>
         <table>
@@ -43,7 +46,7 @@ class JobApplications extends Component {
             <th>Resume</th>
             <th>Withdraw</th>
           </tr>
-          {this.state.applications.map((application, i) => {
+          {applications.map((application, i) => {
             return (
               <tr>
                 <td>{application.cname}</td>
