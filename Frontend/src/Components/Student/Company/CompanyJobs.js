@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Spinner from 'react-bootstrap/Spinner';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
+import { BeatLoader } from 'react-spinners';
+import PlacesAutocomplete from 'react-places-autocomplete';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -160,7 +157,7 @@ class CompanyJobs extends Component {
       );
     });
 
-    return (
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div style={{ marginTop: '15px' }}>
         <Modal isOpen={showJobApplication} onRequestClose={this.toggleJobApplication} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black', padding: 0, textAlign: 'center' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleJobApplication}>

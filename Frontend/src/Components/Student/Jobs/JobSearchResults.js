@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Spinner from 'react-bootstrap/Spinner';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
+import { BeatLoader } from 'react-spinners';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
 import Modal from 'react-modal';
 
@@ -22,7 +19,8 @@ class JobSearchResults extends Component {
       showJobApplication: false,
       address: '',
       minSalary: 0,
-      maxSalary: Infinity
+      maxSalary: Infinity,
+      loading: true
     };
   }
 
@@ -33,10 +31,10 @@ class JobSearchResults extends Component {
     axios.post(url, { jtitle: searchQuery })
       .then((response) => {
         if (response.data) {
-          this.setState({
-            jobs: response.data,
-          });
           this.allJobs = response.data;
+          this.setState({
+            jobs: response.data, loading: false
+          });
           console.log(response.data);
         }
       });
@@ -154,7 +152,7 @@ class JobSearchResults extends Component {
   }
 
   render() {
-    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication } = this.state;
+    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, loading } = this.state;
     const selectedJob = jobs[selectedIndex];
     const jobSearchResults = jobs.map((job, i) => {
       const date = new Date(job.jposted);
@@ -190,7 +188,7 @@ class JobSearchResults extends Component {
       );
     });
 
-    return (
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div style={{ marginTop: '15px' }}>
         <Modal isOpen={showJobApplication} onRequestClose={this.toggleJobApplication} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black', padding: 0, textAlign: 'center' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleJobApplication}>
@@ -291,7 +289,7 @@ class JobSearchResults extends Component {
                           <div className="employerName">
                             {selectedJob ? selectedJob.cname : ''}
                             <span className="rating">
-                              3.5
+                              {selectedJob.crating}
                               <span className="ratingStar" />
                             </span>
                           </div>

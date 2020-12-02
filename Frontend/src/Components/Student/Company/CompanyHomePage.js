@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { BeatLoader } from 'react-spinners';
 import CompanyOverview from './CompanyOverview';
 import CompanyReviews from './CompanyReviews';
 import CompanyJobs from './CompanyJobs';
@@ -17,6 +18,7 @@ class CompanyHomePage extends Component {
       company: {},
       cphotos: [],
       tab: 'Overview',
+      loading: true
     };
   }
 
@@ -28,7 +30,7 @@ class CompanyHomePage extends Component {
       .then((response) => {
         if (response.data) {
           const company = response.data;
-          this.setState({ company, cphotos: company.cphotos });
+          this.setState({ company, cphotos: company.cphotos, loading: false });
         }
       });
   }
@@ -44,12 +46,12 @@ class CompanyHomePage extends Component {
   }
 
   render() {
-    const { company, tab, cphotos } = this.state;
+    const { company, tab, cphotos, loading } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
       case 'Overview':
-        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id}/>;
+        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Reviews':
         companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
@@ -70,7 +72,7 @@ class CompanyHomePage extends Component {
         console.log('D');
         companyContent = null;
     }
-    return (
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div>
         <div id="EIHdrModule" className="snug module noblur eep sticky" style={{ width: '992px', top: '1px', marginLeft: 'auto', marginRight: 'auto' }}>
           <div id="EmpHeroAndEmpInfo" className="gdGrid" data-brandviews="MODULE:n=hub-profileImage:eid=432">

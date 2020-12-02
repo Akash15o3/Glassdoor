@@ -7,10 +7,11 @@ Modal.setAppElement('#root');
 export default class Job extends Component {
   constructor(props) {
     super(props);
-    const { cname, cemail } = this.props.employer;
+    const { cname, cemail, averageRating } = this.props.employer;
     this.state = {
       open: false,
       cname,
+      averageRating,
       jtitle: '',
       jindustry: '',
       jposted: new Date(),
@@ -118,11 +119,12 @@ export default class Job extends Component {
 
   saveUpdates = () => {
     const { id } = this.props;
-    const { cname, cemail } = this.state;
+    const { cname, cemail, averageRating } = this.state;
     const url = `${process.env.REACT_APP_BACKEND}/jobs/createNewJob`;
     const data = {
       cname,
       cemail,
+      averageRating,
       id,
       jtitle: this.state.jtitle,
       jindustry: this.state.jindustry,

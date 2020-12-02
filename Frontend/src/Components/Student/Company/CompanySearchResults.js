@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 import { getCid, getCName } from '../../../Actions/studentActions';
 
 class CompanySearchResults extends Component {
@@ -9,6 +10,7 @@ class CompanySearchResults extends Component {
     super(props);
     this.state = {
       companies: [],
+      loading: true
     };
   }
 
@@ -21,7 +23,7 @@ class CompanySearchResults extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: response.data,
+            companies: response.data, loading: false
           });
           const { companies } = this.state;
           console.log(companies);
@@ -35,7 +37,7 @@ class CompanySearchResults extends Component {
   }
 
   render() {
-    const { companies } = this.state;
+    const { companies, loading } = this.state;
     const { credentials } = this.props;
     const contents = companies.map((item) => (
       <div className="single-company-result module ">
@@ -119,7 +121,7 @@ class CompanySearchResults extends Component {
         </div>
       </div>
     ));
-    return (
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
           <div className="flex-aside">

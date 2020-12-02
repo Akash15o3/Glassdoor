@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { BeatLoader } from 'react-spinners';
 import { updateStudent } from '../../../Actions/studentActions';
 
 Modal.setAppElement('#root');
@@ -20,7 +21,8 @@ class CompanyInterview extends Component {
       difficulty: 'Easy',
       offerstatus: 'Rejected',
       question: '',
-      answer: ''
+      answer: '',
+      loading: true
     };
   }
 
@@ -44,7 +46,7 @@ class CompanyInterview extends Component {
           const positivePercent = Math.round((positive / total) * 100);
           const neutralPercent = Math.round((neutral / total) * 100);
           const negativePercent = Math.round((negative / total) * 100);
-          this.setState({ interviews, positivePercent, neutralPercent, negativePercent });
+          this.setState({ interviews, positivePercent, neutralPercent, negativePercent, loading: false });
         }
       });
   }
@@ -102,8 +104,8 @@ class CompanyInterview extends Component {
   }
 
   render() {
-    const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer } = this.state;
-    return (
+    const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer, loading } = this.state;
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div style={{ width: '65%', margin: 'auto', backgroundColor: 'white' }}>
         <Modal isOpen={this.state.open} onRequestClose={this.closeInterviewModal} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.closeInterviewModal}>
@@ -267,7 +269,7 @@ class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-            </li>,
+                    </li>,
               <div className="hr">
                 <hr />
               </div>];

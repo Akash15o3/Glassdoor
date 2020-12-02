@@ -3,6 +3,7 @@ const Ioredis = require('ioredis');
 const Reviews = require('../Models/ReviewModel');
 const Companies = require('../Models/CompanyModel');
 const Students = require('../Models/StudentModel');
+const Jobs = require('../Models/StudentModel');
 
 const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_CLIENT);
 
@@ -184,7 +185,9 @@ const updateCompany = function update(cid, rating) {
       return false;
     }
     // eslint-disable-next-line max-len, no-param-reassign
-    company.averageRating = (company.averageRating * company.reviewCount + rating) / (company.reviewCount + 1);
+    const averageRating = (company.averageRating * company.reviewCount + rating) / (company.reviewCount + 1);
+    company.averageRating = averageRating;
+    Jobs.update({ cname: company.cname }, { $set: { crating: averageRating } });
     // eslint-disable-next-line no-param-reassign, no-plusplus
     company.reviewCount++;
     company.save();
@@ -222,7 +225,7 @@ function approveReview(data, callback) {
         // one command each time to improve the
         // performance.
         console.log('keys:', keys);
-        let pipeline = redisDel.pipeline();
+        const pipeline = redisDel.pipeline();
         keys.forEach((key) => {
           console.log('key:', key);
           pipeline.del(key);
@@ -265,7 +268,7 @@ function rejectReview(data, callback) {
         // one command each time to improve the
         // performance.
         console.log('keys:', keys);
-        let pipeline = redisDel.pipeline();
+        const pipeline = redisDel.pipeline();
         keys.forEach((key) => {
           console.log('key:', key);
           pipeline.del(key);
@@ -379,7 +382,7 @@ function rejectPhoto(data, callback) {
 
 function getReviewsPerDay(data, callback) {
   console.log('here');
-  
+
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
