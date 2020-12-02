@@ -24,7 +24,7 @@ function getSalaries(data, callback) {
 }
 function createNewSalary(data, callback) {
   const {
-    jtitle, salbase, salexperience, sallocation, salbonus, stid,
+    jtitle, salbase, salexperience, sallocation, salbonus, stid, cid, cname,
   } = data;
   Students.findById(stid, (error, student) => {
     if (error) {
@@ -51,7 +51,7 @@ function createNewSalary(data, callback) {
     }
   });
   new Salary({
-    jtitle, salbase, salexperience, sallocation, salbonus,
+    jtitle, salbase, salexperience, sallocation, salbonus, cid, cname,
   })
     .save((err, salary) => {
       if (err) {

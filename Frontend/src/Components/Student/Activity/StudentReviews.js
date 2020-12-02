@@ -34,7 +34,7 @@ class StudentReviews extends Component {
                     <div className="cell">
                       <h2 className="summary strong noMargTop tightTop margBotXs">{`"${review.rheadline}"`}</h2>
                       <div>
-                        <span style={{ color: '#0caa41', marginRight: '5px' }}>5</span>
+                        <span style={{ color: '#0caa41', marginRight: '5px' }}>{review.overallRating}</span>
                         {[...Array(5)].map((e, i) => {
                           return <span role="button" style={{ color: `${i < review.overallRating ? '#0caa41' : 'lightgray'}` }}>★</span>;
                         })}

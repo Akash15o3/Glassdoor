@@ -22,7 +22,7 @@ class StudentInterviews extends Component {
             const date = new Date(interview.interviewposted);
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-            return [<li className=" empReview cf " id="InterviewReview_38660866">
+            return [<li style={{ margin: 'auto' }} className=" empReview cf reviewCard" id="InterviewReview_38660866">
               <div className="cf">
                 <div className="floatLt"><time className="date subtle small">{posted_on}</time></div>
                 <p className="helpfulReviews small tightVert floatRt"> &nbsp; </p>
@@ -80,15 +80,26 @@ class StudentInterviews extends Component {
                     </div>
                     <div className="description ">
                       <div className="interviewReviewDetails truncateData" data-animate-after-less="true" data-click-anywhere="true" data-less-str="Show Less" data-more-str="Show More" data-truncate-toggle="true" data-truncate-words={70}>
-                        <p className="strong margTopMd tightBot">Interview Questions</p>
+                        <p className="strong margTopMd tightBot">Interview Question</p>
                         <div className="interviewQuestions">
                           <ul className="undecorated">
                             <li>
                               <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
-                                {' '}
-                                What is your availability to work? &nbsp;
-                                {' '}
-                                <a href="/Interview/What-is-your-availability-to-work-QTN_4027130.htm" className="questionResponse">Answer Question</a>
+                                {interview.interviewqna[0].question}
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="description ">
+                      <div className="interviewReviewDetails truncateData" data-animate-after-less="true" data-click-anywhere="true" data-less-str="Show Less" data-more-str="Show More" data-truncate-toggle="true" data-truncate-words={70}>
+                        <p className="strong margTopMd tightBot">Answer</p>
+                        <div className="interviewQuestions">
+                          <ul className="undecorated">
+                            <li>
+                              <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
+                                {interview.interviewqna[0].answers[0]}
                               </span>
                             </li>
                           </ul>
@@ -98,7 +109,7 @@ class StudentInterviews extends Component {
                   </div>
                 </div>
               </div>
-                    </li>,
+            </li>,
               <div className="hr">
                 <hr />
               </div>];

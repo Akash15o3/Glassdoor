@@ -297,25 +297,34 @@ function studentUploadCompanyPictures(data, callback) {
   const {
     cid, stid, cphotos, stphotos,
   } = data;
-  Students.findByIdAndUpdate(stid, { $push: { cphotos: { $each: stphotos } } }, options, (error, results) => {
-    console.log(results);
-  });
-  Company.findByIdAndUpdate(cid, { $push: { cphotos: { $each: cphotos } } }, options, (error, results) => {
-    if (error) {
+
+  Company.findByIdAndUpdate(cid, { $push: { cphotos: { $each: cphotos } } }, options, (err, company) => {
+    if (err) {
       const response = {
         status: 401,
         header: 'text/plain',
         content: 'Error student uploading company pictures',
       };
       callback(null, response);
-    } else {
-      const response = {
-        status: 200,
-        header: 'text/plain',
-        content: JSON.stringify(results.cphotos),
-      };
-      callback(null, response);
     }
+    Students.findByIdAndUpdate(stid, { $push: { cphotos: { $each: stphotos } } }, options, (error, student) => {
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error saving student pictures added',
+        };
+        callback(null, response);
+      } else {
+        const results = { stphotos: student.cphotos, cphotos: company.cphotos };
+        const response = {
+          status: 200,
+          header: 'text/plain',
+          content: JSON.stringify(results),
+        };
+        callback(null, response);
+      }
+    });
   });
 }
 function handleRequest(msg, callback) {

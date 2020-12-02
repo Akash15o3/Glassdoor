@@ -18,7 +18,7 @@ class SearchBar extends Component {
     const { isAuth, views, viewWhileNotLoggedIn } = this.props;
     if (!isAuth) {
       if (views >= 2) {
-        alert('You have surpassed your limit of 2 seraches. Please login to continue!');
+        alert('You have surpassed your limit of 2 searsches. Please login to continue!');
         return;
       }
 

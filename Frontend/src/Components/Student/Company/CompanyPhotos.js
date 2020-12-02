@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import Pagination from '../../Pagination';
+import { updateStudent } from '../../../Actions/studentActions';
 
-export default class CompanyPhotos extends Component {
+class CompanyPhotos extends Component {
   constructor(props) {
     console.log(props);
     super(props);
@@ -44,8 +46,9 @@ export default class CompanyPhotos extends Component {
       .then((res) => {
         // then print response status
         console.log(res.data);
-        this.setState({ photos: res.data, upload: false, numPages: Math.ceil((res.data.length / this.itemsPerPage)) });
-        this.props.updatePhotos(res.data);
+        this.setState({ photos: res.data.cphotos, upload: false, numPages: Math.ceil((res.data.cphotos.length / this.itemsPerPage)) });
+        this.props.updatePhotos(res.data.cphotos);
+        this.props.updateStudent({ cphotos: res.data.stphotos });
       });
   }
 
@@ -66,7 +69,9 @@ export default class CompanyPhotos extends Component {
     const { cname } = this.props;
     const { itemsPerPage } = this;
     const numPhotos = photos.length;
-    const numItems = numPages === pageIndex + 1 && numPhotos % itemsPerPage !== 0 ? numPhotos % itemsPerPage : itemsPerPage;
+    let numItems = 0;
+    if (numPhotos > 0) numItems = numPages === pageIndex + 1 && numPhotos % itemsPerPage !== 0 ? numPhotos % itemsPerPage : itemsPerPage;
+
     return (
       <div id="companyPhotoContainer">
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -95,3 +100,11 @@ export default class CompanyPhotos extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStudent: (updateInfo) => dispatch(updateStudent(updateInfo)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CompanyPhotos);

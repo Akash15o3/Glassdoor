@@ -6,9 +6,10 @@ const { Schema } = mongoose;
 const studentSchema = new Schema(
   {
     stname: String,
-
     stemail: String,
     stpassword: String,
+    stjobtitle: String,
+    stlocation: String,
     stphoto: {
       type: String,
       default:

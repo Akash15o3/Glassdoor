@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateStudent } from '../../../Actions/studentActions';
 
 Modal.setAppElement('#root');
-export default class CompanySalaries extends Component {
+class CompanySalaries extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,13 +60,16 @@ export default class CompanySalaries extends Component {
   }
 
   submitSalary = () => {
+    // ADD CNAME AND CID TO SALRIES
     const { jtitle, salbase, salexperience, sallocation, salbonus } = this.state;
+    const { stid, cid, cname } = this.props;
     const url = `${process.env.REACT_APP_BACKEND}/salaries/createSalary`;
-    axios.post(url, { jtitle, salbase, salexperience, sallocation, salbonus, stid: this.props.stid })
+    axios.post(url, { jtitle, salbase, salexperience, sallocation, salbonus, stid, cid, cname })
       .then((response) => {
         if (response.data) {
           const salaries = [...this.state.salaries, response.data];
           this.setState({ salaries });
+          this.props.updateStudent({ stsalaries: [...this.props.stsalaries, response.data] });
           this.closeSalaryModal();
         }
       });
@@ -133,3 +138,16 @@ export default class CompanySalaries extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    stsalaries: state.student.user.stsalaries,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStudent: (updateInfo) => dispatch(updateStudent(updateInfo)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanySalaries);
