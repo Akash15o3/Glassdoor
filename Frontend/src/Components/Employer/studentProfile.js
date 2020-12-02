@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import axios from 'axios';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
 // import CompanyOverview from './CompanyOverview';
 // import CompanyReviews from './CompanyReviews';
 // import CompanyJobs from './CompanyJobs';
@@ -17,21 +17,21 @@ class CompanyHomePage extends Component {
       cphotos: [],
       salaries: [],
       jobs: [],
-      tab: 'Overview',
-      aapplierid: '',
-      stname: '',
-      stemail: '',
-      stphoto: '',
-      stjobpref: '',
-      title: '',
-      targetsalary: '',
-      industry: '',
-      relocation: '',
-      gender: '',
-      disability: '',
-      ethnicity: '',
-      veteran: '',
-      stdemographics: '',
+      tab: "Overview",
+      aapplierid: "",
+      stname: "",
+      stemail: "",
+      stphoto: "",
+      stjobpref: "",
+      title: "",
+      targetsalary: "",
+      industry: "",
+      relocation: "",
+      gender: "",
+      disability: "",
+      ethnicity: "",
+      veteran: "",
+      stdemographics: "",
     };
   }
 
@@ -45,7 +45,7 @@ class CompanyHomePage extends Component {
     axios.get(url).then((response) => {
       if (response.data) {
         // const company = response.data;
-        console.log('Student response: ');
+        console.log("Student response: ");
         console.log(response.data);
         this.setState({
           stname: response.data.stname,
@@ -63,14 +63,14 @@ class CompanyHomePage extends Component {
           // ethnicity: response.data.ethnicity,
           // veteran: response.data.veteran,
         });
-        console.log('student profile response', response.data);
+        console.log("student profile response", response.data);
       }
     });
   }
 
   tabChangeHandler = (e) => {
     this.setState({
-      tab: e.currentTarget.getAttribute('data-label'),
+      tab: e.currentTarget.getAttribute("data-label"),
     });
   };
 
@@ -130,12 +130,24 @@ class CompanyHomePage extends Component {
           id="EIHdrModule"
           className="snug module noblur eep sticky"
           style={{
-            width: '992px',
-            top: '1px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            width: "992px",
+            top: "1px",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
+          <div className="logo cell">
+            <span className="sqLogo tighten lgSqLogo logoOverlay">
+              <img
+                // src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"
+                src={this.state.stphoto}
+                className
+                // alt=" Logo"
+                title
+                style={{ width: "70px", height: "70px" }}
+              />
+            </span>
+          </div>
           <div
             id="EmpHeroAndEmpInfo"
             className="gdGrid"
@@ -168,27 +180,6 @@ class CompanyHomePage extends Component {
             </div> */}
 
             <div className="empInfo tbl hideHH ">
-              <div className="logo cell">
-                <a
-                  href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"
-                  data-ajax="true"
-                  className="sqLogoLink"
-                >
-                  <span
-                    className="sqLogo tighten lgSqLogo logoOverlay"
-                    // style={{ top: '8px', right: '5px' }}
-                  >
-                    <img
-                      // src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"
-                      src={this.state.stphoto}
-                      className
-                      // alt=" Logo"
-                      title
-                      style={{ width: '70px', height: '70px' }}
-                    />
-                  </span>
-                </a>
-              </div>
               <div className="header cell info">
                 <h1
                   className=" strong tightAll"
@@ -199,58 +190,24 @@ class CompanyHomePage extends Component {
                     id="DivisionsDropdownComponent"
                     className="d-inline-flex align-items-center"
                   > */}
-                  <p>
-                    Student Name:
-                    {' '}
-                    {this.state.stname}
-                  </p>
+                  <p>Student Name: {this.state.stname}</p>
                   <h2>JOB PRERERENCES: </h2>
+                  <p>Title: {this.state.stjobpref.title}</p>
+                  <p>Target Industry: {this.state.stjobpref.industry}</p>
+                  <p>Search Status: {this.state.stjobpref.searchstatus}</p>
                   <p>
-                    Title:
-                    {' '}
-                    {this.state.stjobpref.title}
+                    Relocation Preference: {this.state.stjobpref.relocation}
                   </p>
-                  <p>
-                    Target Industry:
-                    {' '}
-                    {this.state.stjobpref.industry}
-                  </p>
-                  <p>
-                    Search Status:
-                    {' '}
-                    {this.state.stjobpref.searchstatus}
-                  </p>
-                  <p>
-                    Relocation Preference:
-                    {' '}
-                    {this.state.stjobpref.relocation}
-                  </p>
-                  <p>
-                    Target Salary:
-                    {' '}
-                    {this.state.stjobpref.targetsalary}
-                  </p>
+                  <p>Target Salary: {this.state.stjobpref.targetsalary}</p>
                   <h2>DEMOGRAPHICS</h2>
+                  <p>Gender: {this.state.stdemographics.gender}</p>
                   <p>
-                    Gender:
-                    {' '}
-                    {this.state.stdemographics.gender}
+                    Disability status: {this.state.stdemographics.disability}
                   </p>
                   <p>
-                    Disability status:
-                    {' '}
-                    {this.state.stdemographics.disability}
+                    Ethnicity Status: {this.state.stdemographics.race_ethnicity}
                   </p>
-                  <p>
-                    Ethnicity Status:
-                    {' '}
-                    {this.state.stdemographics.race_ethnicity}
-                  </p>
-                  <p>
-                    Veteran status:
-                    {' '}
-                    {this.state.stdemographics.veteran}
-                  </p>
+                  <p>Veteran status: {this.state.stdemographics.veteran}</p>
 
                   {/* </span> */}
                 </h1>
