@@ -187,11 +187,11 @@ class CompanyHomePage extends Component {
               </div>
             </div>
             <div className="empInfo tbl hideHH ">
-              <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '58px', right: '17px' }}><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" className alt=" Logo" title /></span></a></div>
-              <div className="header cell info">
+              <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '20px', right: '17px' }}><img src={company.cphoto} className alt=" Logo" title /></span></a></div>
+              <div className="header cell info" style= {{ position: 'relative', right: '250px' }}>
                 <h1 className=" strong tightAll" title data-company="McDonald's">
                   <span id="DivisionsDropdownComponent" className="d-inline-flex align-items-center">
-                    <p>{ company.cname }</p>
+                    <p style={{ fontSize: '20px' }}>{ company.cname }</p>
                   </span>
                 </h1>
               </div>

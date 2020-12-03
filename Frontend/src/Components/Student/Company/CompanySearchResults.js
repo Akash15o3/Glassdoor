@@ -86,7 +86,7 @@ class CompanySearchResults extends Component {
         <div className="row justify-content-between">
           <div className="col-lg-7">
             <div className="row justify-content-start">
-              <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
+              <div className="col-3 logo-and-ratings-wrap"><a><span><img src={item.cphoto} style={{ width: '50px', position: 'relative', top: '13px'}} /></span></a></div>
               <div className="col-9 pr-0">
                 <h2>
                   <Link id={item._id} name={item.cname} onClick={this.handleClick} to={`/${credentials.role}/company`}>
@@ -96,7 +96,7 @@ class CompanySearchResults extends Component {
                   </Link>
                   <div>
                     <span>
-                      <span className="bigRating strong margRtSm h2">3.5</span>
+                      <span className="bigRating strong margRtSm h2">{item.averageRating}</span>
                       <span className="gdStars gdRatings sm ">
                         <i>
                           <i />

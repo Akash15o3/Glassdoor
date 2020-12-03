@@ -33,7 +33,7 @@ class CompanyReviews extends Component {
     const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
     axios.post(url, { cid })
       .then((response) => {
-        if (response.data) {
+        if (response.data && response.data.length > 0) {
           const reviews = response.data;
           let average = 0;
           let recommended = 0;
@@ -263,8 +263,8 @@ class CompanyReviews extends Component {
         </Modal>
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
-            {cname}
-            's Reviews
+            {`${cname} `}
+            Reviews
             <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', top: '5px', right: '5px' }}>
               <i className="btn-plus margRtSm" />
               <span>+ Add a Review</span>
@@ -299,7 +299,7 @@ class CompanyReviews extends Component {
                 %
               </text>
             </svg>
-            <div>Recommend to a Friend</div>
+            <div style={{ marginLeft: '25px' }}>Recommend to a Friend</div>
           </div>
           <div className="single-chart" style={{ float: 'left', marginLeft: '220px', marginBottom: '20px' }}>
             <svg viewBox="0 0 36 36" className="circular-chart green">
@@ -321,7 +321,7 @@ class CompanyReviews extends Component {
                 %
               </text>
             </svg>
-            <div>Approve of CEO</div>
+            <div style={{ marginLeft: '55px' }}>Approve of CEO</div>
           </div>
           <hr style={{ width: '3000px', backgroundColor: 'black' }} />
           <div>
@@ -372,7 +372,9 @@ class CompanyReviews extends Component {
                   <p>{firstReview === undefined ? null : firstReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
                   <p>{firstReview === undefined ? null : firstReview.rcons}</p>
-                  <button className="gd-ui-button  css-glrvaa">Helpful</button>
+                  <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '20px', bottom: '20px', textAlign: 'center' }}>
+                      <span>Helpful</span>
+                    </button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
               </div>
@@ -424,7 +426,9 @@ class CompanyReviews extends Component {
                   <p>{secondReview === undefined ? null : secondReview.rpros}</p>
                   <p className="mb-0 mt-xsm strong ">Cons</p>
                   <p>{secondReview === undefined ? null : secondReview.rcons}</p>
-                  <button className="gd-ui-button  css-glrvaa">Helpful</button>
+                  <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '20px', bottom: '20px', textAlign: 'center' }}>
+                      <span>Helpful</span>
+                    </button>
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
               </div>

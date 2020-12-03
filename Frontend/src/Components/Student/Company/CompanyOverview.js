@@ -24,6 +24,10 @@ export default class CompanyOverview extends Component {
     };
   }
 
+  componentDidMount() {
+    const { firstReview, secondReview } = this.state;
+    console.log(firstReview);
+  }
   // componentDidMount() {
   //   const { cid } = this.props;
   //   console.log(cid);
@@ -75,12 +79,168 @@ export default class CompanyOverview extends Component {
     const { showAddReview } = this.state;
     const { overallRate, recommendedRating, ceoRating, firstReview, secondReview } = this.props;
     const { cname } = this.props;
+    let contents;
+    if (firstReview.length !== 0 && secondReview.length !== 0) {
+      contents = (
+        <div style={{ textAlign: 'left' }}>
+          <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
+          <div>
+            <div>
+              <div style={{ marginLeft: '50px' }}>
+                <h2>
+                  <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
+                    "
+                    {firstReview === undefined ? null : firstReview.rheadline}
+                    "
+                  </a>
+                </h2>
+                <div>
+                  <div style={{ marginBottom: '50px' }}>
+                    <div>
+                      <div>
+                        <span className="fa fa-star checked" />
+                        <span className="fa fa-star checked" />
+                        <span className="fa fa-star-half-o" />
+                        <span className="fa fa-star" />
+                        <span className="fa fa-star" />
+                      </div>
+                      <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+                        <div className="tooltipContainer">
+                          <span className="pointer" />
+                          <div className="content">
+                            <ul className="pl-0" />
+                          </div>
+                        </div>
+                      </aside>
+                    </div>
+                    <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview === undefined ? null : firstReview.rwriter}</span>
+                  </div>
+                </div>
+                <div className="interviewOutcomes">
+                  <div className="flex-grid">
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={firstReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell">
+                          <span className="middle">
+                            {firstReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={firstReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell"><span className="middle">{firstReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
+                      </div>
+                    </div>
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={firstReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell"><span className="middle">{firstReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-0 mt-xsm strong ">Description</p>
+                <p>{firstReview === undefined ? null : firstReview.rdescription}</p>
+                <p className="mb-0 mt-xsm strong ">Pros</p>
+                <p>{firstReview === undefined ? null : firstReview.rpros}</p>
+                <p className="mb-0 mt-xsm strong ">Cons</p>
+                <p>
+                  {firstReview === undefined ? null : firstReview.rcons}
+                  {' '}
+                  <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '20px', bottom: '20px', textAlign: 'center' }}>
+                    <span>Helpful</span>
+                  </button>
+                </p>
+              </div>
+              <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+            </div>
+          </div>
+          <div>
+            <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
+            <div>
+              <div style={{ marginLeft: '50px' }}>
+                <h2>
+                  <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
+                    "
+                    {secondReview === undefined ? null : secondReview.rheadline}
+                    "
+                  </a>
+                </h2>
+                <div>
+                  <div style={{ marginBottom: '50px' }}>
+                    <div>
+                      <div>
+                        <span className="fa fa-star checked" />
+                        <span className="fa fa-star checked" />
+                        <span className="fa fa-star-half-o" />
+                        <span className="fa fa-star" />
+                        <span className="fa fa-star" />
+                      </div>
+                      <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
+                        <div className="tooltipContainer">
+                          <span className="pointer" />
+                          <div className="content">
+                            <ul className="pl-0" />
+                          </div>
+                        </div>
+                      </aside>
+                    </div>
+                    <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview === undefined ? null : secondReview.rwriter}</span>
+                  </div>
+                </div>
+                <div className="interviewOutcomes">
+                  <div className="flex-grid">
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={secondReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell">
+                          <span className="middle">
+                            {secondReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={secondReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell"><span className="middle">{secondReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
+                      </div>
+                    </div>
+                    <div className="tightLt col span-1-3">
+                      <div className="middle">
+                        <div className="cell"><i className={secondReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
+                        <div className="cell"><span className="middle">{secondReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-0 mt-xsm strong ">Description</p>
+                <p>{secondReview === undefined ? null : secondReview.rdescription}</p>
+                <p className="mb-0 mt-xsm strong ">Pros</p>
+                <p>{secondReview === undefined ? null : secondReview.rpros}</p>
+                <p className="mb-0 mt-xsm strong ">Cons</p>
+                <p>{secondReview === undefined ? null : secondReview.rcons}</p>
+                <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '20px', bottom: '20px', textAlign: 'center' }}>
+                  <span>Helpful</span>
+                </button>
+              </div>
+              <hr style={{ width: '3000px', backgroundColor: 'black' }} />
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      contents = null;
+    }
     return (
       <div id="companyHomeContent">
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
           <h2 style={{ marginLeft: '45px' }}>
-            { company.cname }
-            's Overview
+            { `${company.cname} `}
+            Overview
           </h2>
           <ul style={{ listStyleType: 'none' }}>
             <li className="d-flex align-items-center col-12 col-sm-6 p-0 m-0 pb-sm pr-xxsm">
@@ -115,9 +275,10 @@ export default class CompanyOverview extends Component {
               </div>
             </li>
           </ul>
-          <div style={{ marginLeft: '20px', marginRight: '20px' }}>
+          <div>
+            <h2 style={{ marginTop: '50px', position: 'relative', top: '50px', right: '160px' }}>Company Mission</h2>
             <span>
-              In 1955, an enterprising salesman named Ray Kroc discovered a small burger restaurant in California, and wrote the first page of McDonald’s® history. In 1967, the first McDonald’s Canada opened in Richmond, B.C. We’ve been growing with our communities and serving quality food at great value ever since. Today, McDonald’s Canada is proud to be one of the world’s leading foodservice retailers. From coast to coast, we serve delicious choices to more than 2.5 million people in over 1,400 locations every day. We’re also more than just your local restaurant. We’re hardworking small-business men and women, students working part-time, seniors getting the most out of life, and volunteers lending time to make a difference in the communities we live and work in.
+              {company.cmission}
               <br />
               <br />
               <br />
@@ -126,8 +287,8 @@ export default class CompanyOverview extends Component {
         </div>
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
-            {cname}
-            's Reviews
+            {`${cname} `}
+            Reviews
           </h2>
           <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
             <span style={{ color: 'green' }}>{overallRate}</span>
@@ -182,153 +343,7 @@ export default class CompanyOverview extends Component {
             <div>Approve of CEO</div>
           </div>
           <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-          <div style={{ textAlign: 'left' }}>
-            <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
-            <div>
-              <div>
-                <div style={{ marginLeft: '50px' }}>
-                  <h2>
-                    <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
-                      "
-                      {firstReview === undefined ? null : firstReview.rheadline}
-                      "
-                    </a>
-                  </h2>
-                  <div>
-                    <div style={{ marginBottom: '50px' }}>
-                      <div>
-                        <div>
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star-half-o" />
-                          <span className="fa fa-star" />
-                          <span className="fa fa-star" />
-                        </div>
-                        <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
-                          <div className="tooltipContainer">
-                            <span className="pointer" />
-                            <div className="content">
-                              <ul className="pl-0" />
-                            </div>
-                          </div>
-                        </aside>
-                      </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview === undefined ? null : firstReview.rwriter}</span>
-                    </div>
-                  </div>
-                  <div className="interviewOutcomes">
-                    <div className="flex-grid">
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={firstReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell">
-                            <span className="middle">
-                              {firstReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={firstReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell"><span className="middle">{firstReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
-                        </div>
-                      </div>
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={firstReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell"><span className="middle">{firstReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>{firstReview === undefined ? null : firstReview.rdescription}</p>
-                  <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>{firstReview === undefined ? null : firstReview.rpros}</p>
-                  <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>
-                    {firstReview === undefined ? null : firstReview.rcons}
-                    {' '}
-                    <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', right: '5px', textAlign: 'center' }}>
-                      <span>Helpful</span>
-                    </button>
-                  </p>
-                </div>
-                <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-              </div>
-            </div>
-            <div>
-              <div><span><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" style={{ float: 'left' }} /></span></div>
-              <div>
-                <div style={{ marginLeft: '50px' }}>
-                  <h2>
-                    <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm">
-                      "
-                      {secondReview === undefined ? null : secondReview.rheadline}
-                      "
-                    </a>
-                  </h2>
-                  <div>
-                    <div style={{ marginBottom: '50px' }}>
-                      <div>
-                        <div>
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star-half-o" />
-                          <span className="fa fa-star" />
-                          <span className="fa fa-star" />
-                        </div>
-                        <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
-                          <div className="tooltipContainer">
-                            <span className="pointer" />
-                            <div className="content">
-                              <ul className="pl-0" />
-                            </div>
-                          </div>
-                        </aside>
-                      </div>
-                      <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{secondReview === undefined ? null : secondReview.rwriter}</span>
-                    </div>
-                  </div>
-                  <div className="interviewOutcomes">
-                    <div className="flex-grid">
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={secondReview.rrecommended === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell">
-                            <span className="middle">
-                              {secondReview.rrecommended === 'Yes' ? 'Recommends' : 'Doesn\'t Recommend'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={secondReview.routlook === 'Positive' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell"><span className="middle">{secondReview.routlook === 'Positive' ? 'Positive Outlook' : 'Positive Outlook'}</span></div>
-                        </div>
-                      </div>
-                      <div className="tightLt col span-1-3">
-                        <div className="middle">
-                          <div className="cell"><i className={secondReview.rceoapprove === 'Yes' ? 'sqLed middle sm green margRtXs ' : 'sqLed middle sm red margRtXs '} /></div>
-                          <div className="cell"><span className="middle">{secondReview.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Doesn\'t Approve CEO'}</span></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="mb-0 mt-xsm strong ">Description</p>
-                  <p>{secondReview === undefined ? null : secondReview.rdescription}</p>
-                  <p className="mb-0 mt-xsm strong ">Pros</p>
-                  <p>{secondReview === undefined ? null : secondReview.rpros}</p>
-                  <p className="mb-0 mt-xsm strong ">Cons</p>
-                  <p>{secondReview === undefined ? null : secondReview.rcons}</p>
-                  <button className="gd-ui-button  css-glrvaa">Helpful</button>
-                </div>
-                <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-              </div>
-            </div>
-          </div>
+          {contents}
         </div>
       </div>
     );
