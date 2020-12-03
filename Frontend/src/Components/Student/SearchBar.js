@@ -17,8 +17,8 @@ class SearchBar extends Component {
   handleClick = () => {
     const { isAuth, views, viewWhileNotLoggedIn } = this.props;
     if (!isAuth) {
-      if (views >= 2) {
-        alert('You have surpassed your limit of 2 searsches. Please login to continue!');
+      if (views >= 5) {
+        alert('You have surpassed your limit of 5 searches. Please login to continue!');
         return;
       }
 
