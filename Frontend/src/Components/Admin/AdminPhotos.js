@@ -9,11 +9,32 @@ class AdminPhotos extends Component {
       filter: 'All',
       filterOptions: ['All', 'Pending', 'Approved', 'Rejected'],
       reviews: [],
+      cphotos: [],
+      cphotosFiltered: []
     }
 
-    // this.filterChangeHandler = this.filterChangeHandler.bind(this);
+    this.filterChangeHandler = this.filterChangeHandler.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      cphotos: [...this.props.company.cphotos],
+      cphotosFiltered: [...this.props.company.cphotos],
+    })
+  }
+
+  filterChangeHandler = (event) => {
+    if(event.target.value !== 'All'){
+      let photos = this.state.cphotos.filter((item) => item.approval === event.target.value)
+      this.setState({
+        cphotosFiltered: [...photos]
+      })
+    } else {
+      this.setState({
+        cphotosFiltered: [...this.state.cphotos],
+      })
+    }
+  }
 
   render(){
     console.log('props: ', this.props);
@@ -38,7 +59,7 @@ class AdminPhotos extends Component {
             {/* <button className="btn btn-primary">Add Photos</button> */}
             <div id="EIHeaderFollowButton" />
           </div>
-          { company.cphotos.map((photo) => (
+          { this.state.cphotosFiltered.map((photo) => (
               <PhotoCard photo={photo} cid={company._id} />
           ))}
         </div>

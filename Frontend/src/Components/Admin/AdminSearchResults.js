@@ -44,7 +44,9 @@ class CompanySearchResults extends Component {
         <div className="row justify-content-between">
           <div className="col-lg-7">
             <div className="row justify-content-start">
-              <div className="col-3 logo-and-ratings-wrap"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm"><span><img src="https://media.glassdoor.com/sqls/432/mcdonald-s-squarelogo-1585239308674.png" /></span></a></div>
+              <div className="col-3 logo-and-ratings-wrap">
+                <img className="img-responsive img-thumbnail" src={item.cphoto} alt="reviewPic" width="300" />
+              </div>
               <div className="col-9 pr-0">
                 <h2>
                   <Link to={{
@@ -147,11 +149,7 @@ class CompanySearchResults extends Component {
                     {' '}
                     <strong>1</strong>
                     –
-                    <strong>10</strong>
-                    {' '}
-                    of
-                    {' '}
-                    <strong>53</strong>
+                    <strong>5</strong>
                     {' '}
                     Companies
                   </div>
@@ -160,25 +158,6 @@ class CompanySearchResults extends Component {
                   {contents}
                 </div>
                 <div className="module pt-xxsm">
-                  <div className="breadcrumbList margTop minor">
-                    <div className="breadcrumb ib " itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                      <a itemProp="url" href="/Reviews/index.htm" data-ga-lbl="">
-                        <span itemProp="title">Reviews</span>
-                        {' '}
-&nbsp;&gt;&nbsp;
-                        {' '}
-                      </a>
-                    </div>
-                    <div className="breadcrumb ib " itemProp="child" itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                      <a itemProp="url" href="/Explore/top-companies-san-francisco_IL.14,27_IM759.htm" data-ga-lbl="">
-                        <span itemProp="title">San Francisco</span>
-                        {' '}
-&nbsp;&gt;&nbsp;
-                        {' '}
-                      </a>
-                    </div>
-                    <div className="breadcrumb ib " itemProp="child" itemScope="" itemType="http://data-vocabulary.org/Breadcrumb"><a itemProp="url" href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23.htm" data-ga-lbl=""><span itemProp="title">mcdonalds</span></a></div>
-                  </div>
                   <div id="FooterPageNav" className="pageNavBar tbl fill noMargBot">
                     <div className="pagingControls cell middle">
                       <ul>

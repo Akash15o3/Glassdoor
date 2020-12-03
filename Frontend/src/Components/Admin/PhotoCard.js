@@ -61,12 +61,12 @@ class PhotoCard extends Component {
     let approveButton = null;
     let rejectButton = null;
     if(photo.approval == 'Pending') {
-      approveButton = <button onClick={this.approvePhoto} className="btn btn-success" style={{ width: 100, position: 'relative', top: '22px', left: '75px' }}>Approve</button>
-      rejectButton = <button onClick={this.rejectPhoto} className="btn btn-success" style={{ width: 100, position: 'relative', top: '22px', left: '75px' }}>Reject</button>
+      approveButton = <button onClick={this.approvePhoto} className="btn btn-success" style={{ width: 100, position: 'relative' }}>Approve</button>
+      rejectButton = <button onClick={this.rejectPhoto} className="btn btn-success" style={{ width: 100, position: 'relative' }}>Reject</button>
     } else if (photo.approval == 'Approved') {
-      rejectButton = <button onClick={this.rejectPhoto} className="btn btn-sm btn-success btn-block" style={{ width: 100, position: 'relative', top: '22px', left: '75px' }}>Reject</button>
+      rejectButton = <button onClick={this.rejectPhoto} className="btn btn-sm btn-success btn-block" style={{ width: 100, position: 'relative' }}>Reject</button>
     } else if(photo.approval == 'Rejected') {
-      approveButton = <button onClick={this.approvePhoto} className="btn btn-sm btn-success btn-block" style={{ width: 100, position: 'relative', top: '22px', left: '75px' }}>Approve</button>
+      approveButton = <button onClick={this.approvePhoto} className="btn btn-sm btn-success btn-block" style={{ width: 100, position: 'relative' }}>Approve</button>
     }
 
     if(this.state.change == true)
@@ -76,7 +76,10 @@ class PhotoCard extends Component {
     return(
       <React.Fragment>
           <img src={photo.url} alt="cphoto" />
+          <br/>
           {approveButton} {rejectButton}
+          <br/>
+          <br/>
           <br/>
       </React.Fragment>
      

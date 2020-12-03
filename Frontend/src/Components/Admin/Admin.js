@@ -15,15 +15,28 @@ class AdminTabs extends Component {
       reviewsHit: false,
       companiesHit: false,
       display: ''
-
     }
+
     this.getNumReviews = this.getNumReviews.bind(this);
     this.topReviewedCompanies = this.topReviewedCompanies.bind(this);
     this.topRatedCompanies = this.topRatedCompanies.bind(this);
     this.topStudents = this.topStudents.bind(this);
     this.topCEOs = this.topCEOs.bind(this);
     this.topViewedCompanies = this.topViewedCompanies.bind(this);
+  }
 
+  componentDidMount (){
+    this.setState({
+      reviews: '',
+      companies: [],
+      students: [],
+      topCEOs: [],
+      topCEOsHit: false,
+      studentsHit: false,
+      reviewsHit: false,
+      companiesHit: false,
+      display: ''
+    })
   }
 
   getNumReviews = (event) => {
@@ -34,6 +47,12 @@ class AdminTabs extends Component {
           this.setState({
             reviews: response.data,
             reviewsHit: true,
+            companies: [],
+            students: [],
+            topCEOs: [],
+            topCEOsHit: false,
+            studentsHit: false,
+            companiesHit: false,
             display: 'Showing Reviews Added Today'
           });
         }
@@ -48,6 +67,12 @@ class AdminTabs extends Component {
           this.setState({
             companies: [ ...response.data ],
             companiesHit: true,
+            reviews: '',
+            students: [],
+            topCEOs: [],
+            topCEOsHit: false,
+            studentsHit: false,
+            reviewsHit: false,
             display: 'Showing 1-5 of 5 Most Reviewed Companies'
           });
         }
@@ -62,6 +87,12 @@ class AdminTabs extends Component {
           this.setState({
             companies: [ ...response.data ],
             companiesHit: true,
+            reviews: '',
+            students: [],
+            topCEOs: [],
+            topCEOsHit: false,
+            studentsHit: false,
+            reviewsHit: false,
             display: 'Showing 1-5 of 5 Top Rated Companies'
           });
         }
@@ -76,6 +107,12 @@ class AdminTabs extends Component {
           this.setState({
             students: [ ...response.data ],
             studentsHit: true,
+            reviews: '',
+            companies: [],
+            topCEOs: [],
+            topCEOsHit: false,
+            reviewsHit: false,
+            companiesHit: false,
             display: 'Showing 1-5 of 5 Students with highest accepted reviews'
           });
         }
@@ -90,6 +127,12 @@ class AdminTabs extends Component {
           this.setState({
             topCEOs: [ ...response.data ],
             topCEOsHit: true,
+            reviews: '',
+            companies: [],
+            students: [],
+            studentsHit: false,
+            reviewsHit: false,
+            companiesHit: false,
             display: 'Showing 1-10 of 10 Top CEOs'
           });
         }
@@ -104,6 +147,12 @@ class AdminTabs extends Component {
           this.setState({
             companies: [ ...response.data ],
             companiesHit: true,
+            reviews: '',
+            students: [],
+            topCEOs: [],
+            topCEOsHit: false,
+            studentsHit: false,
+            reviewsHit: false,
             display: 'Showing 1-10 of 10 Top Viewed Companies in last 24 hours'
           });
         }

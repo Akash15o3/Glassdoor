@@ -86,7 +86,13 @@ class AdminCompanyPage extends Component {
               </div>
             </div>
             <div className="empInfo tbl hideHH ">
-              <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '58px', right: '17px' }}><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" className alt=" Logo" title /></span></a></div>
+              <div className="logo cell">
+                <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink">
+                  <span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '58px', right: '17px' }}>
+                    <img src={company.cphoto} className alt=" Logo" title />
+                  </span>
+                </a>
+              </div>
               <div className="header cell info">
                 <h1 className=" strong tightAll" title data-company="McDonald's">
                   <span id="DivisionsDropdownComponent" className="d-inline-flex align-items-center">
@@ -100,7 +106,7 @@ class AdminCompanyPage extends Component {
           <div id="StickyNavWrapper" className="stickyNavWrapper ">
             <div id="SmarterNavContainer" className="initialStick">
               <div id="SmarterBannerContainer" />
-              <div id="EmpLinksWrapper" className="empLinksWrapper  sticky">
+              <div id="EmpLinksWrapper" className="empLinksWrapper sticky">
                 <div className="empLinks tbl ">
                   <div id="EIProductHeaders" className="tbl eiProductCells">
                     <div className="row ">
@@ -118,14 +124,6 @@ class AdminCompanyPage extends Component {
                       </a>
                       <div className="vline cell"><i /></div>
                     </div>
-                  </div>
-                  <div className="buttons cell showDesk padRt alignRt">
-                    <div id="EIHeaderFollowButton" style={{ display: 'inline-block', marginRight: '12px' }} />
-                    <a href="/mz-survey/employer/collectReview_input.htm?i=432&j=true&y=&c=PAGE_INFOSITE_TOP" className="gd-btn gd-btn-link gradient gd-btn-1 gd-btn-med gd-btn-icon padHorz addReview">
-                      <i className="btn-plus margRtSm" />
-                      <span>Add a Review</span>
-                      <i className="hlpr" />
-                    </a>
                   </div>
                 </div>
               </div>

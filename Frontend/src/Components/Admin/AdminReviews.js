@@ -15,10 +15,28 @@ class AdminReviews extends Component {
 
   filterChangeHandler = (event) => {
     console.log("selected", event.target.value)
-
-    this.setState({
-      filter: event.target.value
-    })
+    let url = `${process.env.REACT_APP_BACKEND}/admin/reviews/cid`;
+    console.log('props adminreviews: ', this.props)
+    const data = {
+      cid: this.props.company._id,
+      skip: 0,
+      limit: 5,
+      filter: event.target.value,
+    }
+    axios.post(url, data)
+      .then((response) => {
+        console.log("Status Code : ",response.data);
+        if(response.status === 200){
+          let temp = JSON.parse(JSON.stringify(response.data));
+          console.log('=>', temp)
+          this.setState({
+            reviews: [...temp],
+            filter: event.target.value,
+          })
+        }
+      }).catch(err =>{
+          console.log("No response")
+      });
   }
 
   componentWillMount() {
@@ -63,7 +81,35 @@ class AdminReviews extends Component {
             ))}
           </select>
         </div>
-        <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginTop: '40px' }}>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div>
+            <div className="flex-aside">
+              <article>
+                <div className="companySearchHierarchies gdGrid">
+                  <div>
+                    {this.state.reviews.map (review => (
+                      <div>
+                        <ReviewCard review = {review} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    )
+  }
+
+}
+
+export default AdminReviews;
+
+/*
+  <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginTop: '40px' }}>
           <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
             { company.cname }
             's Reviews
@@ -74,11 +120,4 @@ class AdminReviews extends Component {
               </div>
             ))}
         </div>
-      </div>
-
-    )
-  }
-
-}
-
-export default AdminReviews;
+*/

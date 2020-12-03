@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import reviewPic from '../../Static/Images/review.jpeg'
 
 class ReviewCard extends Component {
   
@@ -21,7 +22,7 @@ class ReviewCard extends Component {
         console.log("Status Code : ",response.data);
         if(response.status === 200){
           this.setState({
-            change: !this.state.change,
+            change: true,
           })
         }
       }).catch(err =>{
@@ -37,7 +38,7 @@ class ReviewCard extends Component {
         console.log("Status Code : ",response.data);
         if(response.status === 200){
           this.setState({
-            change: !this.state.change,
+            change: true,
           })
         }
       }).catch(err =>{
@@ -81,15 +82,16 @@ class ReviewCard extends Component {
     let approveButton = null;
     let rejectButton = null;
     if(review.rapproval == 'Pending') {
-      approveButton = <button onClick={this.approveReview} className="btn btn-success" style={{ position: 'relative', top: '22px', left: '75px' }}>Approve</button>
-      rejectButton = <button onClick={this.rejectReview} className="btn btn-success" style={{ position: 'relative', top: '22px', left: '75px' }}>Reject</button>
+      approveButton = <button onClick={this.approveReview} className="btn btn-success" style={{ position: 'center', width: '20%'}}>Approve</button>
+      rejectButton = <button onClick={this.rejectReview} className="btn btn-success" style={{ position: 'relative', width: '20%'}}>Reject</button>
     } else if (review.rapproval == 'Approved') {
-      rejectButton = <button onClick={this.rejectReview} className="btn btn-sm btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Reject</button>
+      rejectButton = <button onClick={this.rejectReview} className="btn btn btn-success btn-block" style={{ position: 'relative', width: '20%' }}>Reject</button>
     } else if(review.rapproval == 'Rejected') {
-      approveButton = <button onClick={this.approveReview} className="btn btn-sm btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Approve</button>
+      approveButton = <button onClick={this.approveReview} className="btn btn btn-success btn-block" style={{ position: 'relative', width: '20%' }}>Approve</button>
     }
 
     return(
+      /*
       <div className="container-fluid style={{borderColor: 'gray', height: 100}}">
         <div className="row">
           <div className="col-12 mt-3">
@@ -97,7 +99,7 @@ class ReviewCard extends Component {
               <div className="card-horizontal">
                 <div class="left-half">
                   <div className="img-square-wrapper">
-                    <img className="img-responsive img-thumbnail" src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's icon" width="100" />
+                    <img className="img-responsive img-thumbnail" src={reviewPic} alt="reviewPic" width="100" />
                   </div>
                 </div>
                 <div class="right-half">
@@ -111,6 +113,46 @@ class ReviewCard extends Component {
                 <small className="text-muted">{review.rdescription}</small>
                 <br/>
                 {approveButton}  {rejectButton}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      */
+
+
+      <div className="single-company-result module ">
+        <div className="row justify-content-between">
+          <div className="col-lg-7">
+            <div className="row justify-content-start">
+              <div className="col-3 logo-and-ratings-wrap">
+                <img className="img-responsive img-thumbnail" src={reviewPic} alt="reviewPic" width="300" />
+                <h3>{review.rapproval}</h3>
+              </div>
+              <div className="col-9 pr-0">
+                <h2>
+                    {' '}
+                    {review.rstudent.stname}
+                    {' '}
+                  <div>
+                    <span>
+                      {renderStars}
+                      {renderHalfStars}
+                      {renderEmptyStars}
+                    </span>
+                  </div>
+                </h2>
+                <div>
+                  <p className="hqInfo adr m-0">
+                    {review.rdescription}
+                  </p>
+                  <p className="webInfo mb-0 mt-xxsm">
+                  <span>
+                    {approveButton}  {rejectButton}
+                  </span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
