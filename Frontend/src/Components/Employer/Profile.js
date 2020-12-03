@@ -20,13 +20,12 @@ export default class Profile extends Component {
           </div>
           <ul id="studentTabList" role="tablist">
             <li>Profile</li>
-            
-            
+
             <li>Demographics</li>
           </ul>
         </div>
         <div id="profileView">
-          <div className="profileField">
+          <div className="jobProfileField">
             <div style={{ textAlign: 'center' }}>
               <h1 style={{ display: 'inline-block' }}>Info</h1>
               <svg className="SVGInline-svg" style={{ width: '24px', height: '24px', marginLeft: '5px' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -37,10 +36,10 @@ export default class Profile extends Component {
             </div>
             <div style={{ textAlign: 'center' }}>
               <button className="home-btn info">Add/Edit Profile Details</button>
-              
+
             </div>
           </div>
-          <div className="profileField">
+          <div className="jobProfileField">
             <div style={{ textAlign: 'center' }}>
               <h1 style={{ display: 'inline-block' }}>Company Mission</h1>
               <svg className="SVGInline-svg" style={{ width: '24px', height: '24px', marginLeft: '5px' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -57,11 +56,8 @@ export default class Profile extends Component {
               </button>
             </div>
           </div>
-          <div className="profileField">
-            
-            
-          </div>
-          
+          <div className="jobProfileField" />
+
         </div>
       </div>
     );
