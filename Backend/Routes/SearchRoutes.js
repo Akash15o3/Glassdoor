@@ -68,5 +68,25 @@ Router.post('/jobs', (request, response) => {
     }
   });
 });
+Router.post('/jobs/numPages', (request, response) => {
+  console.log('\nEndpoint POST: get number of jobs search result pages ');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
 
+  kafka.make_request('searchesTopic', 'JOBSEARCHPAGES', data, (err, result) => {
+    console.log('get number of jobs search result pages', result);
+    if (err) {
+      console.log('get number of jobs search result pages Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('get number of jobs search result pages Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
 module.exports = Router;

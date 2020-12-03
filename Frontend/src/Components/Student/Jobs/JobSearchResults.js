@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import PlacesAutocomplete from 'react-places-autocomplete';
-
 import Modal from 'react-modal';
+import Pagination from '../../Pagination';
 
 Modal.setAppElement('#root');
 class JobSearchResults extends Component {
   constructor(props) {
     super(props);
+    this.itemsPerPage = 10;
     this.state = {
       jobs: [],
       selectedIndex: 0,
@@ -20,24 +21,37 @@ class JobSearchResults extends Component {
       address: '',
       minSalary: 0,
       maxSalary: Infinity,
-      loading: true
+      loading: true,
+      pageIndex: 0,
+      numPages: 0,
+      numJobs: 0
     };
   }
 
   componentDidMount() {
     const { searchQuery } = this.props;
-    const url = `${process.env.REACT_APP_BACKEND}/search/jobs`;
-
-    axios.post(url, { jtitle: searchQuery })
+    const Promises = [];
+    let url = `${process.env.REACT_APP_BACKEND}/search/jobs`;
+    Promises.push(axios.post(url, { jtitle: searchQuery })
       .then((response) => {
         if (response.data) {
           this.allJobs = response.data;
           this.setState({
-            jobs: response.data, loading: false
+            jobs: response.data
           });
-          console.log(response.data);
         }
-      });
+      }));
+    url = `${process.env.REACT_APP_BACKEND}/search/jobs/numPages`;
+    Promises.push(axios.post(url, { jtitle: searchQuery })
+      .then((response) => {
+        if (response.data) {
+          const { numJobs } = response.data;
+          this.setState({
+            numJobs, numPages: Math.ceil(numJobs / this.itemsPerPage)
+          });
+        }
+      }));
+    Promise.all(Promises).then(() => this.setState({ loading: false }));
   }
 
   handleAddressChange = (address) => {
@@ -151,9 +165,38 @@ class JobSearchResults extends Component {
       });
   }
 
+  setPage = (e) => {
+    this.setState({
+      loading: true
+    });
+    const { className } = e.currentTarget;
+    const { numPages } = this.state;
+    let { pageIndex } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      pageIndex -= 1;
+    } else if (className === 'next' && pageIndex < numPages - 1) {
+      pageIndex += 1;
+    } else if (className.includes('page')) {
+      pageIndex = parseInt(e.currentTarget.getAttribute('pageIndex'));
+    }
+    const url = `${process.env.REACT_APP_BACKEND}/search/jobs`;
+    axios.post(url, { jtitle: this.props.searchQuery, skip: pageIndex })
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            jobs: response.data, pageIndex, loading: false
+          });
+        }
+      });
+  }
+
   render() {
-    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, loading } = this.state;
+    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, loading, numJobs, numPages, pageIndex } = this.state;
+    const { itemsPerPage } = this;
+    let numItems = 0;
+    if (numJobs > 0) numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0 ? numJobs % itemsPerPage : itemsPerPage;
     const selectedJob = jobs[selectedIndex];
+
     const jobSearchResults = jobs.map((job, i) => {
       const date = new Date(job.jposted);
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -278,6 +321,7 @@ class JobSearchResults extends Component {
         <div id="jobSearchResults">
           <ul style={{ flex: 7, overflowY: 'scroll', height: '65%' }} className="jlGrid hover p-0 ">
             {jobSearchResults}
+            <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
           </ul>
           <div id="JDCol" className="noPad opened transformNone">
             <div id="JDWrapper" className>

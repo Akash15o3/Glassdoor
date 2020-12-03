@@ -442,3 +442,7 @@ left: 50%;
 .cTab{
   top:70%;
 }
+
+#JobDescriptionContainer{
+  margin-top: 15px;
+}

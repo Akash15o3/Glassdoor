@@ -110,7 +110,26 @@ function searchJobsByTitle(data, callback) {
       }
     });
 }
-
+function getNumJobSearchPages(data, callback) {
+  const regex = new RegExp(escapeRegex(data.jtitle), 'gi');
+  Jobs.find({ jtitle: regex }, (err, jobs) => {
+    if (err) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching number of job search results pages',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify({ numJobs: jobs.length }),
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   console.log('=>', msg.subTopic);
   switch (msg.subTopic) {
@@ -132,7 +151,12 @@ function handleRequest(msg, callback) {
       searchJobsByTitle(msg.data, callback);
       break;
     }
-
+    case 'JOBSEARCHPAGES': {
+      console.log('KB: Inside get job search results pages');
+      console.log('Message:', msg);
+      getNumJobSearchPages(msg.data, callback);
+      break;
+    }
     default: {
       const response = {
         status: 400,

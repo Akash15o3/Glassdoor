@@ -51,15 +51,28 @@ class CompanySearchResults extends Component {
   }
 
   setPage = (e) => {
+    this.setState({
+      loading: true
+    });
     const { className } = e.currentTarget;
-    const { pageIndex, numPages } = this.state;
+    const { numPages } = this.state;
+    let { pageIndex } = this.state;
     if (className === 'prev' && pageIndex > 0) {
-      this.setState({ pageIndex: pageIndex - 1 });
+      pageIndex -= 1;
     } else if (className === 'next' && pageIndex < numPages - 1) {
-      this.setState({ pageIndex: pageIndex + 1 });
+      pageIndex += 1;
     } else if (className.includes('page')) {
-      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+      pageIndex = parseInt(e.currentTarget.getAttribute('pageIndex'));
     }
+    const url = `${process.env.REACT_APP_BACKEND}/search/companies`;
+    axios.post(url, { cname: this.props.searchQuery, skip: pageIndex })
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            companies: response.data, pageIndex, loading: false
+          });
+        }
+      });
   }
 
   render() {
