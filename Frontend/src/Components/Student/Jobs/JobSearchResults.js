@@ -259,7 +259,7 @@ class JobSearchResults extends Component {
           </div>
           {this.props.isAuth ? <button onClick={this.submitApplication} className="save">Apply</button> : null}
         </Modal>
-        <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
+        <div id="HzFiltersWrap">
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
               <select onChange={this.sortTypeChangeHandler} on className="filter">
@@ -267,6 +267,13 @@ class JobSearchResults extends Component {
                 <option value="Rating">Highest Rated</option>
               </select>
               {/* <input className="filter" placeholder="Location" /> */}
+              <select onChange={this.jobTypeFilterChangeHandler} className="filter" style={{ fontSize: 'medium' }}>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+                <option value="Temporary">Temporary</option>
+              </select>
               <PlacesAutocomplete
                 className="filter"
                 value={this.state.address}
@@ -306,13 +313,7 @@ class JobSearchResults extends Component {
                   </div>
                 )}
               </PlacesAutocomplete>
-              <select onChange={this.jobTypeFilterChangeHandler} className="filter" style={{ fontSize: 'medium' }}>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-                <option value="Temporary">Temporary</option>
-              </select>
+
               <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="min" className="filter" placeholder="Minimum Salary" />
               <input type="number" onChange={this.salaryFilterChangeHandler} salaryType="max" className="filter" placeholder="Maximum Salary" />
             </div>

@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+#html, body, .App, #root{
+  height:100%
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -94,6 +96,7 @@
 }
 #studentProfile{
   display: flex;
+  height: 100%;
 }
 #profileTabs{
   flex: 3;
@@ -101,9 +104,8 @@
   border-right: 1px solid grey;
 }
 .studentHomeContent{
-  display: flex;
-  flex-direction: column;
   flex: 7;
+  height: 100%;
 }
 #studentTabList{
   list-style: none;
@@ -151,6 +153,13 @@ outline: none;
 
 .profileField{
 border-bottom: 1px solid grey;
+padding: 3vw;
+height: 50%;
+position: relative;
+top:100px
+}
+.jobProfileField{
+  border-bottom: 1px solid grey;
 padding: 3vw;
 }
 .jobPrefField{

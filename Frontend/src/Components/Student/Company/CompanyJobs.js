@@ -212,7 +212,7 @@ class CompanyJobs extends Component {
           </div>
           {this.props.isAuth ? <button onClick={this.submitApplication} className="save">Apply</button> : null}
         </Modal>
-        <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
+        <div id="HzFiltersWrap">
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
 

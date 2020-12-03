@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { BeatLoader } from 'react-spinners';
 
 Modal.setAppElement('#root');
 export default class CompanyReviews extends Component {
@@ -25,7 +26,8 @@ export default class CompanyReviews extends Component {
       rfeatured: '',
       rreply: '',
       rreplyid: '',
-      reviews: []
+      reviews: [],
+      loading: true
     };
   }
 
@@ -39,7 +41,7 @@ export default class CompanyReviews extends Component {
           console.log(response.data);
           //   console.log(response.data._id, '||||', response.data[0]._id);
           this.setState({
-            reviews: response.data,
+            reviews: response.data, loading: false
           });
         }
       });
@@ -232,7 +234,7 @@ export default class CompanyReviews extends Component {
       }
     );
 
-    return (
+    return this.state.loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
         {/* <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleAddReview} />

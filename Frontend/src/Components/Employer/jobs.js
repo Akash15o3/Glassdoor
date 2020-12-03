@@ -8,7 +8,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import { Link } from 'react-router-dom';
-
+import { BeatLoader } from 'react-spinners';
 import Modal from 'react-modal';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { Pie } from 'react-chartjs-2';
@@ -22,7 +22,8 @@ class JobSearchResults extends Component {
     super(props);
     this.state = {
       pageIndex: 0,
-
+      numPages: 0,
+      loading: true,
       jobs: [],
       selectedIndex: 0,
       jobInfoState: 'jdescription',
@@ -179,7 +180,6 @@ class JobSearchResults extends Component {
     };
 
     this.itemsPerPage = 10;
-    this.numPages = 3;
 
     // this.getApplierDemographics = this.getApplierDemographics.bind(this);
   }
@@ -195,6 +195,8 @@ class JobSearchResults extends Component {
         this.setState({
           jobs: response.data,
           totalCountOfJobs: response.data.length,
+          numPages: Math.ceil(response.data.length / this.itemsPerPage),
+          loading: false
         });
         console.log('Jobs response fe');
         console.log(response.data);
@@ -212,7 +214,7 @@ class JobSearchResults extends Component {
     const { pageIndex } = this.state;
     if (className === 'prev' && pageIndex > 0) {
       this.setState({ pageIndex: pageIndex - 1 });
-    } else if (className === 'next' && pageIndex < this.numPages - 1) {
+    } else if (className === 'next' && pageIndex < this.state.numPages - 1) {
       this.setState({ pageIndex: pageIndex + 1 });
     } else if (className.includes('page')) {
       this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
@@ -635,10 +637,13 @@ class JobSearchResults extends Component {
       coverLetter,
       showJobApplication,
       pageIndex,
+      numPages
     } = this.state;
 
     const { itemsPerPage } = this;
-
+    let numItems = 0;
+    const numJobs = jobs.length;
+    if (numJobs > 0) numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0 ? numJobs % itemsPerPage : itemsPerPage;
     console.log('jobs frontend jobs', jobs);
     console.log('selected index: ', selectedIndex);
     const selectedJob = jobs[selectedIndex];
@@ -825,7 +830,7 @@ class JobSearchResults extends Component {
         applicantContent = null;
     }
 
-    return (
+    return this.state.loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div style={{ marginTop: '15px' }}>
         <Modal
           isOpen={showJobApplication}
@@ -896,7 +901,7 @@ class JobSearchResults extends Component {
             Apply
           </button>
         </Modal>
-        <div id="HzFiltersWrap" style={{ zIndex: 0 }}>
+        <div id="HzFiltersWrap">
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
               {/* <input className="filter" placeholder="Location" /> */}
@@ -966,7 +971,7 @@ class JobSearchResults extends Component {
           >
             {/* {jobSearchResults} */}
             {
-              [...Array(this.itemsPerPage)].map((e, i) => {
+              [...Array(numItems)].map((e, i) => {
                 return (
                   <container>
                     {jobSearchResults[i + (pageIndex * itemsPerPage)]}
@@ -974,7 +979,7 @@ class JobSearchResults extends Component {
                 );
               })
             }
-            <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.numPages} />
+            <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.state.numPages} />
 
           </ul>
 
