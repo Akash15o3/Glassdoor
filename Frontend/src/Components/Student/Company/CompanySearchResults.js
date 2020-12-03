@@ -4,31 +4,45 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import { getCid, getCName } from '../../../Actions/studentActions';
+import Pagination from '../../Pagination';
 
 class CompanySearchResults extends Component {
   constructor(props) {
     super(props);
+    this.itemsPerPage = 10;
     this.state = {
       companies: [],
-      loading: true
+      loading: true,
+      pageIndex: 0,
+      numPages: 0,
+      numCompanies: 0
     };
   }
 
   componentDidMount() {
     const { searchQuery } = this.props;
     const cname = searchQuery;
-    const url = `${process.env.REACT_APP_BACKEND}/search/companies`;
-
-    axios.post(url, { cname })
+    const Promises = [];
+    let url = `${process.env.REACT_APP_BACKEND}/search/companies`;
+    Promises.push(axios.post(url, { cname })
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: response.data, loading: false
+            companies: response.data
           });
-          const { companies } = this.state;
-          console.log(companies);
         }
-      });
+      }));
+    url = `${process.env.REACT_APP_BACKEND}/search/companies/numPages`;
+    Promises.push(axios.post(url, { cname })
+      .then((response) => {
+        if (response.data) {
+          const { numCompanies } = response.data;
+          this.setState({
+            numCompanies, numPages: Math.ceil(numCompanies / this.itemsPerPage)
+          });
+        }
+      }));
+    Promise.all(Promises).then(() => this.setState({ loading: false }));
   }
 
   handleClick = (e) => {
@@ -36,9 +50,24 @@ class CompanySearchResults extends Component {
     this.props.getCName(e.target.getAttribute('name'));
   }
 
+  setPage = (e) => {
+    const { className } = e.currentTarget;
+    const { pageIndex, numPages } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      this.setState({ pageIndex: pageIndex - 1 });
+    } else if (className === 'next' && pageIndex < numPages - 1) {
+      this.setState({ pageIndex: pageIndex + 1 });
+    } else if (className.includes('page')) {
+      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+    }
+  }
+
   render() {
-    const { companies, loading } = this.state;
+    const { companies, loading, pageIndex, numCompanies, numPages } = this.state;
+    const { itemsPerPage } = this;
     const { credentials } = this.props;
+    let numItems = 0;
+    if (numCompanies > 0) numItems = numPages === pageIndex + 1 && numCompanies % itemsPerPage !== 0 ? numCompanies % itemsPerPage : itemsPerPage;
     const contents = companies.map((item) => (
       <div className="single-company-result module ">
         <div className="row justify-content-between">
@@ -105,17 +134,6 @@ class CompanySearchResults extends Component {
                   <span className="subtle"> Inter­views</span>
                 </a>
               </div>
-              <div className="col-12 mt">
-                <div className="row justify-content-center justify-content-lg-end">
-                  <div className="col-11 col-lg-auto cta-wrap">
-                    <a href="/mz-survey/employer/collectReview_input.htm?c=PAGE_SRCH_COMPANIES&amp;i=432" className="gd-btn gd-btn-link gradient gd-btn-1 gd-btn-med gd-btn-icon pr-md">
-                      <i className="btn-plus margRtSm" />
-                      <span>Add a Review</span>
-                      <i className="hlpr" />
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -138,13 +156,13 @@ class CompanySearchResults extends Component {
                     {' '}
                     Showing
                     {' '}
-                    <strong>1</strong>
+                    <strong>{(itemsPerPage * pageIndex) + 1}</strong>
                     –
-                    <strong>10</strong>
+                    <strong>{(itemsPerPage * pageIndex) + numItems}</strong>
                     {' '}
                     of
                     {' '}
-                    <strong>53</strong>
+                    <strong>{numCompanies}</strong>
                     {' '}
                     Companies
                   </div>
@@ -152,40 +170,7 @@ class CompanySearchResults extends Component {
                 <div>
                   {contents}
                 </div>
-                <div className="module pt-xxsm">
-                  <div className="breadcrumbList margTop minor">
-                    <div className="breadcrumb ib " itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                      <a itemProp="url" href="/Reviews/index.htm" data-ga-lbl="">
-                        <span itemProp="title">Reviews</span>
-                        {' '}
-&nbsp;&gt;&nbsp;
-                        {' '}
-                      </a>
-                    </div>
-                    <div className="breadcrumb ib " itemProp="child" itemScope="" itemType="http://data-vocabulary.org/Breadcrumb">
-                      <a itemProp="url" href="/Explore/top-companies-san-francisco_IL.14,27_IM759.htm" data-ga-lbl="">
-                        <span itemProp="title">San Francisco</span>
-                        {' '}
-&nbsp;&gt;&nbsp;
-                        {' '}
-                      </a>
-                    </div>
-                    <div className="breadcrumb ib " itemProp="child" itemScope="" itemType="http://data-vocabulary.org/Breadcrumb"><a itemProp="url" href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23.htm" data-ga-lbl=""><span itemProp="title">mcdonalds</span></a></div>
-                  </div>
-                  <div id="FooterPageNav" className="pageNavBar tbl fill noMargBot">
-                    <div className="pagingControls cell middle">
-                      <ul>
-                        <li className="prev"><span className="disabled"><i><span>Previous</span></i></span></li>
-                        <li className="page current "><span className="disabled">1</span></li>
-                        <li className="page "><a href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23_IP2.htm">2</a></li>
-                        <li className="page "><a href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23_IP3.htm">3</a></li>
-                        <li className="page "><a href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23_IP4.htm">4</a></li>
-                        <li className="page last"><a href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23_IP5.htm">5</a></li>
-                        <li className="next"><a href="/Reviews/san-francisco-mcdonalds-reviews-SRCH_IL.0,13_IM759_KE14,23_IP2.htm"><i><span>Next</span></i></a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
               </div>
             </article>
             <aside id="ZCol" className="zCol" />

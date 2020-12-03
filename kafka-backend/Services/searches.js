@@ -48,6 +48,27 @@ function searchCompaniesByName(data, callback) {
     });
 }
 
+function getNumCompanySearchPages(data, callback) {
+  const regex = new RegExp(escapeRegex(data.cname), 'gi');
+  Companies.find({ cname: regex }, (err, companies) => {
+    if (err) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error fetching number of company search results pages',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify({ numCompanies: companies.length }),
+      };
+      callback(null, response);
+    }
+  });
+}
+
 function searchJobsByTitle(data, callback) {
   console.log('Inside search jobs kafka BE');
   const regex = new RegExp(escapeRegex(data.jtitle), 'gi');
@@ -99,7 +120,12 @@ function handleRequest(msg, callback) {
       searchCompaniesByName(msg.data, callback);
       break;
     }
-
+    case 'COMPANYSEARCHPAGES': {
+      console.log('KB: Inside get company search results pages');
+      console.log('Message:', msg);
+      getNumCompanySearchPages(msg.data, callback);
+      break;
+    }
     case 'SEARCHJOBSBYTITLE': {
       console.log('KB: Inside search jobs by title');
       console.log('Message:', msg);

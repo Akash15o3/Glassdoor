@@ -25,7 +25,27 @@ Router.post('/companies', (request, response) => {
     }
   });
 });
+Router.post('/companies/numPages', (request, response) => {
+  console.log('\nEndpoint POST: get number of company search result pages ');
+  console.log('Req Body: ', request.body);
+  const data = { ...request.body };
 
+  kafka.make_request('searchesTopic', 'COMPANYSEARCHPAGES', data, (err, result) => {
+    console.log('get number of company search result pages', result);
+    if (err) {
+      console.log('get number of company search result pages Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('get number of company search result pages Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
 // Search Jobs by title
 Router.post('/jobs', (request, response) => {
   console.log('\nEndpoint POST: search by Job title');

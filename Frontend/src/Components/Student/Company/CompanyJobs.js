@@ -149,7 +149,6 @@ class CompanyJobs extends Component {
     const numJobs = jobs.length;
     let numItems = 0;
     if (numJobs > 0) numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0 ? numJobs % itemsPerPage : itemsPerPage;
-    console.log(jobs, numItems, pageIndex, numPages, itemsPerPage, numJobs);
     const jobSearchResults = [...Array(numItems)].map((e, i) => {
       const index = i + (pageIndex * itemsPerPage);
       const date = new Date(jobs[index].jposted);
