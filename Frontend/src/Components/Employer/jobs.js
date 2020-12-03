@@ -843,6 +843,9 @@ class JobSearchResults extends Component {
               padding: 0,
               textAlign: 'center',
             },
+            overlay: {
+              zIndex: 99
+            }
           }}
         >
           <span

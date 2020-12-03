@@ -187,7 +187,7 @@ class CompanyJobs extends Component {
 
     return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div style={{ marginTop: '15px' }}>
-        <Modal isOpen={showJobApplication} onRequestClose={this.toggleJobApplication} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black', padding: 0, textAlign: 'center' } }}>
+        <Modal isOpen={showJobApplication} onRequestClose={this.toggleJobApplication} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black', padding: 0, textAlign: 'center' }, overlay: { zIndex: 99 } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleJobApplication}>
             <svg className="SVGInline-svg modal_closeIcon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M13.34 12l5.38-5.38a.95.95 0 00-1.34-1.34L12 10.66 6.62 5.28a.95.95 0 00-1.34 1.34L10.66 12l-5.38 5.38a.95.95 0 001.34 1.34L12 13.34l5.38 5.38a.95.95 0 001.34-1.34z" fill="gray" fillRule="evenodd" />
