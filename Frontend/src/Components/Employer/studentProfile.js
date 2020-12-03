@@ -34,7 +34,7 @@ class CompanyHomePage extends Component {
       ethnicity: '',
       veteran: '',
       stdemographics: '',
-      loading: true
+      loading: true,
     };
   }
 
@@ -56,7 +56,7 @@ class CompanyHomePage extends Component {
           stphoto: response.data.stphoto,
           stjobpref: { ...response.data.stjobpref },
           stdemographics: { ...response.data.stdemographics },
-          loading: false
+          loading: false,
           // relocation: response.data.stjobpref.strelocation,
           // title: response.data.title,
           // targetsalary: response.data.targetsalary,
@@ -128,7 +128,11 @@ class CompanyHomePage extends Component {
     //     console.log("D");
     //     companyContent = null;
     // }
-    return this.state.loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
+    return this.state.loading ? (
+      <div className="loader cTab">
+        <BeatLoader color="green" />
+      </div>
+    ) : (
       <div>
         <div
           id="EIHdrModule"
@@ -143,12 +147,10 @@ class CompanyHomePage extends Component {
           <div className="logo cell">
             <span className="sqLogo tighten lgSqLogo logoOverlay">
               <img
-                // src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png"
                 src={this.state.stphoto}
                 className
-                // alt=" Logo"
                 title
-                style={{ width: '70px', height: '70px' }}
+                style={{ width: '120px', height: '120px' }}
               />
             </span>
           </div>
@@ -157,34 +159,12 @@ class CompanyHomePage extends Component {
             className="gdGrid"
             data-brandviews="MODULE:n=hub-profileImage:eid=432"
           >
-            {/* <div id="HeroLbFrame-432" className="hidden">
-              <div className="lbSlideFrame">
-                <div className="titleBar">
-                  <span className="viewAll">
-                    <a href="/Photos/McDonald-s-Office-Photos-E432.htm">
-                      <i />
-                      <span>View All</span>
-                    </a>
-                  </span>
-                  <span className="counter">
-                    <span className="current">num</span>
-                    {' '}
-                    of
-                    {' '}
-                    <span className="total">num</span>
-                  </span>
-                  <span className="close">
-                    <button type="button" title="Close (Esc)">
-                      <span className="offScreen">Close (Esc)</span>
-                    </button>
-                  </span>
-                </div>
-                <div className="slides" />
-              </div>
-            </div> */}
-
-            <div className="empInfo tbl hideHH ">
-              <div className="header cell info">
+            <div
+              className="empInfo tbl hideHH "
+            >
+              <div
+                className="header cell info"
+              >
                 <h1
                   className=" strong tightAll"
                   title

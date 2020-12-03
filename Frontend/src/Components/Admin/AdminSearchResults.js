@@ -3,42 +3,84 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { getCid } from '../../Actions/studentActions';
+import { BeatLoader } from 'react-spinners';
+import Pagination from '../Pagination';
 
 class CompanySearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
       companies: [],
+      loading: true,
+      pageIndex: 0,
+      numPages: 0,
+      numCompanies: 0
     };
+    this.itemsPerPage = 10;
   }
 
   componentDidMount() {
     const { searchQuery } = this.props;
     console.log('searchQuery: ', searchQuery);
     const cname = searchQuery;
-    const url = `${process.env.REACT_APP_BACKEND}/search/companies`;
 
-    const data = {
-      cname: searchQuery,
-      skip: 0,
-      limit: 5
-    }
-
-    axios.post(url, data)
+    const Promises = [];
+    let url = `${process.env.REACT_APP_BACKEND}/search/companies`;
+    Promises.push(axios.post(url, { cname })
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: response.data,
+            companies: response.data
           });
-          const { companies } = this.state;
-          console.log(companies);
+        }
+      }));
+
+    url = `${process.env.REACT_APP_BACKEND}/search/companies/numPages`;
+    Promises.push(axios.post(url, { cname })
+      .then((response) => {
+        if (response.data) {
+          const { numCompanies } = response.data;
+          this.setState({
+            numCompanies, numPages: Math.ceil(numCompanies / this.itemsPerPage)
+          });
+        }
+      }));
+    Promise.all(Promises).then(() => this.setState({ loading: false }));
+  }
+
+  setPage = (e) => {
+    this.setState({
+      loading: true
+    });
+    const { className } = e.currentTarget;
+    const { numPages } = this.state;
+    let { pageIndex } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      pageIndex -= 1;
+    } else if (className === 'next' && pageIndex < numPages - 1) {
+      pageIndex += 1;
+    } else if (className.includes('page')) {
+      pageIndex = parseInt(e.currentTarget.getAttribute('pageIndex'));
+    }
+    const url = `${process.env.REACT_APP_BACKEND}/search/companies`;
+    axios.post(url, { cname: this.props.searchQuery, skip: pageIndex })
+      .then((response) => {
+        if (response.data) {
+          this.setState({
+            companies: response.data, pageIndex, loading: false
+          });
         }
       });
   }
 
   render() {
-    const { companies } = this.state;
+    // const { companies } = this.state;
+    // const { credentials } = this.props;
+    const { companies, loading, pageIndex, numCompanies, numPages } = this.state;
+    const { itemsPerPage } = this;
     const { credentials } = this.props;
+    let numItems = 0;
+    if (numCompanies > 0) numItems = numPages === pageIndex + 1 && numCompanies % itemsPerPage !== 0 ? numCompanies % itemsPerPage : itemsPerPage;
     const contents = companies.map((item) => (
       <div className="single-company-result module ">
         <div className="row justify-content-between">
@@ -130,7 +172,8 @@ class CompanySearchResults extends Component {
       </div>
     ));
     
-    return (
+    return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
+      /*
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
           <div className="flex-aside">
@@ -172,6 +215,46 @@ class CompanySearchResults extends Component {
                     </div>
                   </div>
                 </div>
+              </div>
+            </article>
+            <aside id="ZCol" className="zCol" />
+          </div>
+        </div>
+      </div>
+      */
+
+
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div>
+          <div className="flex-aside">
+            <article>
+              <div className="companySearchHierarchies gdGrid">
+                <header className="px-lg-0 px">
+                  <h1 className="pt-lg-std py-sm m-0">
+                    {' '}
+                    Showing results for
+                    {' '}
+                    <strong>{this.props.searchQuery}</strong>
+                  </h1>
+                  <div className="pb-lg-xxl pb-std">
+                    {' '}
+                    Showing
+                    {' '}
+                    <strong>{(itemsPerPage * pageIndex) + 1}</strong>
+                    –
+                    <strong>{(itemsPerPage * pageIndex) + numItems}</strong>
+                    {' '}
+                    of
+                    {' '}
+                    <strong>{numCompanies}</strong>
+                    {' '}
+                    Companies
+                  </div>
+                </header>
+                <div>
+                  {contents}
+                </div>
+                <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
               </div>
             </article>
             <aside id="ZCol" className="zCol" />

@@ -45,75 +45,42 @@ class JobSearchResults extends Component {
       //   backgroundColor: ['red', 'blue', 'green']
       // }],
       genderdata: {
-        labels: [
-          'Male',
-          'Female',
-          'Non-Binary',
-          'Not Disclosed',
-        ],
+        labels: ['Male', 'Female', 'Non-Binary', 'Not Disclosed'],
         // multipying every usage by 1.5
-        datasets: [{
-        // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
-          data: [],
-          backgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56',
-            '#DE3163',
-          ],
-          hoverBackgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56',
-            '#DE3163',
-          ]
-        }]
+        datasets: [
+          {
+            // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
+            data: [],
+            backgroundColor: ['#1cff92', '#36A2EB', '#FFCE56', '#DE3163'],
+            hoverBackgroundColor: ['#1cff92', '#36A2EB', '#FFCE56', '#DE3163'],
+          },
+        ],
       },
 
       veterandata: {
-        labels: [
-          'Protected Veteran',
-          'Not a Veteran',
-          'Not Disclosed',
-        ],
+        labels: ['Protected Veteran', 'Not a Veteran', 'Not Disclosed'],
         // multipying every usage by 1.5
-        datasets: [{
-        // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
-          data: [],
-          backgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56'
-          ],
-          hoverBackgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56'
-          ]
-        }]
+        datasets: [
+          {
+            // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
+            data: [],
+            backgroundColor: ['#1cff92', '#36A2EB', '#FFCE56'],
+            hoverBackgroundColor: ['#1cff92', '#36A2EB', '#FFCE56'],
+          },
+        ],
       },
 
       disabilitydata: {
-        labels: [
-          'Disabled',
-          'Not Disabled',
-          'Not Disclosed',
-        ],
+        labels: ['Disabled', 'Not Disabled', 'Not Disclosed'],
         // multipying every usage by 1.5
-        datasets: [{
-        // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
-          data: [],
-          backgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56',
-          ],
-          hoverBackgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56'
-          ]
-        }]
+        datasets: [
+          {
+            // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
+            data: [],
+            backgroundColor: ['#1cff92', '#36A2EB', '#FFCE56'],
+            hoverBackgroundColor: ['#1cff92', '#36A2EB', '#FFCE56'],
+          },
+        ],
       },
 
       ethnicitydata: {
@@ -128,30 +95,32 @@ class JobSearchResults extends Component {
           'Not Disclosed',
         ],
         // multipying every usage by 1.5
-        datasets: [{
-        // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
-          data: [],
-          backgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56',
-            '#FF0000',
-            '#808000',
-            '#800000',
-            '#CCCCFF',
-            '#FF7F50',
-          ],
-          hoverBackgroundColor: [
-            '#1cff92',
-            '#36A2EB',
-            '#FFCE56',
-            '#FF0000',
-            '#808000',
-            '#800000',
-            '#CCCCFF',
-            '#FF7F50',
-          ]
-        }]
+        datasets: [
+          {
+            // data: [.300 * 1.6, 104 * 1.6, 44 * 1.6],
+            data: [],
+            backgroundColor: [
+              '#1cff92',
+              '#36A2EB',
+              '#FFCE56',
+              '#FF0000',
+              '#808000',
+              '#800000',
+              '#CCCCFF',
+              '#FF7F50',
+            ],
+            hoverBackgroundColor: [
+              '#1cff92',
+              '#36A2EB',
+              '#FFCE56',
+              '#FF0000',
+              '#808000',
+              '#800000',
+              '#CCCCFF',
+              '#FF7F50',
+            ],
+          },
+        ],
       },
 
       applicantDetails: [],
@@ -196,7 +165,7 @@ class JobSearchResults extends Component {
           jobs: response.data,
           totalCountOfJobs: response.data.length,
           numPages: Math.ceil(response.data.length / this.itemsPerPage),
-          loading: false
+          loading: false,
         });
         console.log('Jobs response fe');
         console.log(response.data);
@@ -207,7 +176,7 @@ class JobSearchResults extends Component {
 
   handleClick = () => {
     this.inputElement.click();
-  }
+  };
 
   setPage = (e) => {
     const { className } = e.currentTarget;
@@ -217,9 +186,11 @@ class JobSearchResults extends Component {
     } else if (className === 'next' && pageIndex < this.state.numPages - 1) {
       this.setState({ pageIndex: pageIndex + 1 });
     } else if (className.includes('page')) {
-      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+      this.setState({
+        pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')),
+      });
     }
-  }
+  };
 
   handleChange = (address) => {
     this.setState({ address });
@@ -385,10 +356,7 @@ class JobSearchResults extends Component {
                         dgenderMaleCount: genderMaleCount,
                       });
 
-                      console.log(
-                        'Male Count: ',
-                        this.state.dgenderMaleCount
-                      );
+                      console.log('Male Count: ', this.state.dgenderMaleCount);
 
                       break;
 
@@ -503,7 +471,12 @@ class JobSearchResults extends Component {
             );
             const genderData = this.state.genderdata;
             const genderDataArray = [];
-            genderDataArray.push(this.state.dgenderMaleCount, this.state.dgenderFemaleCount, this.state.dgenderBinaryCount, this.state.dgenderNotDisclosedCount);
+            genderDataArray.push(
+              this.state.dgenderMaleCount,
+              this.state.dgenderFemaleCount,
+              this.state.dgenderBinaryCount,
+              this.state.dgenderNotDisclosedCount
+            );
             genderData.datasets[0].data = genderDataArray;
 
             this.setState({
@@ -512,7 +485,11 @@ class JobSearchResults extends Component {
 
             const veteranData = this.state.veterandata;
             const veteranDataArray = [];
-            veteranDataArray.push(this.state.dveteranCount, this.state.dnotVeteranCount, this.state.dveteranNotDisclosedCount);
+            veteranDataArray.push(
+              this.state.dveteranCount,
+              this.state.dnotVeteranCount,
+              this.state.dveteranNotDisclosedCount
+            );
             veteranData.datasets[0].data = veteranDataArray;
 
             this.setState({
@@ -521,7 +498,11 @@ class JobSearchResults extends Component {
 
             const disabilityData = this.state.disabilitydata;
             const disabilityDataArray = [];
-            disabilityDataArray.push(this.state.ddisabledCount, this.state.dnotdisabledCount, this.state.ddisabledNotDisclosedCount);
+            disabilityDataArray.push(
+              this.state.ddisabledCount,
+              this.state.dnotdisabledCount,
+              this.state.ddisabledNotDisclosedCount
+            );
             disabilityData.datasets[0].data = disabilityDataArray;
 
             this.setState({
@@ -530,7 +511,16 @@ class JobSearchResults extends Component {
 
             const ethnicityData = this.state.ethnicitydata;
             const ethnicityDataArray = [];
-            ethnicityDataArray.push(this.state.draceAmericanCount, this.state.draceAlaskanCount, this.state.draceAsianCount, this.state.draceBlackCount, this.state.draceHawaiiCount, this.state.dracePacificCount, this.state.draceWhiteCount, this.state.draceNotDisclosedCount);
+            ethnicityDataArray.push(
+              this.state.draceAmericanCount,
+              this.state.draceAlaskanCount,
+              this.state.draceAsianCount,
+              this.state.draceBlackCount,
+              this.state.draceHawaiiCount,
+              this.state.dracePacificCount,
+              this.state.draceWhiteCount,
+              this.state.draceNotDisclosedCount
+            );
             ethnicityData.datasets[0].data = ethnicityDataArray;
 
             this.setState({
@@ -548,32 +538,6 @@ class JobSearchResults extends Component {
           console.log(err);
         });
     }
-
-    // this.setState({
-    //   dgenderBinaryCount: genderBinaryCount,
-    //   dgenderMaleCount: genderMaleCount,
-    //   dgenderFemaleCount: genderFemaleCount,
-    //   dgenderNotDisclosedCount: genderNotDisclosedCount,
-    //   draceAmericanCount: raceAmericanCount,
-    //   draceAlaskanCount: raceAlaskanCount,
-    //   draceAsianCount: raceAsianCount,
-    //   draceBlackCount: raceBlackCount,
-    //   draceHawaiiCount: raceHawaiiCount,
-    //   dracePacificCount: racePacificCount,
-    //   draceWhiteCount: raceWhiteCount,
-    //   draceNotDisclosedCount: raceNotDisclosedCount,
-    //   deteranCount: veteranCount,
-    //   dnotVeteranCount: notVeteranCount,
-    //   dveteranNotDisclosedCount: veteranNotDisclosedCount,
-    //   ddisabledCount: disabledCount,
-    //   dnotdisabledCount: notdisabledCount,
-    //   ddisabledNotDisclosedCount: disabledNotDisclosedCount,
-    // });
-    // console.log('jobinfo state: ', this.state.jobInfoState);
-    // console.log(
-    //   'total refuse to disclose gender using state count',
-    //   this.state.dgenderNotDisclosedCount
-    // );
   };
 
   resumeChangeHandler = (e) => {
@@ -637,13 +601,17 @@ class JobSearchResults extends Component {
       coverLetter,
       showJobApplication,
       pageIndex,
-      numPages
+      numPages,
     } = this.state;
 
     const { itemsPerPage } = this;
     let numItems = 0;
     const numJobs = jobs.length;
-    if (numJobs > 0) numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0 ? numJobs % itemsPerPage : itemsPerPage;
+    if (numJobs > 0) {
+      numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0
+        ? numJobs % itemsPerPage
+        : itemsPerPage;
+    }
     console.log('jobs frontend jobs', jobs);
     console.log('selected index: ', selectedIndex);
     const selectedJob = jobs[selectedIndex];
@@ -793,18 +761,11 @@ class JobSearchResults extends Component {
               {this.state.applicantsRejected}
             </h3>
             <h1>Gender Breakdown</h1>
-            <Pie
-              data={this.state.genderdata}
-              height="80%"
-            />
+            <Pie data={this.state.genderdata} height="80%" />
             <br />
             <h1>Veteran Breakdown</h1>
-            <Pie
-              data={this.state.veterandata}
-              height="80%"
-            />
+            <Pie data={this.state.veterandata} height="80%" />
             <br />
-
             {/* <h1>Disability Breakdown</h1>
             <Pie
               // data={{
@@ -814,12 +775,8 @@ class JobSearchResults extends Component {
               height="80%"
             />
             <br /> */}
-
             <h1>Ethnicity/Race Breakdown</h1>
-            <Pie
-              data={this.state.ethnicitydata}
-              height="80%"
-            />
+            <Pie data={this.state.ethnicitydata} height="80%" />
             <br />
           </div>
         );
@@ -830,7 +787,11 @@ class JobSearchResults extends Component {
         applicantContent = null;
     }
 
-    return this.state.loading ? <div className="loader"><BeatLoader color="green" /></div> : (
+    return this.state.loading ? (
+      <div className="loader">
+        <BeatLoader color="green" />
+      </div>
+    ) : (
       <div style={{ marginTop: '15px' }}>
         <Modal
           isOpen={showJobApplication}
@@ -844,8 +805,8 @@ class JobSearchResults extends Component {
               textAlign: 'center',
             },
             overlay: {
-              zIndex: 99
-            }
+              zIndex: 99,
+            },
           }}
         >
           <span
@@ -900,14 +861,10 @@ class JobSearchResults extends Component {
               cols="50"
             />
           </div>
-          <button className="save" onClick={this.saveUpdates}>
-            Apply
-          </button>
         </Modal>
-        <div id="HzFiltersWrap">
+        {/* <div id="HzFiltersWrap">
           <header id="DKFilters" className="wide">
             <div className="selectContainer">
-              {/* <input className="filter" placeholder="Location" /> */}
               <PlacesAutocomplete
                 className="filter"
                 value={this.state.address}
@@ -966,24 +923,25 @@ class JobSearchResults extends Component {
               <input className="filter" placeholder="Job Type" />
             </div>
           </header>
-        </div>
+        </div> */}
         <div id="jobSearchResults">
           <ul
             style={{ flex: 7, overflowY: 'scroll', height: '65%' }}
             className="jlGrid hover p-0 "
           >
             {/* {jobSearchResults} */}
-            {
-              [...Array(numItems)].map((e, i) => {
-                return (
-                  <container>
-                    {jobSearchResults[i + (pageIndex * itemsPerPage)]}
-                  </container>
-                );
-              })
-            }
-            <Pagination setPage={this.setPage} page={this.state.pageIndex} numPages={this.state.numPages} />
-
+            {[...Array(numItems)].map((e, i) => {
+              return (
+                <container>
+                  {jobSearchResults[i + pageIndex * itemsPerPage]}
+                </container>
+              );
+            })}
+            <Pagination
+              setPage={this.setPage}
+              page={this.state.pageIndex}
+              numPages={this.state.numPages}
+            />
           </ul>
 
           <div id="JDCol" className="noPad opened transformNone">
@@ -1016,13 +974,13 @@ class JobSearchResults extends Component {
                             }`}
                           </div>
                         </div>
-                        <button
+                        {/* <button
                           onClick={this.toggleJobApplication}
                           className="btn btn-primary"
                         >
                           <i className="icon-bolt margRtSm" />
                           Apply
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
