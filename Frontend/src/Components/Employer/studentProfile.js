@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+import { BeatLoader } from "react-spinners";
 
 // import CompanyOverview from './CompanyOverview';
 // import CompanyReviews from './CompanyReviews';
@@ -19,22 +19,22 @@ class CompanyHomePage extends Component {
       cphotos: [],
       salaries: [],
       jobs: [],
-      tab: 'Overview',
-      aapplierid: '',
-      stname: '',
-      stemail: '',
-      stphoto: '',
-      stjobpref: '',
-      title: '',
-      targetsalary: '',
-      industry: '',
-      relocation: '',
-      gender: '',
-      disability: '',
-      ethnicity: '',
-      veteran: '',
-      stdemographics: '',
-      loading: true
+      tab: "Overview",
+      aapplierid: "",
+      stname: "",
+      stemail: "",
+      stphoto: "",
+      stjobpref: "",
+      title: "",
+      targetsalary: "",
+      industry: "",
+      relocation: "",
+      gender: "",
+      disability: "",
+      ethnicity: "",
+      veteran: "",
+      stdemographics: "",
+      loading: true,
     };
   }
 
@@ -48,7 +48,7 @@ class CompanyHomePage extends Component {
     axios.get(url).then((response) => {
       if (response.data) {
         // const company = response.data;
-        console.log('Student response: ');
+        console.log("Student response: ");
         console.log(response.data);
         this.setState({
           stname: response.data.stname,
@@ -56,7 +56,7 @@ class CompanyHomePage extends Component {
           stphoto: response.data.stphoto,
           stjobpref: { ...response.data.stjobpref },
           stdemographics: { ...response.data.stdemographics },
-          loading: false
+          loading: false,
           // relocation: response.data.stjobpref.strelocation,
           // title: response.data.title,
           // targetsalary: response.data.targetsalary,
@@ -67,14 +67,14 @@ class CompanyHomePage extends Component {
           // ethnicity: response.data.ethnicity,
           // veteran: response.data.veteran,
         });
-        console.log('student profile response', response.data);
+        console.log("student profile response", response.data);
       }
     });
   }
 
   tabChangeHandler = (e) => {
     this.setState({
-      tab: e.currentTarget.getAttribute('data-label'),
+      tab: e.currentTarget.getAttribute("data-label"),
     });
   };
 
@@ -128,16 +128,20 @@ class CompanyHomePage extends Component {
     //     console.log("D");
     //     companyContent = null;
     // }
-    return this.state.loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
+    return this.state.loading ? (
+      <div className="loader cTab">
+        <BeatLoader color="green" />
+      </div>
+    ) : (
       <div>
         <div
           id="EIHdrModule"
           className="snug module noblur eep sticky"
           style={{
-            width: '992px',
-            top: '1px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
+            width: "992px",
+            top: "1px",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
           <div className="logo cell">
@@ -148,7 +152,7 @@ class CompanyHomePage extends Component {
                 className
                 // alt=" Logo"
                 title
-                style={{ width: '70px', height: '70px' }}
+                style={{ width: "120px", height: "120px" }}
               />
             </span>
           </div>
@@ -194,58 +198,24 @@ class CompanyHomePage extends Component {
                     id="DivisionsDropdownComponent"
                     className="d-inline-flex align-items-center"
                   > */}
-                  <p>
-                    Student Name:
-                    {' '}
-                    {this.state.stname}
-                  </p>
+                  <p>Student Name: {this.state.stname}</p>
                   <h2>JOB PRERERENCES: </h2>
+                  <p>Title: {this.state.stjobpref.title}</p>
+                  <p>Target Industry: {this.state.stjobpref.industry}</p>
+                  <p>Search Status: {this.state.stjobpref.searchstatus}</p>
                   <p>
-                    Title:
-                    {' '}
-                    {this.state.stjobpref.title}
+                    Relocation Preference: {this.state.stjobpref.relocation}
                   </p>
-                  <p>
-                    Target Industry:
-                    {' '}
-                    {this.state.stjobpref.industry}
-                  </p>
-                  <p>
-                    Search Status:
-                    {' '}
-                    {this.state.stjobpref.searchstatus}
-                  </p>
-                  <p>
-                    Relocation Preference:
-                    {' '}
-                    {this.state.stjobpref.relocation}
-                  </p>
-                  <p>
-                    Target Salary:
-                    {' '}
-                    {this.state.stjobpref.targetsalary}
-                  </p>
+                  <p>Target Salary: {this.state.stjobpref.targetsalary}</p>
                   <h2>DEMOGRAPHICS</h2>
+                  <p>Gender: {this.state.stdemographics.gender}</p>
                   <p>
-                    Gender:
-                    {' '}
-                    {this.state.stdemographics.gender}
+                    Disability status: {this.state.stdemographics.disability}
                   </p>
                   <p>
-                    Disability status:
-                    {' '}
-                    {this.state.stdemographics.disability}
+                    Ethnicity Status: {this.state.stdemographics.race_ethnicity}
                   </p>
-                  <p>
-                    Ethnicity Status:
-                    {' '}
-                    {this.state.stdemographics.race_ethnicity}
-                  </p>
-                  <p>
-                    Veteran status:
-                    {' '}
-                    {this.state.stdemographics.veteran}
-                  </p>
+                  <p>Veteran status: {this.state.stdemographics.veteran}</p>
 
                   {/* </span> */}
                 </h1>
