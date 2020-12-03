@@ -165,7 +165,7 @@ function getByCompanyName(data, callback) {
 }
 
 function getByCompanyId(data, callback) {
-  Reviews.find({ cid: data.cid }, (error, reviews) => {
+  Reviews.find({ cid: data.cid , rapproval: "Approved"}, (error, reviews) => {
     if (error) {
       console.log(error);
       return callback(error, null);
