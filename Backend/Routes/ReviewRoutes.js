@@ -94,14 +94,14 @@ Router.post('/cid', (request, response) => {
       // response.writeHead(result.status, {
       //   'Content-Type': result.header,
       // });
-      console.log("Reviews by cid: ", result.content);
+      console.log('Reviews by cid: ', result.content);
       // response.end(result.content);
       response.send(result);
     }
   });
 });
 
-//Reply to a review
+// Reply to a review
 Router.post('/replyReviews', (request, response) => {
   console.log('\nEndpoint POST: Reply to a review');
   console.log('Req Body: ', request.body);
@@ -116,32 +116,49 @@ Router.post('/replyReviews', (request, response) => {
       response.writeHead(result.status, {
         'Content-Type': result.header,
       });
-      console.log("response backend reply review:")
+      console.log('response backend reply review:');
       console.log(result.content);
       response.end(result.content);
     }
   });
 });
 
-
-//getFeatReviews
-
-Router.get("/getFeatReviews", (request, response) => {
-  console.log("\nEndpoint GET: get all jobs");
-  console.log("Req Body: ", request.query);
-  const data = { ...request.params };
-
-  kafka.make_request("reviewsTopic", "GETFEATREVIEWS", request.query, (err, result) => {
-    console.log("Get one jobs result ", result);
+Router.post('/helpfulReview', (request, response) => {
+  console.log('\nEndpoint POST: Increment helpful review');
+  console.log('Req Body: ', request.body);
+  kafka.make_request('reviewsTopic', 'HELPFULREVIEW', request.body, (err, result) => {
     if (err) {
-      console.log("Get one jobs Kafka error");
+      console.log('helpful review Kafka error');
       response.writeHead(401, {
-        "Content-Type": "text/plain",
+        'Content-Type': 'text/plain',
       });
-      response.end("Get one jobs Kafka error");
+      response.end('Reviews addreview Kafka error');
     } else {
       response.writeHead(result.status, {
-        "Content-Type": result.header,
+        'Content-Type': result.header,
+      });
+      response.end(result.content);
+    }
+  });
+});
+// getFeatReviews
+
+Router.get('/getFeatReviews', (request, response) => {
+  console.log('\nEndpoint GET: get all jobs');
+  console.log('Req Body: ', request.query);
+  const data = { ...request.params };
+
+  kafka.make_request('reviewsTopic', 'GETFEATREVIEWS', request.query, (err, result) => {
+    console.log('Get one jobs result ', result);
+    if (err) {
+      console.log('Get one jobs Kafka error');
+      response.writeHead(401, {
+        'Content-Type': 'text/plain',
+      });
+      response.end('Get one jobs Kafka error');
+    } else {
+      response.writeHead(result.status, {
+        'Content-Type': result.header,
       });
       response.end(result.content);
     }

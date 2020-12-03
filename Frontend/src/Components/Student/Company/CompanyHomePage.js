@@ -20,9 +20,9 @@ class CompanyHomePage extends Component {
       ceoRating: Number,
       firstReview: [],
       secondReview: [],
-      reviews: [],
       company: {},
       cphotos: [],
+      reviews: null,
       salaries: null,
       interviews: null,
       jobs: null,
@@ -100,7 +100,6 @@ class CompanyHomePage extends Component {
             ceoRating: approve,
             firstReview: arr[0],
             secondReview: arr[1],
-            reviews: response.data
           });
         }
       }));
@@ -140,10 +139,10 @@ class CompanyHomePage extends Component {
     let companyContent = null;
     switch (tab) {
       case 'Overview':
-        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} overallRate={overallRate} recommendedRating={recommendedRating} ceoRating={ceoRating} firstReview={firstReview} secondReview={secondReview} reviews={reviews} />;
+        companyContent = <CompanyOverview company={company} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} overallRate={overallRate} recommendedRating={recommendedRating} ceoRating={ceoRating} firstReview={firstReview} secondReview={secondReview} />;
         break;
       case 'Reviews':
-        companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} updateReviews={this.updateReviews} />;
+        companyContent = <CompanyReviews cphoto={company.cphoto} updateReviews={this.updateReviews} reviews={reviews} cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} />;
         break;
       case 'Jobs':
         companyContent = <CompanyJobs updateJobs={this.updateJobs} jobs={jobs} cname={company.cname} isAuth={this.props.isAuth} />;
@@ -188,7 +187,7 @@ class CompanyHomePage extends Component {
             </div>
             <div className="empInfo tbl hideHH ">
               <div className="logo cell"><a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm" data-ajax="true" className="sqLogoLink"><span className="sqLogo tighten lgSqLogo logoOverlay" style={{ position: 'relative', top: '20px', right: '17px' }}><img src={company.cphoto} className alt=" Logo" title /></span></a></div>
-              <div className="header cell info" style= {{ position: 'relative', right: '250px' }}>
+              <div className="header cell info" style={{ position: 'relative', right: '250px' }}>
                 <h1 className=" strong tightAll" title data-company="McDonald's">
                   <span id="DivisionsDropdownComponent" className="d-inline-flex align-items-center">
                     <p style={{ fontSize: '20px' }}>{ company.cname }</p>

@@ -230,7 +230,25 @@ function getFeatReview(data, callback) {
     }
   });
 }
-
+function incrementHelpfulReview(data, callback) {
+  Reviews.findByIdAndUpdate(data.rid, { $inc: { rhelpful: 1 } }, { new: true }, (error, review) => {
+    if (error) {
+      const response = {
+        status: 401,
+        header: 'text/plain',
+        content: 'Error helpful review',
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        status: 200,
+        header: 'application/json',
+        content: JSON.stringify(review),
+      };
+      callback(null, response);
+    }
+  });
+}
 function handleRequest(msg, callback) {
   switch (msg.subTopic) {
     case 'ADDREVIEW': {
@@ -266,6 +284,12 @@ function handleRequest(msg, callback) {
       break;
     }
 
+    case 'HELPFULREVIEW': {
+      console.log('KB: Inside helpful review');
+      console.log('Message:', msg);
+      incrementHelpfulReview(msg.data, callback);
+      break;
+    }
     default: {
       const response = {
         status: 400,

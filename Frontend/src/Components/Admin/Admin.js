@@ -15,7 +15,7 @@ class AdminTabs extends Component {
       reviewsHit: false,
       companiesHit: false,
       display: ''
-    }
+    };
 
     this.getNumReviews = this.getNumReviews.bind(this);
     this.topReviewedCompanies = this.topReviewedCompanies.bind(this);
@@ -25,7 +25,7 @@ class AdminTabs extends Component {
     this.topViewedCompanies = this.topViewedCompanies.bind(this);
   }
 
-  componentDidMount (){
+  componentDidMount() {
     this.setState({
       reviews: '',
       companies: [],
@@ -36,7 +36,7 @@ class AdminTabs extends Component {
       reviewsHit: false,
       companiesHit: false,
       display: ''
-    })
+    });
   }
 
   getNumReviews = (event) => {
@@ -65,7 +65,7 @@ class AdminTabs extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: [ ...response.data ],
+            companies: [...response.data],
             companiesHit: true,
             reviews: '',
             students: [],
@@ -85,7 +85,7 @@ class AdminTabs extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: [ ...response.data ],
+            companies: [...response.data],
             companiesHit: true,
             reviews: '',
             students: [],
@@ -105,7 +105,7 @@ class AdminTabs extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            students: [ ...response.data ],
+            students: [...response.data],
             studentsHit: true,
             reviews: '',
             companies: [],
@@ -125,7 +125,7 @@ class AdminTabs extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            topCEOs: [ ...response.data ],
+            topCEOs: [...response.data],
             topCEOsHit: true,
             reviews: '',
             companies: [],
@@ -145,7 +145,7 @@ class AdminTabs extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({
-            companies: [ ...response.data ],
+            companies: [...response.data],
             companiesHit: true,
             reviews: '',
             students: [],
@@ -159,24 +159,36 @@ class AdminTabs extends Component {
       });
   }
 
-
   render() {
+    let displayElement = (
+      <div>
+        {' '}
+        <br />
+        <br />
+        <h2>Welcome, Admin</h2>
+        {' '}
+      </div>
+    );
 
-    let displayElement = <div> <br/><br/><h2>Welcome, Admin</h2> </div>;
-
-    if(this.state.reviewsHit === true) {
-      displayElement = <div>{this.state.reviews} reviews were added today.</div>
+    if (this.state.reviewsHit === true) {
+      displayElement = (
+        <div>
+          {this.state.reviews}
+          {' '}
+          reviews were added today.
+        </div>
+      );
     }
-    if(this.state.companiesHit === true) {
+    if (this.state.companiesHit === true) {
       displayElement = this.state.companies.map((item) => (
         <div className="single-company-result module ">
           <div className="row justify-content-between">
             <div className="col-lg-7">
               <div className="row justify-content-start">
                 <div className="col-3 logo-and-ratings-wrap">
-                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                  <a>
                     <span>
-                      <img src={item.cphoto} class="img-thumbnail" alt="photo" width = "300" />
+                      <img src={item.cphoto} className="img-thumbnail" alt="photo" width="300" />
                     </span>
                   </a>
                 </div>
@@ -212,7 +224,7 @@ class AdminTabs extends Component {
                         { item.clocation }
                       </span>
                     </p>
-                    <p className="webInfo mb-0 mt-xxsm"><span><a href="www.mcdonalds.com">{ item.cwebsite }</a></span></p>
+                    <p className="webInfo mb-0 mt-xxsm"><span><a>{ item.cwebsite }</a></span></p>
                   </div>
                 </div>
               </div>
@@ -220,7 +232,7 @@ class AdminTabs extends Component {
             <div className="col-lg-5 ei-contributions-count-wrap mt-std">
               <div className="row justify-content-between">
                 <div className="ei-contribution-wrap col-4 pl-lg-0 pr-0">
-                  <a className="eiCell cell reviews d-inline-block py-sm" href="/Reviews/McDonald-s-San-Francisco-Reviews-EI_IE432.0,10_IL.11,24_IM759.htm">
+                  <a className="eiCell cell reviews d-inline-block py-sm">
                     <span className="num h2">
                       {' '}
                       { item.reviewCount }
@@ -229,7 +241,7 @@ class AdminTabs extends Component {
                   </a>
                 </div>
                 <div className="ei-contribution-wrap col-4 p-0">
-                  <a className="eiCell cell salaries d-inline-block py-sm" href="/Salary/McDonald-s-San-Francisco-Salaries-EI_IE432.0,10_IL.11,24_IM759.htm">
+                  <a className="eiCell cell salaries d-inline-block py-sm">
                     <span className="num h2">
                       {' '}
                       { item.salaryCount }
@@ -238,7 +250,7 @@ class AdminTabs extends Component {
                   </a>
                 </div>
                 <div className="ei-contribution-wrap col-4 pl-0">
-                  <a className="eiCell cell interviews d-inline-block py-sm" href="/Interview/McDonald-s-San-Francisco-Interview-Questions-EI_IE432.0,10_IL.11,24_IM759.htm">
+                  <a className="eiCell cell interviews d-inline-block py-sm">
                     <span className="num h2">
                       {' '}
                       { item.interviewCount }
@@ -253,16 +265,16 @@ class AdminTabs extends Component {
       ));
     }
 
-    if(this.state.studentsHit === true) {
+    if (this.state.studentsHit === true) {
       displayElement = this.state.students.map((item) => (
         <div className="single-company-result module ">
           <div className="row justify-content-between">
             <div className="col-lg-7">
               <div className="row justify-content-start">
                 <div className="col-3 logo-and-ratings-wrap">
-                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                  <a>
                     <span>
-                      <img src={item.stphoto} class="img-thumbnail" alt="photo" width = "300" />
+                      <img src={item.stphoto} className="img-thumbnail" alt="photo" width="300" />
                     </span>
                   </a>
                 </div>
@@ -286,7 +298,7 @@ class AdminTabs extends Component {
             <div className="col-lg-5 ei-contributions-count-wrap mt-std">
               <div className="row justify-content-between">
                 <div className="ei-contribution-wrap col-4 pl-lg-0 pr-0">
-                  <a className="eiCell cell reviews d-inline-block py-sm" href="/Reviews/McDonald-s-San-Francisco-Reviews-EI_IE432.0,10_IL.11,24_IM759.htm">
+                  <a className="eiCell cell reviews d-inline-block py-sm">
                     <span className="num h2">
                       {' '}
                       { item.streviews.length }
@@ -295,7 +307,7 @@ class AdminTabs extends Component {
                   </a>
                 </div>
                 <div className="ei-contribution-wrap col-4 p-0">
-                  <a className="eiCell cell salaries d-inline-block py-sm" href="/Salary/McDonald-s-San-Francisco-Salaries-EI_IE432.0,10_IL.11,24_IM759.htm">
+                  <a className="eiCell cell salaries d-inline-block py-sm">
                     <span className="num h2">
                       {' '}
                       { item.streviewsaccepted }
@@ -310,16 +322,16 @@ class AdminTabs extends Component {
       ));
     }
 
-    if(this.state.topCEOsHit === true) {
+    if (this.state.topCEOsHit === true) {
       displayElement = this.state.topCEOs.map((item) => (
         <div className="single-company-result module ">
           <div className="row justify-content-between">
             <div className="col-lg-7">
               <div className="row justify-content-start">
                 <div className="col-3 logo-and-ratings-wrap">
-                  <a href="/Overview/Working-at-McDonald-s-EI_IE432.11,21.htm">
+                  <a>
                     <span>
-                      <img src="https://thumbs.dreamstime.com/z/ceo-looking-city-planning-rear-view-company-large-buildings-his-office-window-d-rendering-mock-up-toned-82642174.jpg" class="img-thumbnail" alt="photo" width = "300" />
+                      <img src="https://thumbs.dreamstime.com/z/ceo-looking-city-planning-rear-view-company-large-buildings-his-office-window-d-rendering-mock-up-toned-82642174.jpg" className="img-thumbnail" alt="photo" width="300" />
                     </span>
                   </a>
                 </div>
@@ -359,9 +371,9 @@ class AdminTabs extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <div>
-          <button id="adminButton" onClick={this.getNumReviews} >
+          <button id="adminButton" onClick={this.getNumReviews}>
             <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
               <g fill="none" fillRule="evenodd">
                 <path fill="#DFF7E7" d="M10 29h4.465a1 1 0 01.832.445l1.11 1.664A2 2 0 0018.07 32h11.86a2 2 0 001.664-.89l1.11-1.665a1 1 0 01.831-.445H38v7H10v-7z" />
@@ -369,9 +381,9 @@ class AdminTabs extends Component {
               </g>
             </svg>
             <h3 className="studentTabTitle">Reviews Added Today</h3>
-            </button>
+          </button>
 
-          <button id="adminButton" onClick={this.topReviewedCompanies} >
+          <button id="adminButton" onClick={this.topReviewedCompanies}>
             <svg style={{ width: '48px', height: '48px' }} viewBox="0 0 48 48">
               <g fill="none" fillRule="evenodd">
                 <path fill="#0CAA41" fillRule="nonzero" d="M19.182 10h19.636c1.205 0 2.182.895 2.182 2v27H17V12c0-1.105.977-2 2.182-2zM39 37V13a1 1 0 00-1-1H20a1 1 0 00-1 1v24h20z" />
@@ -430,8 +442,7 @@ class AdminTabs extends Component {
             </svg>
             <h3 className="studentTabTitle">Top Viewed Companies</h3>
           </button>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
@@ -451,8 +462,9 @@ class AdminTabs extends Component {
             </div>
           </div>
         </div>
-      </React.Fragment>
-  )};
+      </>
+    );
+  }
 }
 
 export default AdminTabs;
