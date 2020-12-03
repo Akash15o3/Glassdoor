@@ -34,7 +34,7 @@ class Login extends Component {
             this.props.setAdmin(user, _id);
           }
           this.props.login(role);
-          this.props.history.push(`/${role}`);
+          this.props.history.push(`/${role.toLowerCase()}`);
         }
       });
   }

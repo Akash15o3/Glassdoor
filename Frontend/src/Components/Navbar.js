@@ -48,6 +48,7 @@ class Navbar extends Component {
 
       <div>
         {isAuth === false ? <Redirect to="/" /> : null}
+        {this.props.history.location.pathname === '/' && isAuth === true ? <Redirect to={`/${role}`} /> : null}
         {searchBar}
         {tabs}
       </div>
