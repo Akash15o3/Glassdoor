@@ -38,7 +38,7 @@ class CompanyHomePage extends Component {
       .then((response) => {
         if (response.data) {
           const company = response.data;
-          this.setState({ company, cphotos: company.cphotos, loading: false });
+          this.setState({ company, cphotos: company.cphotos.filter((photo) => photo.approval === 'Approved'), loading: false });
         }
       });
   }
@@ -145,28 +145,43 @@ class CompanyHomePage extends Component {
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell reviews " onClick={this.tabChangeHandler} data-label="Reviews">
-                        <span className="num h2"> 43k</span>
+                        <span className="num h2">
+                          {' '}
+                          {reviews ? reviews.length : 0}
+                        </span>
                         <span className="subtle"> Reviews</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell jobs " onClick={this.tabChangeHandler} data-label="Jobs">
-                        <span className="num h2"> 56k</span>
+                        <span className="num h2">
+                          {' '}
+                          {jobs ? jobs.length : 0}
+                        </span>
                         <span className="subtle"> Jobs</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell salaries " onClick={this.tabChangeHandler} data-label="Salaries">
-                        <span className="num h2"> 40k</span>
+                        <span className="num h2">
+                          {' '}
+                          {salaries ? salaries.length : 0}
+                        </span>
                         <span className="subtle"> Salaries</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell interviews " onClick={this.tabChangeHandler} data-label="Interview">
-                        <span className="num h2"> 7.3k</span>
+                        <span className="num h2">
+                          {' '}
+                          {interviews ? interviews.length : 0}
+                        </span>
                         <span className="subtle"> Inter­views</span>
                       </a>
                       <div className="vline cell"><i /></div>
                       <div className="vline cell"><i /></div>
                       <a className="eiCell cell photos " onClick={this.tabChangeHandler} data-label="Photos">
-                        <span className="num h2"> 291</span>
+                        <span className="num h2">
+                          {' '}
+                          {cphotos.length}
+                        </span>
                         <span className="subtle"> Photos</span>
                       </a>
                     </div>

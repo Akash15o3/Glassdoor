@@ -61,8 +61,6 @@ class SearchBar extends Component {
         <select onChange={this.typeChangeHandler} id="options" style={{ position: 'relative', left: '55px', top: '25px' }}>
           <option value="job">Jobs</option>
           <option value="company">Companies</option>
-          <option value="salary">Salaries</option>
-          <option value="interview">Interviews</option>
         </select>
         <div><button onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</button></div>
         {/* <div><Link to="/student/searchresults" onClick={this.handleClick} className="btn btn-lg btn-success btn-block" style={{ position: 'relative', top: '22px', left: '75px' }}>Search</Link></div> */}

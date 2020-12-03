@@ -11,6 +11,7 @@ export default class CompanyOverview extends Component {
       recommendedRating: Number,
       ceoRating: Number,
       topReviews: [],
+      cFeatured: [],
       showAddReview: false,
       overallRating: 1,
       rheadline: '',
@@ -27,27 +28,35 @@ export default class CompanyOverview extends Component {
   }
 
   componentDidMount() {
+    const Promises = [];
     if (this.props.reviews !== null) {
       const { reviews } = this.props;
       if (reviews.length > 0) { this.setPercentages(reviews); }
-      this.setState({ reviews, loading: false, numPages: Math.ceil(reviews.length / this.itemsPerPage) });
+      this.setState({ reviews, numPages: Math.ceil(reviews.length / this.itemsPerPage) });
     } else {
       const { cid } = this.props;
       const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
-      axios.post(url, { cid })
+      Promises.push(axios.post(url, { cid })
         .then((response) => {
-          if (response.data && response.data.length > 0) {
+          if (response.data) {
             const reviews = response.data;
             this.setPercentages(reviews);
             this.setState({
               reviews,
-              loading: false,
               numPages: Math.ceil(reviews.length / this.itemsPerPage)
             });
             this.props.updateReviews(reviews);
           }
-        });
+        }));
     }
+    this.props.company.cfeatured.forEach((data) => Promises.push(axios.get(
+      `${process.env.REACT_APP_BACKEND}/reviews/getFeatReviews?rid=${data}`
+    )
+      .then((results) => {
+        const { cFeatured } = this.state;
+        this.setState({ cFeatured: [...cFeatured, results.data] });
+      })));
+    Promise.all(Promises).then(() => this.setState({ loading: false }));
   }
 
   setPercentages = (reviews) => {
@@ -89,7 +98,7 @@ export default class CompanyOverview extends Component {
 
   render() {
     const { company } = this.props;
-    const { overallRate, recommendedRating, ceoRating, topReviews, loading } = this.state;
+    const { overallRate, recommendedRating, ceoRating, topReviews, loading, cFeatured } = this.state;
     const { cname, cphoto } = this.props;
     return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div id="companyHomeContent">
@@ -199,7 +208,70 @@ export default class CompanyOverview extends Component {
             <div>Approve of CEO</div>
           </div>
           <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>Top 2 Reviews</h1>
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>Featured Reviews</h1>
+          <ol className="empReviews tightLt">
+            {cFeatured.map((review) => {
+              const date = new Date(review.rdate);
+              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+              const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+              return [
+                <li style={{ width: '100%', backgroundColor: '#FFFF66' }} className=" empReview cf reviewCard" id="InterviewReview_38660866">
+                  <div className="cf">
+                    <div className="floatLt"><time className="date subtle small">{posted_on}</time></div>
+                    <p className="helpfulReviews small tightVert floatRt">{`${review.rhelpful} found helpful`}</p>
+                  </div>
+                  <div className="tbl fill reviewHdr">
+                    <div className="row">
+                      <div className="cell sqLogoCell showDesk"><span className="sqLogo tighten smSqLogo logoOverlay"><img src={cphoto} className="lazy lazy-loaded" data-retina-ok="true" alt=" Logo" title style={{ opacity: 1 }} /></span></div>
+                      <div className="cell">
+                        <h2 className="summary strong noMargTop tightTop margBotXs">{`"${review.rheadline}"`}</h2>
+                        <div>
+                          <span style={{ color: '#0caa41', marginRight: '5px' }}>{review.overallRating}</span>
+                          {[...Array(5)].map((e, i) => {
+                            return <span role="button" style={{ color: `${i < review.overallRating ? '#0caa41' : 'lightgray'}` }}>★</span>;
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tbl fill margTopMd">
+                    <div className="row">
+                      <div className="cell sqLogoCell showDesk" />
+                      <div className="cell reviewBodyCell">
+                        <div className="row reviewBodyCell recommends">
+                          <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                            <i className={`sqLed middle sm mr-xsm ${review.rrecommended === 'Yes' ? 'green' : 'red'}`} />
+                            <span>{`${review.rrecommended === 'Yes' ? 'Recommends' : 'Does Not Recommend'}`}</span>
+                          </div>
+                          <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                            <i className={`sqLed middle sm mr-xsm ${review.routlook === 'Positive' ? 'green' : 'red'}`} />
+                            <span>{`${review.routlook} Outlook`}</span>
+                          </div>
+                          <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                            <i className={`sqLed middle sm mr-xsm ${review.rceoapprove === 'Yes' ? 'green' : 'red'}`} />
+                            <span>{`${review.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Does Not Approve of CEO'}`}</span>
+                          </div>
+                        </div>
+                        <div style={{ marginTop: '40px' }} className="description ">
+                          {review.rdescription}
+                        </div>
+                        <div style={{ marginTop: '30px' }} className="description ">
+                          <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
+                          {review.rpros}
+                        </div>
+                        <div style={{ marginTop: '30px' }} className="description ">
+                          <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
+                          {review.rcons}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>,
+                <br />
+              ];
+            })}
+          </ol>
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>Top Reviews</h1>
           <ol className="empReviews tightLt">
             {topReviews.map((review) => {
               const date = new Date(review.rdate);

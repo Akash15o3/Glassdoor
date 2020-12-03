@@ -45,7 +45,7 @@ class CompanyReviews extends Component {
       const url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
       axios.post(url, { cid })
         .then((response) => {
-          if (response.data && response.data.length > 0) {
+          if (response.data) {
             const reviews = response.data;
             this.setPercentages(reviews);
             this.setState({
