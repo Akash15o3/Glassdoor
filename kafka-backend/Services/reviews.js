@@ -98,7 +98,7 @@ function addReview(data, callback) {
   });
 }
 
-function getByCompnayName(data, callback) {
+function getByCompanyName(data, callback) {
   if (data.skip === undefined) {
     data.skip = 0;
   }
@@ -164,7 +164,7 @@ function getByCompnayName(data, callback) {
   });
 }
 
-function getByCompnayId(data, callback) {
+function getByCompanyId(data, callback) {
   Reviews.find({ cid: data.cid }, (error, reviews) => {
     if (error) {
       console.log(error);
@@ -176,36 +176,36 @@ function getByCompnayId(data, callback) {
 }
 
 function updateReview(data, callback) {
-
-  var updateStatus = {
+  const updateStatus = {
     rreply: data.rreply,
   };
 
   const { id, ...updateInfo } = data;
-  console.log('update info spread operator', data.rreply)
+  console.log('update info spread operator', data.rreply);
   Reviews.updateOne(
     { _id: data.rreplyid },
     { $set: updateStatus },
-    options, 
+    options,
     (error, results) => {
-    console.log('Inside Find by ID reply: ', results);
-    if (error) {
-      const response = {
-        status: 401,
-        header: 'text/plain',
-        content: 'Error updating Reviews reply',
-      };
-      callback(null, response);
-    } else {
-      const response = {
-        status: 200,
-        header: 'application/json',
-        content: JSON.stringify(results),
-      };
-      console.log("response content reply: ", response.content)
-      callback(null, response);
-    }
-  });
+      console.log('Inside Find by ID reply: ', results);
+      if (error) {
+        const response = {
+          status: 401,
+          header: 'text/plain',
+          content: 'Error updating Reviews reply',
+        };
+        callback(null, response);
+      } else {
+        const response = {
+          status: 200,
+          header: 'application/json',
+          content: JSON.stringify(results),
+        };
+        console.log('response content reply: ', response.content);
+        callback(null, response);
+      }
+    },
+  );
 }
 
 function getFeatReview(data, callback) {
@@ -242,13 +242,13 @@ function handleRequest(msg, callback) {
     case 'GETREVIEWBYCNAME': {
       console.log('KB: Inside get review by company name');
       console.log('Message:', msg);
-      getByCompnayName(msg.data, callback);
+      getByCompanyName(msg.data, callback);
       break;
     }
     case 'GETREVIEWBYCID': {
       console.log('KB: Inside get review by company name');
       console.log('Message:', msg);
-      getByCompnayId(msg.data, callback);
+      getByCompanyId(msg.data, callback);
       break;
     }
 

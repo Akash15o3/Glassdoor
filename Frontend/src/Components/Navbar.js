@@ -47,7 +47,7 @@ class Navbar extends Component {
     return (
 
       <div>
-        {isAuth === true ? <Redirect to={`/${role}`} /> : null}
+        {isAuth === false ? <Redirect to="/" /> : null}
         {searchBar}
         {tabs}
       </div>

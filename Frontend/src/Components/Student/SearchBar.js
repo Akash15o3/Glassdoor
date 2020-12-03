@@ -27,7 +27,9 @@ class SearchBar extends Component {
     const { search, type } = this.state;
     this.props.search(search);
     console.log(this.props);
-    this.props.history.push(`/${this.props.role}/${type}SearchResults`);
+    const route = `/${this.props.role}/${type}SearchResults`;
+    if (this.props.history.location.pathname === route) window.location.reload();
+    else this.props.history.push(route);
   }
 
   searchChangeHandler = (e) => {

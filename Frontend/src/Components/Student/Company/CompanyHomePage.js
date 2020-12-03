@@ -23,16 +23,30 @@ class CompanyHomePage extends Component {
       reviews: [],
       company: {},
       cphotos: [],
+      salaries: null,
+      interviews: null,
+      jobs: null,
       tab: 'Overview',
       loading: true
     };
   }
 
   componentDidMount() {
-    let url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+    let url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
     const { cid } = this.props;
-    // let cid;
-    axios.post(url, { cid })
+    const Promises = [];
+    // OVERVIEW
+    Promises.push(axios.post(url, { cid })
+      .then((response) => {
+        if (response.data) {
+          const company = response.data;
+          this.setState({ company, cphotos: company.cphotos });
+        }
+      }));
+    url = `${process.env.REACT_APP_BACKEND}/reviews/cid`;
+
+    // REVIEWS API
+    Promises.push(axios.post(url, { cid })
       .then((response) => {
         if (response.data && response.data.length > 0) {
           console.log(response.data);
@@ -89,17 +103,9 @@ class CompanyHomePage extends Component {
             reviews: response.data
           });
         }
-      });
+      }));
 
-    url = `${process.env.REACT_APP_BACKEND}/companies/specificCompany`;
-
-    axios.post(url, { cid })
-      .then((response) => {
-        if (response.data) {
-          const company = response.data;
-          this.setState({ company, cphotos: company.cphotos, loading: false });
-        }
-      });
+    Promise.all(Promises).then(() => this.setState({ loading: false }));
   }
 
   tabChangeHandler = (e) => {
@@ -116,8 +122,20 @@ class CompanyHomePage extends Component {
     this.setState({ reviews });
   }
 
+  updateJobs = (jobs) => {
+    this.setState({ jobs });
+  }
+
+  updateSalaries = (salaries) => {
+    this.setState({ salaries });
+  }
+
+  updateInterviews = (interviews) => {
+    this.setState({ interviews });
+  }
+
   render() {
-    const { company, tab, cphotos, overallRate, recommendedRating, ceoRating, firstReview, secondReview, reviews, loading } = this.state;
+    const { company, tab, cphotos, overallRate, recommendedRating, ceoRating, firstReview, secondReview, reviews, jobs, salaries, interviews, loading } = this.state;
     console.log(tab);
     let companyContent = null;
     switch (tab) {
@@ -128,13 +146,13 @@ class CompanyHomePage extends Component {
         companyContent = <CompanyReviews cname={company.cname} cid={company._id} stname={this.props.name} stid={this.props.id} updateReviews={this.updateReviews} />;
         break;
       case 'Jobs':
-        companyContent = <CompanyJobs cname={company.cname} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyJobs updateJobs={this.updateJobs} jobs={jobs} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Salaries':
-        companyContent = <CompanySalaries stid={this.props.id} cname={company.cname} cid={company._id} isAuth={this.props.isAuth} />;
+        companyContent = <CompanySalaries updateSalaries={this.updateSalaries} salaries={salaries} stid={this.props.id} cname={company.cname} cid={company._id} isAuth={this.props.isAuth} />;
         break;
       case 'Interview':
-        companyContent = <CompanyInterviews stid={this.props.id} cname={company.cname} isAuth={this.props.isAuth} />;
+        companyContent = <CompanyInterviews updateInterviews={this.updateInterviews} interviews={interviews} stid={this.props.id} cname={company.cname} isAuth={this.props.isAuth} />;
         break;
       case 'Photos':
         companyContent = <CompanyPhotos updatePhotos={this.updatePhotos} cphotos={cphotos} stid={this.props.id} stname={this.props.name} cid={company._id} cname={company.cname} isAuth={this.props.isAuth} />;

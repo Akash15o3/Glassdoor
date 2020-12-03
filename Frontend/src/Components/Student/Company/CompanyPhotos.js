@@ -6,7 +6,6 @@ import { updateStudent } from '../../../Actions/studentActions';
 
 class CompanyPhotos extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.itemsPerPage = 6;
     this.state = {
@@ -14,7 +13,7 @@ class CompanyPhotos extends Component {
       upload: false,
       files: [],
       pageIndex: 0,
-      numPages: Math.ceil((this.props.cphotos.length / this.itemsPerPage))
+      numPages: Math.ceil(this.props.cphotos.length / this.itemsPerPage)
     };
   }
 
@@ -93,7 +92,8 @@ class CompanyPhotos extends Component {
             ) : null}
         </div>
         {[...Array(numItems)].map((e, i) => {
-          return <img src={photos[i + (pageIndex * itemsPerPage)].url} />;
+          const index = i + (pageIndex * itemsPerPage);
+          return <img src={photos[index].url} />;
         })}
         <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
       </div>

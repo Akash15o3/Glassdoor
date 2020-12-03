@@ -4,7 +4,7 @@ export default function Pagination(props) {
   const { page, numPages, setPage } = props;
   return (
     <div id="FooterPageNav" className="pageNavBar tbl fill noMargBot" style={{ display: 'flex', justifyContent: 'center' }}>
-      <div className="pagingControls cell middle">
+      <div style={{ marginBottom: '10px' }} className="pagingControls cell middle">
         <ul>
           <li onClick={setPage} className="prev">
             {page === 0

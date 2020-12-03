@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import Modal from 'react-modal';
+import { BeatLoader } from 'react-spinners';
+import Pagination from '../../Pagination';
 
 Modal.setAppElement('#root');
 class CompanyJobs extends Component {
   constructor(props) {
     super(props);
+    this.itemsPerPage = 10;
     this.state = {
       jobs: [],
       selectedIndex: 0,
@@ -17,21 +19,28 @@ class CompanyJobs extends Component {
       coverLetter: '',
       showJobApplication: false,
       address: '',
+      pageIndex: 0,
+      numPages: 0,
       loading: true
     };
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${this.props.cname}`;
-    axios.get(url)
-      .then((response) => {
-        if (response.data && response.data > 0) {
-          this.allJobs = response.data;
-          this.setState({
-            jobs: response.data, loading: false
-          });
-        }
-      });
+    if (this.props.jobs !== null) {
+      this.setState({ jobs: this.props.jobs, loading: false, numPages: Math.ceil(this.props.jobs.length / this.itemsPerPage) });
+    } else {
+      const url = `${process.env.REACT_APP_BACKEND}/jobs/getJob?cname=${this.props.cname}`;
+      axios.get(url)
+        .then((response) => {
+          if (response.data) {
+            this.allJobs = response.data;
+            this.props.updateJobs(response.data);
+            this.setState({
+              jobs: response.data, loading: false, numPages: Math.ceil(response.data.length / this.itemsPerPage)
+            });
+          }
+        });
+    }
   }
 
   handleAddressChange = (address) => {
@@ -121,28 +130,47 @@ class CompanyJobs extends Component {
       });
   }
 
+  setPage = (e) => {
+    const { className } = e.currentTarget;
+    const { pageIndex, numPages } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      this.setState({ pageIndex: pageIndex - 1 });
+    } else if (className === 'next' && pageIndex < numPages - 1) {
+      this.setState({ pageIndex: pageIndex + 1 });
+    } else if (className.includes('page')) {
+      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+    }
+  }
+
   render() {
-    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, loading } = this.state;
+    const { jobs, selectedIndex, jobInfoState, coverLetter, showJobApplication, pageIndex, loading, numPages } = this.state;
+    const { itemsPerPage } = this;
     const selectedJob = jobs[selectedIndex];
-    const jobSearchResults = jobs.map((job, i) => {
-      const date = new Date(job.jposted);
-      const posted_on = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const numJobs = jobs.length;
+    let numItems = 0;
+    if (numJobs > 0) numItems = numPages === pageIndex + 1 && numJobs % itemsPerPage !== 0 ? numJobs % itemsPerPage : itemsPerPage;
+    console.log(jobs, numItems, pageIndex, numPages, itemsPerPage, numJobs);
+    const jobSearchResults = [...Array(numItems)].map((e, i) => {
+      const index = i + (pageIndex * itemsPerPage);
+      const date = new Date(jobs[index].jposted);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+      const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
       return (
-        <li className={`jl react-job-listing gdGrid ${selectedIndex === i ? 'selected' : ''}`} index={i} onClick={this.selectJob}>
+        <li className={`jl react-job-listing gdGrid ${selectedIndex === index ? 'selected' : ''}`} index={index} onClick={this.selectJob}>
           <div className="d-flex flex-column css-fbt9gv e1rrn5ka2">
             <a target="_blank" className="jobLink" style={{ pointerEvents: 'all' }}><span className=" css-9ujsbx euyrj9o1"><img src="https://media.glassdoor.com/sql/432/mcdonald-s-squarelogo-1585239308674.png" alt="McDonald's Logo" title="McDonald's Logo" /></span></a>
             <span className="compactStars ">
-              {job.crating}
+              {jobs[index].crating}
               <i className="star" />
             </span>
           </div>
           <div className="d-flex flex-column pl-sm css-nq3w9f">
             <div className="jobHeader d-flex justify-content-between align-items-start">
-              <a rel="nofollow noopener noreferrer" target="_blank" className=" css-10l5u4p e1n63ojh0 jobLink" style={{ pointerEvents: 'all', marginBottom: '5px' }}><span>{job.cname}</span></a>
+              <a rel="nofollow noopener noreferrer" target="_blank" className=" css-10l5u4p e1n63ojh0 jobLink" style={{ pointerEvents: 'all', marginBottom: '5px' }}><span>{jobs[index].cname}</span></a>
             </div>
-            <a rel="nofollow noopener noreferrer" target="_blank" className="jobInfoItem jobTitle css-13w0lq6 eigr9kq1 jobLink" style={{ pointerEvents: 'all', textAlign: 'left', marginBottom: '5px' }}><span>{job.jtitle}</span></a>
+            <a rel="nofollow noopener noreferrer" target="_blank" className="jobInfoItem jobTitle css-13w0lq6 eigr9kq1 jobLink" style={{ pointerEvents: 'all', textAlign: 'left', marginBottom: '5px' }}><span>{jobs[index].jtitle}</span></a>
             <div style={{ marginBottom: '10px' }} className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
-              <span className="loc css-nq3w9f pr-xxsm">{`${job.jcity}, ${job.jstate}`}</span>
+              <span className="loc css-nq3w9f pr-xxsm">{`${jobs[index].jcity}, ${jobs[index].jstate}`}</span>
             </div>
             <div style={{ marginBottom: '10px' }} className="d-flex flex-wrap css-yytu5e e1rrn5ka1">
               <span className="loc css-nq3w9f pr-xxsm">{posted_on}</span>
@@ -236,6 +264,7 @@ class CompanyJobs extends Component {
         <div id="jobSearchResults">
           <ul style={{ flex: 7, overflowY: 'scroll', height: '65%' }} className="jlGrid hover p-0 ">
             {jobSearchResults}
+            <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
           </ul>
           <div id="JDCol" className="noPad opened transformNone">
             <div id="JDWrapper" className>

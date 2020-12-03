@@ -156,7 +156,8 @@ class JobSearchResults extends Component {
     const selectedJob = jobs[selectedIndex];
     const jobSearchResults = jobs.map((job, i) => {
       const date = new Date(job.jposted);
-      const posted_on = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+      const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
       return (
         <li className={`jl react-job-listing gdGrid ${selectedIndex === i ? 'selected' : ''}`} index={i} onClick={this.selectJob}>
           <div className="d-flex flex-column css-fbt9gv e1rrn5ka2">

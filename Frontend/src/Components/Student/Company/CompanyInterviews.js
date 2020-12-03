@@ -4,17 +4,22 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 import { updateStudent } from '../../../Actions/studentActions';
+import Pagination from '../../Pagination';
 
 Modal.setAppElement('#root');
 class CompanyInterview extends Component {
   constructor(props) {
     super(props);
+    this.itemsPerPage = 3;
     this.state = {
       open: false,
       interviews: [],
       positivePercent: 0,
       neutralPercent: 0,
       negativePercent: 0,
+      positive: 0,
+      negative: 0,
+      neutral: 0,
       overallexp: 'Positive',
       jobtitle: '',
       description: '',
@@ -22,34 +27,43 @@ class CompanyInterview extends Component {
       offerstatus: 'Rejected',
       question: '',
       answer: '',
+      pageIndex: 0,
+      numPages: 0,
       loading: true
     };
   }
 
   componentDidMount() {
-    const url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${this.props.cname}`;
-    axios.get(url)
-      .then((response) => {
-        if (response.data && response.data.length > 0) {
+    if (this.props.interviews !== null) {
+      this.setPercentages(this.props.interviews);
+      this.setState({ interviews: this.props.interviews, loading: false, numPages: Math.ceil(this.props.interviews.length / this.itemsPerPage) });
+    } else {
+      const url = `${process.env.REACT_APP_BACKEND}/interviews/getInterviews?cname=${this.props.cname}`;
+      axios.get(url)
+        .then((response) => {
           const interviews = response.data;
-          let negative = 0;
-          let neutral = 0;
-          let positive = 0;
-          const total = interviews.length;
-          interviews.forEach(
-            (interview) => {
-              if (interview.overallexp === 'Positive') positive++;
-              else if (interview.overallexp === 'Negative') negative++;
-              else if (interview.overallexp === 'Neutral') neutral++;
-            }
-          );
-          const positivePercent = Math.round((positive / total) * 100);
-          const neutralPercent = Math.round((neutral / total) * 100);
-          const negativePercent = Math.round((negative / total) * 100);
-          this.setState({ interviews, positivePercent, neutralPercent, negativePercent });
-        }
-        this.setState({ loading: false });
-      });
+          this.props.updateInterviews(interviews);
+          this.setPercentages(interviews);
+          this.setState({ interviews, loading: false, numPages: Math.ceil(interviews.length / this.itemsPerPage) });
+        });
+    }
+  }
+
+  setPercentages = (interviews) => {
+    const total = interviews.length;
+    if (total === 0) return;
+    let { positive, neutral, negative } = this.state;
+    interviews.forEach(
+      (interview) => {
+        if (interview.overallexp === 'Positive') positive++;
+        else if (interview.overallexp === 'Negative') negative++;
+        else if (interview.overallexp === 'Neutral') neutral++;
+      }
+    );
+    const positivePercent = Math.round((positive / total) * 100);
+    const neutralPercent = Math.round((neutral / total) * 100);
+    const negativePercent = Math.round((negative / total) * 100);
+    this.setState({ positivePercent, neutralPercent, negativePercent, positive, negative, neutral });
   }
 
   openInterviewModal = () => {
@@ -97,15 +111,33 @@ class CompanyInterview extends Component {
       .then((response) => {
         if (response.data) {
           const interviews = [...this.state.interviews, response.data];
-          this.setState({ interviews });
+          this.setState({ interviews, numPages: Math.ceil((interviews.length / this.itemsPerPage)) });
+          this.props.updateInterviews(interviews);
+          this.setPercentages(interviews);
           this.props.updateStudent({ stinterviews: [...this.props.stinterviews, response.data] });
           this.closeInterviewModal();
         }
       });
   }
 
+  setPage = (e) => {
+    const { className } = e.currentTarget;
+    const { pageIndex, numPages } = this.state;
+    if (className === 'prev' && pageIndex > 0) {
+      this.setState({ pageIndex: pageIndex - 1 });
+    } else if (className === 'next' && pageIndex < numPages - 1) {
+      this.setState({ pageIndex: pageIndex + 1 });
+    } else if (className.includes('page')) {
+      this.setState({ pageIndex: parseInt(e.currentTarget.getAttribute('pageIndex')) });
+    }
+  }
+
   render() {
-    const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer, loading } = this.state;
+    const { overallexp, jobtitle, description, difficulty, offerstatus, question, answer, pageIndex, numPages, interviews, negativePercent, neutralPercent, positivePercent, loading } = this.state;
+    const { itemsPerPage } = this;
+    const numInterviews = interviews.length;
+    let numItems = 0;
+    if (numInterviews > 0) numItems = numPages === pageIndex + 1 && numInterviews % itemsPerPage !== 0 ? numInterviews % itemsPerPage : itemsPerPage;
     return loading ? <div className="loader cTab"><BeatLoader color="green" /></div> : (
       <div style={{ width: '65%', margin: 'auto', backgroundColor: 'white' }}>
         <Modal isOpen={this.state.open} onRequestClose={this.closeInterviewModal} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
@@ -160,27 +192,28 @@ class CompanyInterview extends Component {
             <span style={{ fontWeight: 'bold', color: 'lightgreen' }}>Positive</span>
             :
             {' '}
-            {this.state.positivePercent}
+            {positivePercent}
             %
           </span>
           <span style={{ marginRight: '15px' }}>
             <span style={{ fontWeight: 'bold', color: 'green' }}>Neutral</span>
             :
             {' '}
-            {this.state.neutralPercent}
+            {neutralPercent}
             %
           </span>
           <span style={{ marginRight: '15px' }}>
             <span style={{ fontWeight: 'bold', color: 'blue' }}>Negative</span>
             :
             {' '}
-            {this.state.negativePercent}
+            {negativePercent}
             %
           </span>
         </div>
         <ol className="empReviews tightLt">
-          {this.state.interviews.map((interview) => {
-            const date = new Date(interview.interviewposted);
+          {[...Array(numItems)].map((e, i) => {
+            const index = i + (pageIndex * itemsPerPage);
+            const date = new Date(interviews[index].interviewposted);
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
             return [<li className=" empReview cf " id="InterviewReview_38660866">
@@ -194,7 +227,7 @@ class CompanyInterview extends Component {
                   <div className="cell">
                     <h2 className="summary strong noMargTop tightTop margBotXs">
                       <a href="/Interview/Burger-King-Interview-RVW38660866.htm">
-                        <span className="reviewer">{interview.jobtitle}</span>
+                        <span className="reviewer">{interviews[index].jobtitle}</span>
                         {' '}
                         Interview
                       </a>
@@ -202,7 +235,7 @@ class CompanyInterview extends Component {
                     <div className="tbl reviewMeta">
                       <div className="cell">
                         <div className="author minor">
-                          {`Anonymous ${interview.offerstatus === 'Accepted' ? 'Employee' : 'Interview Candidate'}`}
+                          {`Anonymous ${interviews[index].offerstatus === 'Accepted' ? 'Employee' : 'Interview Candidate'}`}
                         </div>
                       </div>
                     </div>
@@ -220,7 +253,7 @@ class CompanyInterview extends Component {
                             <div className="cell"><i className="sqLed middle sm green margRtXs " /></div>
                             <div className="cell">
                               <span className="middle">
-                                {`${interview.offerstatus} Offer`}
+                                {`${interviews[index].offerstatus} Offer`}
                               </span>
                             </div>
                           </div>
@@ -228,13 +261,13 @@ class CompanyInterview extends Component {
                         <div className="tightLt col span-1-3">
                           <div className="middle">
                             <div className="cell"><i className="sqLed middle sm green margRtXs " /></div>
-                            <div className="cell"><span className="middle">{`${interview.overallexp} Experience`}</span></div>
+                            <div className="cell"><span className="middle">{`${interviews[index].overallexp} Experience`}</span></div>
                           </div>
                         </div>
                         <div className="tightLt col span-1-3">
                           <div className="middle">
                             <div className="cell"><i className="sqLed middle sm green margRtXs " /></div>
-                            <div className="cell"><span className="middle">{`${interview.difficulty} Interview`}</span></div>
+                            <div className="cell"><span className="middle">{`${interviews[index].difficulty} Interview`}</span></div>
                           </div>
                         </div>
                       </div>
@@ -246,7 +279,7 @@ class CompanyInterview extends Component {
                           <ul className="undecorated">
                             <li>
                               <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
-                                {interview.interviewqna[0].question}
+                                {interviews[index].interviewqna[0].question}
                               </span>
                             </li>
                           </ul>
@@ -260,7 +293,7 @@ class CompanyInterview extends Component {
                           <ul className="undecorated">
                             <li>
                               <span className="interviewQuestion noPadVert truncateThis wrapToggleStr " data-truncate-words={70}>
-                                {interview.interviewqna[0].answers[0]}
+                                {interviews[index].interviewqna[0].answers[0]}
                               </span>
                             </li>
                           </ul>
@@ -270,12 +303,13 @@ class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-                    </li>,
+            </li>,
               <div className="hr">
                 <hr />
               </div>];
           })}
         </ol>
+        <Pagination setPage={this.setPage} page={pageIndex} numPages={numPages} />
       </div>
     );
   }

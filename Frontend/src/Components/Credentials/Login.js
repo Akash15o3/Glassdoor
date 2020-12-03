@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 // import jwt_decode from 'jwt-decode';
-import '../../Static/Styles/Credentials.css';
 import { login } from '../../Actions/credentialActions';
 import { setStudent } from '../../Actions/studentActions';
 import { setEmployer } from '../../Actions/employerActions';
@@ -31,11 +30,11 @@ class Login extends Component {
             this.props.setStudent(user, _id);
           } else if (role === 'Employer') {
             this.props.setEmployer(user, _id);
-          }
-          else if (role === 'Admin') {
+          } else if (role === 'Admin') {
             this.props.setAdmin(user, _id);
           }
           this.props.login(role);
+          this.props.history.push(`/${role}`);
         }
       });
   }

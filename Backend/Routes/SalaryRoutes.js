@@ -6,7 +6,7 @@ const Router = express.Router();
 Router.get('/getSalaries', (request, response) => {
   console.log('\nEndpoint GET: get all salaries for a company');
   console.log('Req Body: ', request.query);
-  const data = { ...request.params };
+  const data = { ...request.query };
   kafka.make_request('salariesTopic', 'GETSALARIES', data, (err, result) => {
     console.log('Get get all salaries for a company result ', result);
     if (err) {
