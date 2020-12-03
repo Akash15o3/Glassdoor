@@ -45,7 +45,7 @@ class AdminReviews extends Component {
     const data = {
       cid: this.props.company._id,
       skip: 0,
-      limit: 5,
+      limit: 20,
       filter: this.state.filter,
     }
     axios.post(url, data)
