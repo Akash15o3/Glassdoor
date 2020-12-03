@@ -83,8 +83,10 @@ class CompanyReviews extends Component {
     approve *= 100;
     approve = Math.round(approve);
     reviews.sort((a, b) => b.rhelpful - a.rhelpful);
-    arr.push(reviews[0]);
-    arr.push(reviews[1]);
+    for (let i = 0; i < reviews.length; i++) {
+      arr.push(reviews[i]);
+      if (i > 1) { break; }
+    }
     console.log(arr);
     this.setState({
       overallRate: average,
