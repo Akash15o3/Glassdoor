@@ -144,7 +144,7 @@ class CompanyHomePage extends Component {
             marginRight: 'auto',
           }}
         >
-          <div className="logo cell">
+          {/* <div className="logo cell">
             <span className="sqLogo tighten lgSqLogo logoOverlay">
               <img
                 src={this.state.stphoto}
@@ -153,84 +153,72 @@ class CompanyHomePage extends Component {
                 style={{ width: '120px', height: '120px' }}
               />
             </span>
-          </div>
+          </div> */}
+          <img
+                src={this.state.stphoto}
+                className
+                title
+                style={{ width: '120px', height: '120px', float: 'left' }}
+              />
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginRight: '120px', marginBottom: '20px' }}>
+              {this.state.stname}
+            </h1>
           <div
             id="EmpHeroAndEmpInfo"
             className="gdGrid"
             data-brandviews="MODULE:n=hub-profileImage:eid=432"
           >
-            <div
-              className="empInfo tbl hideHH "
-            >
-              <div
-                className="header cell info"
-              >
-                <h1
-                  className=" strong tightAll"
-                  title
-                  data-company="McDonald's"
-                >
-                  {/* <span
-                    id="DivisionsDropdownComponent"
-                    className="d-inline-flex align-items-center"
-                  > */}
-                  <p>
-                    Student Name:
-                    {' '}
-                    {this.state.stname}
-                  </p>
-                  <h2>JOB PRERERENCES: </h2>
-                  <p>
-                    Title:
-                    {' '}
-                    {this.state.stjobpref.title}
-                  </p>
-                  <p>
-                    Target Industry:
-                    {' '}
-                    {this.state.stjobpref.industry}
-                  </p>
-                  <p>
-                    Search Status:
-                    {' '}
-                    {this.state.stjobpref.searchstatus}
-                  </p>
-                  <p>
-                    Relocation Preference:
-                    {' '}
-                    {this.state.stjobpref.relocation}
-                  </p>
-                  <p>
-                    Target Salary:
-                    {' '}
-                    {this.state.stjobpref.targetsalary}
-                  </p>
-                  <h2>DEMOGRAPHICS</h2>
-                  <p>
-                    Gender:
-                    {' '}
-                    {this.state.stdemographics.gender}
-                  </p>
-                  <p>
-                    Disability status:
-                    {' '}
-                    {this.state.stdemographics.disability}
-                  </p>
-                  <p>
-                    Ethnicity Status:
-                    {' '}
-                    {this.state.stdemographics.race_ethnicity}
-                  </p>
-                  <p>
-                    Veteran status:
-                    {' '}
-                    {this.state.stdemographics.veteran}
-                  </p>
-
-                  {/* </span> */}
-                </h1>
-              </div>
-              <div className="cell unlock small showDesk" />
+            <div style={{ border: '1px solid black', width: '55%', margin: 'auto', backgroundColor: 'greenyellow' }}>
+              <h2><b>Job Preferences</b></h2>
+              <p>
+                Title:
+                {' '}
+                {this.state.stjobpref.title}
+              </p>
+              <p>
+                Target Industry:
+                {' '}
+                {this.state.stjobpref.industry}
+              </p>
+              <p>
+                Search Status:
+                {' '}
+                {this.state.stjobpref.searchstatus}
+              </p>
+              <p>
+                Relocation Preference:
+                {' '}
+                {this.state.stjobpref.relocation}
+              </p>
+              <p>
+                Target Salary:
+                {' '}
+                {this.state.stjobpref.targetsalary}
+              </p>
+            </div>
+            <br />
+            <div style={{ border: '1px solid black', width: '55%', margin: 'auto', backgroundColor: 'lightgreen' }}>
+              <h2><b>Demographics</b></h2>
+              <p>
+                Gender:
+                {' '}
+                {this.state.stdemographics.gender}
+              </p>
+              <p>
+                Disability status:
+                {' '}
+                {this.state.stdemographics.disability}
+              </p>
+              <p>
+                Ethnicity Status:
+                {' '}
+                {this.state.stdemographics.race_ethnicity}
+              </p>
+              <p>
+                Veteran status:
+                {' '}
+                {this.state.stdemographics.veteran}
+              </p>
             </div>
           </div>
           {/* <div id="StickyNavWrapper" className="stickyNavWrapper ">
