@@ -186,29 +186,74 @@ class CompanyInterview extends Component {
             </button>
           ) : null}
         </h1>
-        <div style={{ borderBottom: '2px solid gray', paddingBottom: '20px' }}>
+        <div>
           <h2>Expereince</h2>
-          <span style={{ marginRight: '15px' }}>
-            <span style={{ fontWeight: 'bold', color: 'lightgreen' }}>Positive</span>
-            :
-            {' '}
-            {positivePercent}
-            %
-          </span>
-          <span style={{ marginRight: '15px' }}>
-            <span style={{ fontWeight: 'bold', color: 'green' }}>Neutral</span>
-            :
-            {' '}
-            {neutralPercent}
-            %
-          </span>
-          <span style={{ marginRight: '15px' }}>
-            <span style={{ fontWeight: 'bold', color: 'blue' }}>Negative</span>
-            :
-            {' '}
-            {negativePercent}
-            %
-          </span>
+          <div className="single-chart" style={{ float: 'left' }}>
+            <svg viewBox="0 0 36 36" className="circular-chart green">
+              <path
+                className="circle-bg"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                className="circle"
+                strokeDasharray={`${positivePercent}, 100`}
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>
+                {positivePercent}
+                %
+              </text>
+            </svg>
+            <div style={{ marginLeft: '25px' }}>Positive</div>
+          </div>
+          <div className="single-chart" style={{ float: 'left' }}>
+            <svg viewBox="0 0 36 36" className="circular-chart green">
+              <path
+                className="circle-bg"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                className="circle"
+                strokeDasharray={`${neutralPercent}, 100`}
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>
+                {neutralPercent}
+                %
+              </text>
+            </svg>
+            <div style={{ marginLeft: '25px' }}>Neutral</div>
+          </div>
+          <div className="single-chart" style={{ float: 'left' }}>
+            <svg viewBox="0 0 36 36" className="circular-chart green">
+              <path
+                className="circle-bg"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                className="circle"
+                strokeDasharray={`${negativePercent}, 100`}
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <text x={18} y="20.35" className="percentage" style={{ backgroundColor: 'green' }}>
+                {negativePercent}
+                %
+              </text>
+            </svg>
+            <div style={{ marginLeft: '25px' }}>Negative</div>
+          </div>
         </div>
         <ol className="empReviews tightLt">
           {[...Array(numItems)].map((e, i) => {
@@ -223,7 +268,6 @@ class CompanyInterview extends Component {
               </div>
               <div className="tbl fill reviewHdr">
                 <div className="row">
-                  <div className="cell sqLogoCell showDesk"><span className="sqLogo tighten smSqLogo logoOverlay"><img data-original="https://media.glassdoor.com/sqls/7201/burger-king-squarelogo-1576633767546.png" data-original-2x="https://media.glassdoor.com/sqlm/7201/burger-king-squarelogo-1576633767546.png" src="https://media.glassdoor.com/sqls/7201/burger-king-squarelogo-1576633767546.png" className="lazy lazy-loaded" data-retina-ok="true" alt=" Logo" title style={{ opacity: 1 }} /></span></div>
                   <div className="cell">
                     <h2 className="summary strong noMargTop tightTop margBotXs">
                       <a href="/Interview/Burger-King-Interview-RVW38660866.htm">
@@ -303,7 +347,7 @@ class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-            </li>,
+                    </li>,
               <div className="hr">
                 <hr />
               </div>];
