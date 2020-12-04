@@ -57,7 +57,7 @@ Router.get("/getJob", (request, response) => {
   const data = { ...request.params };
 
   kafka.make_request("jobsTopic", "GETONE", request.query, (err, result) => {
-    console.log("Get one jobs result ", result);
+    // console.log("Get one jobs result ", result);
     if (err) {
       console.log("Get one jobs Kafka error");
       response.writeHead(401, {
@@ -80,7 +80,7 @@ Router.post("/createNewJob", (request, response) => {
   const data = { ...request.body };
   console.log(data);
   kafka.make_request("jobsTopic", "ADDNEWJOB", data, (err, result) => {
-    console.log("Get new job result ", result);
+    // console.log("Get new job result ", result);
     if (err) {
       console.log("Get new job Kafka error");
       response.writeHead(401, {
@@ -106,7 +106,7 @@ Router.get("/getJobApplicants", (request, response) => {
     "GETAPPLICANTS",
     request.query,
     (err, result) => {
-      console.log("Get jobs applicants result ", result);
+      // console.log("Get jobs applicants result ", result);
       if (err) {
         console.log("Get jobs applicants Kafka error");
         response.writeHead(401, {
@@ -134,7 +134,7 @@ Router.post("/updateApplicantStatus", (request, response) => {
     "UPDATEAPPLICANTSTATUS",
     data,
     (err, result) => {
-      console.log("updateApplicantStatus result ", result);
+      // console.log("updateApplicantStatus result ", result);
       if (err) {
         console.log("updateApplicantStatus Kafka error");
         response.writeHead(401, {
@@ -162,7 +162,7 @@ Router.get("/getApplierDemographics", (request, response) => {
     "GETAPPLIERDEMOGRAPHICS",
     request.query,
     (err, result) => {
-      console.log("Get one jobs result ", result);
+      // console.log("Get one jobs result ", result);
       if (err) {
         console.log("Get one jobs Kafka error");
         response.writeHead(401, {

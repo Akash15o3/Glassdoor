@@ -8,7 +8,7 @@ Router.get('/getSalaries', (request, response) => {
   console.log('Req Body: ', request.query);
   const data = { ...request.query };
   kafka.make_request('salariesTopic', 'GETSALARIES', data, (err, result) => {
-    console.log('Get get all salaries for a company result ', result);
+    // console.log('Get get all salaries for a company result ', result);
     if (err) {
       console.log('Get get all salaries for a company Kafka error');
       response.writeHead(401, {
@@ -29,7 +29,7 @@ Router.post('/createSalary', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('salariesTopic', 'CREATESALARY', data, (err, result) => {
-    console.log('Create Salary id result', result);
+    // console.log('Create Salary id result', result);
     if (err) {
       console.log('Create Salary id Kafka error');
       response.writeHead(401, {

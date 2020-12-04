@@ -12,7 +12,7 @@ Router.get('/', (request, response) => {
     'GETALL',
     request.body,
     (err, result) => {
-      console.log('Get all result ', result);
+      // console.log('Get all result ', result);
       if (err) {
         console.log('Companies getall Kafka error');
         response.writeHead(401, {
@@ -36,7 +36,7 @@ Router.get('/:id', (request, response) => {
   const data = { ...request.params };
 
   kafka.make_request('companiesTopic', 'GETONE', data, (err, result) => {
-    console.log('Get one company result ', result);
+    // console.log('Get one company result ', result);
     if (err) {
       console.log('Companies getone Kafka error');
       response.writeHead(401, {
@@ -82,7 +82,7 @@ Router.post('/updateProfile', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('companiesTopic', 'UPDATEPROFILE', data, (err, result) => {
-    console.log('Update Company Profile by id result', result);
+    // console.log('Update Company Profile by id result', result);
     if (err) {
       console.log('Update Company Profile by id Kafka error');
       response.writeHead(401, {
@@ -154,7 +154,7 @@ Router.put('/profile/delFtReview/:cid', (request, response) => {
   const data = { ...request.params, ...request.body };
 
   kafka.make_request('companiesTopic', 'DELFTREVIEW', data, (err, result) => {
-    console.log('Delete featured review result ', result);
+    // console.log('Delete featured review result ', result);
     if (err) {
       console.log('Delete featured review Kafka error');
       response.writeHead(401, {
