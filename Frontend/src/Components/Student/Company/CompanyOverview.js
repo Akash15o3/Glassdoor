@@ -84,8 +84,8 @@ export default class CompanyOverview extends Component {
     approve = Math.round(approve);
     reviews.sort((a, b) => b.rhelpful - a.rhelpful);
     for (let i = 0; i < reviews.length; i++) {
-      arr.push(reviews[i]);
       if (i > 1) { break; }
+      arr.push(reviews[i]);
     }
     console.log(arr);
     this.setState({
@@ -140,7 +140,7 @@ export default class CompanyOverview extends Component {
               </div>
             </li>
           </ul>
-          <div>
+          <div style={{ visibility: 'hidden' }}>
             <h2 style={{ marginTop: '50px', position: 'relative', top: '50px', right: '160px' }}>Company Mission</h2>
             <span>
               {company.cmission}
@@ -157,11 +157,9 @@ export default class CompanyOverview extends Component {
           </h2>
           <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
             <span style={{ color: 'green' }}>{overallRate}</span>
-            <span className="fa fa-star checked" />
-            <span className="fa fa-star checked" />
-            <span className="fa fa-star-half-o" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
+            {[...Array(5)].map((e, i) => {
+              return <span className={i < overallRate ? 'fa fa-star checked' : 'fa fa-star'} />;
+            })}
           </div>
           <div className="single-chart" style={{ float: 'left' }}>
             <svg viewBox="0 0 36 36" className="circular-chart green">
@@ -259,10 +257,17 @@ export default class CompanyOverview extends Component {
                           <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
                           {review.rpros}
                         </div>
-                        <div style={{ marginTop: '30px' }} className="description ">
+                        <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
                           <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
                           {review.rcons}
                         </div>
+                        {review.rreply
+                          ? (
+                            <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                              <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${review.cname}`}</h3>
+                              <p>{review.rreply}</p>
+                            </div>
+                          ) : null}
                       </div>
                     </div>
                   </div>
@@ -271,7 +276,7 @@ export default class CompanyOverview extends Component {
               ];
             })}
           </ol>
-          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>Top Reviews</h1>
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>Top 2 Reviews</h1>
           <ol className="empReviews tightLt">
             {topReviews.map((review) => {
               const date = new Date(review.rdate);
@@ -322,10 +327,17 @@ export default class CompanyOverview extends Component {
                           <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
                           {review.rpros}
                         </div>
-                        <div style={{ marginTop: '30px' }} className="description ">
+                        <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
                           <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
                           {review.rcons}
                         </div>
+                        {review.rreply
+                          ? (
+                            <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                              <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${review.cname}`}</h3>
+                              <p>{review.rreply}</p>
+                            </div>
+                          ) : null}
                       </div>
                     </div>
                   </div>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { connect } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 
 Modal.setAppElement('#root');
-export default class CompanyReviews extends Component {
+class EmployerReviews extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -142,6 +143,7 @@ export default class CompanyReviews extends Component {
                 this.setState({
                   reviews: res.data,
                 });
+                alert('Marked review as featured!');
               }
             });
           //   const reviews = [...this.props.reviews, response.data];
@@ -159,25 +161,17 @@ export default class CompanyReviews extends Component {
     const cname = sessionStorage.getItem('cname');
 
     const details = this.state.reviews.map(
-      ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply, _id }) => {
-        return (
-          <div>
-            <select onChange={this.roleChangeHandler} id={_id}>
+      (review) => {
+        const date = new Date(review.rdate);
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+        const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        return [
+          /* <select onChange={this.roleChangeHandler} id={review._id}>
               <option value="Not Selected ">Not Selected</option>
               <option value="Selected Review">Selected</option>
-            </select>
+            </select>, */
 
-            <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} id={_id} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
-              <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleAddReview} id={_id} />
-              <h1 style={{ textAlign: 'center' }}>
-                Reply to Review
-              </h1>
-              <label className="modalLabel">Write your reply here</label>
-              <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rreplyHandler} rows="10" cols="50" />
-              <button className="save" onClick={this.submitReview}>Submit Reply</button>
-            </Modal>
-
-            <div>
+          /* <div>
               <div>
                 <div style={{ marginLeft: '50px' }}>
                   <h2>
@@ -228,14 +222,98 @@ export default class CompanyReviews extends Component {
                 </div>
                 <hr style={{ width: '3000px', backgroundColor: 'black' }} />
               </div>
+            </div> */
+          <li style={{ width: '100%' }} className=" empReview cf reviewCard" id="InterviewReview_38660866">
+            <input onClick={this.roleChangeHandler} id={review._id} type="checkbox" style={{ marginBottom: '15px' }} />
+            <div className="cf">
+              <div className="floatLt"><time className="date subtle small">{posted_on}</time></div>
+              <p className="helpfulReviews small tightVert floatRt">{`${review.rhelpful} found helpful`}</p>
             </div>
-          </div>
-        );
+            <div className="tbl fill reviewHdr">
+              <div className="row">
+                <div className="cell sqLogoCell showDesk"><span className="sqLogo tighten smSqLogo logoOverlay"><img src={this.props.cphoto} className="lazy lazy-loaded" data-retina-ok="true" alt=" Logo" title style={{ opacity: 1 }} /></span></div>
+                <div className="cell">
+                  <h2 className="summary strong noMargTop tightTop margBotXs">{`"${review.rheadline}"`}</h2>
+                  <div>
+                    <span style={{ color: '#0caa41', marginRight: '5px' }}>{review.overallRating}</span>
+                    {[...Array(5)].map((e, i) => {
+                      return <span role="button" style={{ color: `${i < review.overallRating ? '#0caa41' : 'lightgray'}` }}>★</span>;
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tbl fill margTopMd">
+              <div className="row">
+                <div className="cell sqLogoCell showDesk" />
+                <div className="cell reviewBodyCell">
+                  <div className="row reviewBodyCell recommends">
+                    <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                      <i className={`sqLed middle sm mr-xsm ${review.rrecommended === 'Yes' ? 'green' : 'red'}`} />
+                      <span>{`${review.rrecommended === 'Yes' ? 'Recommends' : 'Does Not Recommend'}`}</span>
+                    </div>
+                    <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                      <i className={`sqLed middle sm mr-xsm ${review.routlook === 'Positive' ? 'green' : 'red'}`} />
+                      <span>{`${review.routlook} Outlook`}</span>
+                    </div>
+                    <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                      <i className={`sqLed middle sm mr-xsm ${review.rceoapprove === 'Yes' ? 'green' : 'red'}`} />
+                      <span>{`${review.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Does Not Approve of CEO'}`}</span>
+                    </div>
+                  </div>
+                  <div style={{ marginTop: '40px' }} className="description ">
+                    {review.rdescription}
+                  </div>
+                  <div style={{ marginTop: '30px' }} className="description ">
+                    <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
+                    {review.rpros}
+                  </div>
+                  <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
+                    <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
+                    {review.rcons}
+                  </div>
+                  {review.rreply
+                    ? (
+                      <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                        <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${review.cname}`}</h3>
+                        <p>{review.rreply}</p>
+                      </div>
+                    ) : (
+                      <div style={{ marginTop: '30px' }} className="description ">
+                        <button onClick={this.toggleAddReview} id={review._id} className="btn btn-primary">
+                          <i className="btn-plus margRtSm" />
+                          <span>Reply to this Review</span>
+                          <i className="hlpr" />
+                        </button>
+                      </div>
+                    )}
+                  <div style={{ marginTop: '30px' }} className="description ">
+                    <button onClick={this.featuredHandler} className="btn btn-warning  ">Mark Featured</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>,
+          <br />
+        ];
       }
     );
 
     return this.state.loading ? <div className="loader"><BeatLoader color="green" /></div> : (
       <div id="companyHomeContent" style={{ textAlign: 'left' }}>
+        <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
+          <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleAddReview}>
+            <svg className="SVGInline-svg modal_closeIcon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M13.34 12l5.38-5.38a.95.95 0 00-1.34-1.34L12 10.66 6.62 5.28a.95.95 0 00-1.34 1.34L10.66 12l-5.38 5.38a.95.95 0 001.34 1.34L12 13.34l5.38 5.38a.95.95 0 001.34-1.34z" fill="gray" fillRule="evenodd" />
+            </svg>
+          </span>
+          <h1 style={{ textAlign: 'center' }}>
+            Reply to Review
+          </h1>
+          <label className="modalLabel">Write your reply here</label>
+          <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none', width: '95%', marginBottom: '20px' }} onChange={this.rreplyHandler} rows="10" cols="50" />
+          <button className="save" onClick={this.submitReview}>Submit Reply</button>
+        </Modal>
         {/* <Modal isOpen={this.state.showAddReview} onRequestClose={this.toggleAddReview} style={{ content: { width: '55%', margin: 'auto', border: '2px solid black' } }}>
           <span alt="Close" className="SVGInline modal_closeIcon" onClick={this.toggleAddReview} />
           <h1 style={{ textAlign: 'center' }}>
@@ -246,7 +324,7 @@ export default class CompanyReviews extends Component {
           <button className="save" onClick={this.submitReview}>Submit Reply</button>
         </Modal> */}
         <div style={{ backgroundColor: 'white', width: '700px', height: 'auto', borderColor: 'gray', marginLeft: '223px', marginTop: '40px' }}>
-          <h2 style={{ marginLeft: 'auto', marginRight: 'auto' }} className="title css-1bqzjlu">
+          <h2 style={{ textAlign: 'center', fontWeight: 'bold' }} className="title css-1bqzjlu">
             {cname}
             's Reviews
             {/* <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', top: '5px', right: '5px' }}>
@@ -256,7 +334,9 @@ export default class CompanyReviews extends Component {
             </button> */}
           </h2>
           <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-          {details}
+          <ol className="empReviews tightLt">
+            {details}
+          </ol>
           {/* <div>
             <div>
               <div>
@@ -315,3 +395,11 @@ export default class CompanyReviews extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    cphoto: state.employer.user.cphoto,
+  };
+};
+
+export default connect(mapStateToProps)(EmployerReviews);

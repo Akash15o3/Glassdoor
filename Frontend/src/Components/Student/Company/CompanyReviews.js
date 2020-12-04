@@ -84,8 +84,8 @@ class CompanyReviews extends Component {
     approve = Math.round(approve);
     reviews.sort((a, b) => b.rhelpful - a.rhelpful);
     for (let i = 0; i < reviews.length; i++) {
-      arr.push(reviews[i]);
       if (i > 1) { break; }
+      arr.push(reviews[i]);
     }
     console.log(arr);
     this.setState({
@@ -251,12 +251,11 @@ class CompanyReviews extends Component {
               </button>
             </h2>
             <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
+
               <span style={{ color: 'green' }}>{overallRate}</span>
-              <span className="fa fa-star checked" />
-              <span className="fa fa-star checked" />
-              <span className="fa fa-star-half-o" />
-              <span className="fa fa-star" />
-              <span className="fa fa-star" />
+              {[...Array(5)].map((e, i) => {
+                return <span className={i < overallRate ? 'fa fa-star checked' : 'fa fa-star'} />;
+              })}
             </div>
             <div className="single-chart" style={{ float: 'left' }}>
               <svg viewBox="0 0 36 36" className="circular-chart green">
@@ -354,10 +353,17 @@ class CompanyReviews extends Component {
                             <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
                             {review.rpros}
                           </div>
-                          <div style={{ marginTop: '30px' }} className="description ">
+                          <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
                             <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
                             {review.rcons}
                           </div>
+                          {review.rreply
+                            ? (
+                              <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                                <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${review.cname}`}</h3>
+                                <p>{review.rreply}</p>
+                              </div>
+                            ) : null}
                         </div>
                       </div>
                     </div>
@@ -420,10 +426,17 @@ class CompanyReviews extends Component {
                             <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
                             {reviews[index].rpros}
                           </div>
-                          <div style={{ marginTop: '30px' }} className="description ">
+                          <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
                             <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
                             {reviews[index].rcons}
                           </div>
+                          {reviews[index].rreply
+                            ? (
+                              <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                                <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${reviews[index].cname}`}</h3>
+                                <p>{reviews[index].rreply}</p>
+                              </div>
+                            ) : null}
                           {reviews[index].helpful_vote ? null
                             : (
                               <button index={index} onClick={this.helpfulReview} className="btn btn-primary clicked" style={{ float: 'right', position: 'relative', top: '10px', left: '5px', textAlign: 'center' }}>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 Modal.setAppElement('#root');
 
-export default class Profile extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
     const { cname, cemail } = this.props.employer;
@@ -658,65 +659,87 @@ export default class Profile extends Component {
             </svg>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <p>{details}</p>
-            {
-              // this.state.reviews.map(
-              //   ({ rheadline, rrecommended, rceoapprove, rdescription, rpros, rcons, rreply }) => {
-              //     return (
-              //       <div>
-              //         <div>
-              //           <div>
-              //             <div style={{ marginLeft: '50px' }}>
-              //               <h2>
-              //                 {/* <a href="/Reviews/Employee-Review-McDonald-s-RVW37932869.htm"> */}
-              //                 "
-              //                 {rheadline}
-              //                 "
-              //                 {/* </a> */}
-              //               </h2>
-              //               <div>
-              //                 <div style={{ marginBottom: '50px' }}>
-              //                   <div>
-              //                     <aside className="gd-ui-tooltip-info toolTip tooltip css-1xincmn" width="initial">
-              //                       <div className="tooltipContainer">
-              //                         <span className="pointer" />
-              //                         <div className="content">
-              //                           <ul className="pl-0" />
-              //                         </div>
-              //                       </div>
-              //                     </aside>
-              //                   </div>
-              //                   {/* <span className="pt-xsm pt-md-0 css-5hofmb e16bqfyh1">{firstReview.rwriter}</span> */}
-              //                 </div>
-              //               </div>
-              //               <div style={{ display: 'inline-block' }}>
-              //                 <p className="mb-0 mt-xsm strong ">Recommended to a Friend</p>
-              //                 <p>{rrecommended}</p>
-              //               </div>
-              //               <div style={{ display: 'inline-block', marginLeft: '50px' }}>
-              //                 <p className="mb-0 mt-xsm strong ">CEO Approval</p>
-              //                 <p>{rceoapprove}</p>
-              //               </div>
-              //               <p className="mb-0 mt-xsm strong ">Description</p>
-              //               <p>{rdescription}</p>
-              //               <p className="mb-0 mt-xsm strong ">Pros</p>
-              //               <p>{rpros}</p>
-              //               <p className="mb-0 mt-xsm strong ">Cons</p>
-              //               <p>{rcons}</p>
-              //               <p className="mb-0 mt-xsm strong ">Reply to review</p>
-              //               <p>{rreply}</p>
-              //             </div>
-              //             <hr style={{ width: '3000px', backgroundColor: 'black' }} />
-              //           </div>
-              //         </div>
-              //       </div>
-              //     );
-              //   }
-              // )
-            }
+            {/* <p>{details}</p> */}
+            <ol className="empReviews tightLt">
+              {this.state.reviews.map((review) => {
+                const date = new Date(review.rdate);
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+                const posted_on = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+                return [
+                  <li style={{ width: '100%', backgroundColor: '#FFFF66' }} className=" empReview cf reviewCard" id="InterviewReview_38660866">
+                    <div className="cf">
+                      <div className="floatLt"><time className="date subtle small">{posted_on}</time></div>
+                      <p className="helpfulReviews small tightVert floatRt">{`${review.rhelpful} found helpful`}</p>
+                    </div>
+                    <div className="tbl fill reviewHdr">
+                      <div className="row">
+                        <div className="cell sqLogoCell showDesk"><span className="sqLogo tighten smSqLogo logoOverlay"><img src={this.props.cphoto} className="lazy lazy-loaded" data-retina-ok="true" alt=" Logo" title style={{ opacity: 1 }} /></span></div>
+                        <div className="cell">
+                          <h2 className="summary strong noMargTop tightTop margBotXs">{`"${review.rheadline}"`}</h2>
+                          <div>
+                            <span style={{ color: '#0caa41', marginRight: '5px' }}>{review.overallRating}</span>
+                            {[...Array(5)].map((e, i) => {
+                              return <span role="button" style={{ color: `${i < review.overallRating ? '#0caa41' : 'lightgray'}` }}>★</span>;
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="tbl fill margTopMd">
+                      <div className="row">
+                        <div className="cell sqLogoCell showDesk" />
+                        <div className="cell reviewBodyCell">
+                          <div className="row reviewBodyCell recommends">
+                            <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                              <i className={`sqLed middle sm mr-xsm ${review.rrecommended === 'Yes' ? 'green' : 'red'}`} />
+                              <span>{`${review.rrecommended === 'Yes' ? 'Recommends' : 'Does Not Recommend'}`}</span>
+                            </div>
+                            <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                              <i className={`sqLed middle sm mr-xsm ${review.routlook === 'Positive' ? 'green' : 'red'}`} />
+                              <span>{`${review.routlook} Outlook`}</span>
+                            </div>
+                            <div style={{ width: 'auto', paddingLeft: 0 }} className="col-sm-4 d-flex align-items-center">
+                              <i className={`sqLed middle sm mr-xsm ${review.rceoapprove === 'Yes' ? 'green' : 'red'}`} />
+                              <span>{`${review.rceoapprove === 'Yes' ? 'Approves of CEO' : 'Does Not Approve of CEO'}`}</span>
+                            </div>
+                          </div>
+                          <div style={{ marginTop: '40px' }} className="description ">
+                            {review.rdescription}
+                          </div>
+                          <div style={{ marginTop: '30px' }} className="description ">
+                            <h4 style={{ fontWeight: 'bold' }}>Pros</h4>
+                            {review.rpros}
+                          </div>
+                          <div style={{ marginTop: '30px', marginBottom: '20px' }} className="description ">
+                            <h4 style={{ fontWeight: 'bold' }}>Cons</h4>
+                            {review.rcons}
+                          </div>
+                          {review.rreply
+                            ? (
+                              <div style={{ borderTop: '1px solid black', backgroundColor: 'aqua' }}>
+                                <h3 style={{ fontWeight: 'bold' }}>{`-Reply from ${review.cname}`}</h3>
+                                <p>{review.rreply}</p>
+                              </div>
+                            ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </li>,
+                  <br />
+                ];
+              })}
+            </ol>
           </div>
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    cphoto: state.employer.user.cphoto,
+  };
+};
+
+export default connect(mapStateToProps)(Profile);
