@@ -186,10 +186,9 @@ height: 100px;
   /* transform: translateX(0px); */
 }
 
-/* .ReactModal__Overlay--before-close {
-  opacity: 0;
-  transform: translateX(-100px);
-} */
+.ReactModal__Overlay {
+  z-index: 99;
+} 
 @keyframes createBox {
   from {
     transform: scale(0);

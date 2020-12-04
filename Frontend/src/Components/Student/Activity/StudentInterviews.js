@@ -76,11 +76,10 @@ class StudentInterviews extends Component {
               </div>
               <div className="tbl fill reviewHdr">
                 <div className="row">
-                  <div className="cell sqLogoCell showDesk"><span className="sqLogo tighten smSqLogo logoOverlay"><img data-original="https://media.glassdoor.com/sqls/7201/burger-king-squarelogo-1576633767546.png" data-original-2x="https://media.glassdoor.com/sqlm/7201/burger-king-squarelogo-1576633767546.png" src="https://media.glassdoor.com/sqls/7201/burger-king-squarelogo-1576633767546.png" className="lazy lazy-loaded" data-retina-ok="true" alt=" Logo" title style={{ opacity: 1 }} /></span></div>
                   <div className="cell">
                     <h2 className="summary strong noMargTop tightTop margBotXs">
                       <a href="/Interview/Burger-King-Interview-RVW38660866.htm">
-                        <span className="reviewer">{interviews[index].jobtitle}</span>
+                        <span className="reviewer">{`${interviews[index].cname} ${interviews[index].jobtitle}`}</span>
                         {' '}
                         Interview
                       </a>
@@ -149,7 +148,7 @@ class StudentInterviews extends Component {
                   </div>
                 </div>
               </div>
-            </li>,
+                    </li>,
               <div className="hr">
                 <hr />
               </div>];

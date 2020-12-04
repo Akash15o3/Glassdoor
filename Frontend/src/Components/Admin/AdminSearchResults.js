@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { getCid } from '../../Actions/studentActions';
 import { BeatLoader } from 'react-spinners';
+import { getCid } from '../../Actions/studentActions';
 import Pagination from '../Pagination';
 
 class CompanySearchResults extends Component {
@@ -155,7 +155,7 @@ class CompanySearchResults extends Component {
                   <span className="subtle"> Inter­views</span>
                 </a>
               </div>
-              <div className="col-12 mt">
+              {/* <div className="col-12 mt">
                 <div className="row justify-content-center justify-content-lg-end">
                   <div className="col-11 col-lg-auto cta-wrap">
                     <a href="/mz-survey/employer/collectReview_input.htm?c=PAGE_SRCH_COMPANIES&amp;i=432" className="gd-btn gd-btn-link gradient gd-btn-1 gd-btn-med gd-btn-icon pr-md">
@@ -165,15 +165,15 @@ class CompanySearchResults extends Component {
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
     ));
-    
+
     return loading ? <div className="loader"><BeatLoader color="green" /></div> : (
-      /*
+    /*
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
           <div className="flex-aside">
@@ -222,7 +222,6 @@ class CompanySearchResults extends Component {
         </div>
       </div>
       */
-
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
