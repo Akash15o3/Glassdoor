@@ -258,7 +258,7 @@ class JobSearchResults extends Component {
       e.currentTarget.getAttribute('value') === 'japplicants'
       || e.currentTarget.getAttribute('value') === 'jreport'
     ) {
-      axios.defaults.withCredentials = true;
+      // axios.defaults.withCredentials = true;
       const url = `${
         process.env.REACT_APP_BACKEND
       }/jobs/getJobApplicants?ajobid=${sessionStorage.getItem('ajobid')}`;
@@ -577,7 +577,7 @@ class JobSearchResults extends Component {
       aapplierid: e.target.id,
       astatus: e.target.value,
     };
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const url = `${process.env.REACT_APP_BACKEND}/jobs/updateApplicantStatus`;
     axios
       .post(url, data)
