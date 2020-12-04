@@ -10,7 +10,7 @@ Router.post('/companies', (request, response) => {
   const data = { ...request.body };
 
   kafka.make_request('searchesTopic', 'SEARCHCOMPANIESBYNAME', data, (err, result) => {
-    console.log('Search companies by name result', result);
+    // console.log('Search companies by name result', result);
     if (err) {
       console.log('Search companies by name Kafka error');
       response.writeHead(401, {
@@ -31,7 +31,7 @@ Router.post('/companies/numPages', (request, response) => {
   const data = { ...request.body };
 
   kafka.make_request('searchesTopic', 'COMPANYSEARCHPAGES', data, (err, result) => {
-    console.log('get number of company search result pages', result);
+    // console.log('get number of company search result pages', result);
     if (err) {
       console.log('get number of company search result pages Kafka error');
       response.writeHead(401, {
@@ -53,7 +53,7 @@ Router.post('/jobs', (request, response) => {
   const data = { ...request.body };
 
   kafka.make_request('searchesTopic', 'SEARCHJOBSBYTITLE', data, (err, result) => {
-    console.log('Search jobs by title result', result);
+    // console.log('Search jobs by title result', result);
     if (err) {
       console.log('Search jobs by title Kafka error');
       response.writeHead(401, {
@@ -74,7 +74,7 @@ Router.post('/jobs/numPages', (request, response) => {
   const data = { ...request.body };
 
   kafka.make_request('searchesTopic', 'JOBSEARCHPAGES', data, (err, result) => {
-    console.log('get number of jobs search result pages', result);
+    // console.log('get number of jobs search result pages', result);
     if (err) {
       console.log('get number of jobs search result pages Kafka error');
       response.writeHead(401, {

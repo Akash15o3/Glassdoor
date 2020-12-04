@@ -10,7 +10,7 @@ Router.get('/', (request, response) => {
   console.log('\nEndpoint GET: get all students');
   console.log('Req Body: ', request.body);
   kafka.make_request('studentsTopic', 'GETALL', request.body, (err, result) => {
-    console.log('Get all students result', result);
+    // console.log('Get all students result', result);
     if (err) {
       console.log('Get all students Kafka error');
       response.writeHead(401, {
@@ -32,7 +32,7 @@ Router.get('/:id', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.params };
   kafka.make_request('studentsTopic', 'GETONE', data, (err, result) => {
-    console.log('Get student by id result', result);
+    // console.log('Get student by id result', result);
     if (err) {
       console.log('Get student by id Kafka error');
       response.writeHead(401, {
@@ -53,7 +53,7 @@ Router.post('/updateProfile', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATEPROFILE', data, (err, result) => {
-    console.log('Update Student Profile by id result', result);
+    // console.log('Update Student Profile by id result', result);
     if (err) {
       console.log('Update Student Profile by id Kafka error');
       response.writeHead(401, {
@@ -74,7 +74,7 @@ Router.post('/uploadProfilePicture', upload.single('file'), (request, response) 
   console.log('Req Body: ', request.body);
   const data = { id: request.body.id, stphoto: request.file.location };
   kafka.make_request('studentsTopic', 'UPLOADPROFILEPICTURE', data, (err, result) => {
-    console.log('Upload Student Profile Picture by id result', result);
+    // console.log('Upload Student Profile Picture by id result', result);
     if (err) {
       console.log('Upload Student Profile Picture by id Kafka error');
       response.writeHead(401, {
@@ -95,7 +95,7 @@ Router.post('/uploadResume', upload.single('file'), (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { id: request.body.id, stresume: request.file.location };
   kafka.make_request('studentsTopic', 'UPLOADRESUME', data, (err, result) => {
-    console.log('Upload Student Resume by id result', result);
+    // console.log('Upload Student Resume by id result', result);
     if (err) {
       console.log('Upload Student Resume by id Kafka error');
       response.writeHead(401, {
@@ -116,7 +116,7 @@ Router.post('/updateJobStatus', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATEJOBSTATUS', data, (err, result) => {
-    console.log('Update Student Job Status by id result', result);
+    // console.log('Update Student Job Status by id result', result);
     if (err) {
       console.log('Update Student Job Status by id Kafka error');
       response.writeHead(401, {
@@ -137,7 +137,7 @@ Router.post('/updateJobTitle', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATEJOBTITLE', data, (err, result) => {
-    console.log('Update Student Job Title by id result', result);
+    // console.log('Update Student Job Title by id result', result);
     if (err) {
       console.log(err);
       console.log('Update Student Job Title by id Kafka error');
@@ -159,7 +159,7 @@ Router.post('/updateTargetSalary', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATETARGETSALARY', data, (err, result) => {
-    console.log('Update Student Target Salary by id result', result);
+    // console.log('Update Student Target Salary by id result', result);
     if (err) {
       console.log('Update Student Target Salary by id Kafka error');
       response.writeHead(401, {
@@ -180,7 +180,7 @@ Router.post('/updateRelocation', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATERELOCATION', data, (err, result) => {
-    console.log('Update Student Relocation by id result', result);
+    // console.log('Update Student Relocation by id result', result);
     if (err) {
       console.log('Update Student Relocation by id Kafka error');
       response.writeHead(401, {
@@ -200,7 +200,7 @@ Router.post('/updateIndustry', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATEINDUSTRY', data, (err, result) => {
-    console.log('Update Student Industry by id result', result);
+    // console.log('Update Student Industry by id result', result);
     if (err) {
       console.log('Update Student Industry by id Kafka error');
       response.writeHead(401, {
@@ -221,7 +221,7 @@ Router.post('/updateDemographics', (request, response) => {
   console.log('Req Body: ', request.body);
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'UPDATEDEMOGRAPHICS', data, (err, result) => {
-    console.log('Update Student Demographics by id result', result);
+    // console.log('Update Student Demographics by id result', result);
     if (err) {
       console.log('Update Student Demographics by id Kafka error');
       response.writeHead(401, {
@@ -242,7 +242,7 @@ Router.post('/applications', (request, response) => {
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'GETAPPLICATIONS', data, (err, result) => {
     console.log(err);
-    console.log('Student Get Application result', result);
+    // console.log('Student Get Application result', result);
     if (err) {
       console.log('Student Get Application Kafka error');
       response.writeHead(401, {
@@ -263,7 +263,7 @@ Router.post('/submitApplication', (request, response) => {
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'SUBMITAPPLICATION', data, (err, result) => {
     console.log(err);
-    console.log('Student Submit Application result', result);
+    // console.log('Student Submit Application result', result);
     if (err) {
       console.log('Student Submit Application Kafka error');
       response.writeHead(401, {
@@ -284,7 +284,7 @@ Router.post('/withdrawApplication', (request, response) => {
   const data = { ...request.body };
   kafka.make_request('studentsTopic', 'WITHDRAWAPPLICATION', data, (err, result) => {
     console.log(err);
-    console.log('Student Withdraw Application result', result);
+    // console.log('Student Withdraw Application result', result);
     if (err) {
       console.log('Student Withdraw Application Kafka error');
       response.writeHead(401, {
@@ -316,7 +316,7 @@ Router.post('/uploadCompanyPhotos', upload.array('files', 10), (request, respons
     cid, stid, cphotos, stphotos,
   };
   kafka.make_request('studentsTopic', 'UPLOADCOMPANYPICTURES', data, (err, result) => {
-    console.log('Student Upload Company Pictures by id result', result);
+    // console.log('Student Upload Company Pictures by id result', result);
     if (err) {
       console.log('Student Upload Company Pictures by id Kafka error');
       response.writeHead(401, {

@@ -10,7 +10,7 @@ Router.post('/', (request, response) => {
   const data = { ...request.body };
 
   kafka.make_request('interviewsTopic', 'ADDNEW', data, (err, result) => {
-    console.log('Add new interview result ', result);
+    // console.log('Add new interview result ', result);
     if (err) {
       console.log('Add new interview Kafka error');
       response.writeHead(401, {
@@ -32,7 +32,7 @@ Router.get('/', (request, response) => {
   console.log('Req Body: ', request.body);
 
   kafka.make_request('interviewsTopic', 'GETALL', request.body, (err, result) => {
-    console.log('Get all interviews result ', result);
+    // console.log('Get all interviews result ', result);
     if (err) {
       console.log('Get all interviews Kafka error');
       response.writeHead(401, {
@@ -56,7 +56,7 @@ Router.put('/:id/addQuestion', (request, response) => {
   const data = { ...request.body, ...request.params };
 
   kafka.make_request('interviewsTopic', 'ADDNEWQUESTION', data, (err, result) => {
-    console.log('Add new question to innterview exp result ', result);
+    // console.log('Add new question to innterview exp result ', result);
     if (err) {
       console.log('Add new question to interview exp Kafka error');
       response.writeHead(401, {
@@ -81,7 +81,7 @@ Router.put('/:id/addAnswer', (request, response) => {
   const data = { ...request.body, ...request.params };
 
   kafka.make_request('interviewsTopic', 'ADDANSWER', data, (err, result) => {
-    console.log('Add answer for an interview experience question result ', result);
+    // console.log('Add answer for an interview experience question result ', result);
     if (err) {
       console.log('Add answer for an interview experience question Kafka error');
       response.writeHead(401, {
@@ -102,7 +102,7 @@ Router.get('/getInterviews', (request, response) => {
   console.log('Req Body: ', request.query);
   const data = { ...request.query };
   kafka.make_request('interviewsTopic', 'GETINTERVIEWS', data, (err, result) => {
-    console.log('Get get all Interviews for a company result ', result);
+    // console.log('Get get all Interviews for a company result ', result);
     if (err) {
       console.log('Get get all Interviews for a company Kafka error');
       response.writeHead(401, {

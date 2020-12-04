@@ -43,7 +43,7 @@ Router.post('/', (request, response) => {
   console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'ADDREVIEW', request.body, (err, result) => {
     if (err) {
-      console.log('Reviews addreview Kafka error');
+      // console.log('Reviews addreview Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
@@ -64,7 +64,7 @@ Router.post('/cname', (request, response) => {
   // console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'GETREVIEWBYCNAME', request.body, (err, result) => {
     if (err) {
-      console.log('Reviews getreviewbycname Kafka error');
+      // console.log('Reviews getreviewbycname Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
@@ -85,7 +85,7 @@ Router.post('/cid', (request, response) => {
   // console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'GETREVIEWBYCID', request.body, (err, result) => {
     if (err) {
-      console.log('Reviews getreviewbycname Kafka error');
+      // console.log('Reviews getreviewbycname Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
@@ -107,7 +107,7 @@ Router.post('/replyReviews', (request, response) => {
   console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'REPLYTOREVIEW', request.body, (err, result) => {
     if (err) {
-      console.log('Reviews ReplyReview Kafka error');
+      // console.log('Reviews ReplyReview Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
@@ -128,7 +128,7 @@ Router.post('/helpfulReview', (request, response) => {
   console.log('Req Body: ', request.body);
   kafka.make_request('reviewsTopic', 'HELPFULREVIEW', request.body, (err, result) => {
     if (err) {
-      console.log('helpful review Kafka error');
+      // console.log('helpful review Kafka error');
       response.writeHead(401, {
         'Content-Type': 'text/plain',
       });
@@ -149,7 +149,7 @@ Router.get('/getFeatReviews', (request, response) => {
   const data = { ...request.params };
 
   kafka.make_request('reviewsTopic', 'GETFEATREVIEWS', request.query, (err, result) => {
-    console.log('Get one jobs result ', result);
+    // console.log('Get one jobs result ', result);
     if (err) {
       console.log('Get one jobs Kafka error');
       response.writeHead(401, {

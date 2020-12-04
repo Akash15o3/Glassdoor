@@ -10,7 +10,7 @@ Router.post('/login', (request, response) => {
   const data = { ...request.params, ...request.body };
 
   kafka.make_request('credentialsTopic', 'LOGIN', data, (err, result) => {
-    console.log('Login result ', result);
+    // console.log('Login result ', result);
     if (err) {
       console.log('Login Kafka error');
       response.writeHead(500, {
@@ -33,7 +33,7 @@ Router.post('/signup', (request, response) => {
   const data = { ...request.params, ...request.body };
 
   kafka.make_request('credentialsTopic', 'SIGNUP', data, (err, result) => {
-    console.log('Signup result ', result);
+    // console.log('Signup result ', result);
     if (err) {
       console.log('Signup Kafka error');
       response.writeHead(500, {

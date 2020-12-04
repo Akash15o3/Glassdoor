@@ -9,7 +9,7 @@ const Students = require('./Services/students');
 const Reviews = require('./Services/reviews');
 const Interviews = require('./Services/interviews');
 const Admin = require('./Services/admin');
-const Salaries = require('./Services/Salaries');
+const Salaries = require('./Services/salaries');
 
 const mongoDB = process.env.REACT_APP_MONGODB;
 
@@ -20,6 +20,8 @@ const options = {
   bufferMaxEntries: 0,
 };
 
+console.log('env var: ', process.env)
+
 // eslint-disable-next-line no-unused-vars
 mongoose.connect(mongoDB, options, (err, res) => {
   if (err) {
@@ -27,7 +29,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
     console.log('MongoDB Connection Failed');
   } else {
     console.log('MongoDB Connected');
-  }
+  }s
 });
 
 function handleTopicRequest(topic_name, fname) {

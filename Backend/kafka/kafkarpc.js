@@ -3,6 +3,7 @@ let crypto = require('crypto');
 let conn = require('./Connection');
 
 let TIMEOUT = 20000; // time to wait for response in ms
+let partitionVal = 0;
 let self;
 
 exports = module.exports = KafkaRPC;
@@ -53,11 +54,15 @@ KafkaRPC.prototype.makeRequest = function(topic_name, subTopic, content, callbac
           data:content,
           subTopic,
         }),
-        partition: 0
+        partition: (partitionVal++) % (+process.env.REACT_APP_KAFKA_PARTITIONS),
       }
 
     ];
     // console.log('rpc payload: ', payload);
+    //Reset back to partiton 0
+    if(partitionVal === 9) {
+      partitonVal = 0;
+    }
     console.log(self.producer.ready);
     self.producer.send(payload, function(err, data){
       console.log('in response2');
