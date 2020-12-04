@@ -168,7 +168,8 @@ class CompanySalaries extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    stsalaries: state.student.user.stsalaries,
+    stsalaries: state.credentials.isAuth ? state.student.user.stsalaries : null,
+    isAuth: state.credentials.isAuth
   };
 };
 

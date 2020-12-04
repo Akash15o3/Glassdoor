@@ -347,7 +347,7 @@ class CompanyInterview extends Component {
                   </div>
                 </div>
               </div>
-                    </li>,
+            </li>,
               <div className="hr">
                 <hr />
               </div>];
@@ -358,10 +358,10 @@ class CompanyInterview extends Component {
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
-    stinterviews: state.student.user.stinterviews,
+    stinterviews: state.credentials.isAuth ? state.student.user.stinterviews : null,
+    isAuth: state.credentials.isAuth
   };
 };
 

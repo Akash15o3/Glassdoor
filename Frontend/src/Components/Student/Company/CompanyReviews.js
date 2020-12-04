@@ -244,11 +244,14 @@ class CompanyReviews extends Component {
             <h2 style={{ textAlign: 'center', fontWeight: 'bold' }} className="title css-1bqzjlu">
               {`${cname} `}
               Reviews
-              <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', top: '5px', right: '5px' }}>
-                <i className="btn-plus margRtSm" />
-                <span>+ Add a Review</span>
-                <i className="hlpr" />
-              </button>
+              {this.props.isAuth
+                ? (
+                  <button onClick={this.toggleAddReview} className="btn btn-primary" style={{ float: 'right', position: 'relative', top: '5px', right: '5px' }}>
+                    <i className="btn-plus margRtSm" />
+                    <span>+ Add a Review</span>
+                    <i className="hlpr" />
+                  </button>
+                ) : null}
             </h2>
             <div style={{ textAlign: 'center', fontSize: '22px', position: 'relative', top: '75px' }}>
 
@@ -462,7 +465,8 @@ class CompanyReviews extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    streviews: state.student.user.streviews,
+    streviews: state.credentials.isAuth ? state.student.user.streviews : null,
+    isAuth: state.credentials.isAuth
   };
 };
 

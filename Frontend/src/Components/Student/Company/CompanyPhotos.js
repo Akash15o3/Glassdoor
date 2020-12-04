@@ -101,6 +101,11 @@ class CompanyPhotos extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    isAuth: state.credentials.isAuth
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -108,4 +113,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CompanyPhotos);
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyPhotos);
