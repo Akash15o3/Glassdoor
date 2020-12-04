@@ -257,7 +257,7 @@ class JobSearchResults extends Component {
             <label style={{ display: 'block', marginBottom: '10px', }}>Cover Letter </label>
             <textarea style={{ resize: 'none', padding: '5px', fontSize: 'medium', outline: 'none' }} value={coverLetter} onChange={this.coverLetterChangeHandler} rows="10" cols="50" />
           </div>
-          {this.props.isAuth ? <button onClick={this.submitApplication} className="save">Apply</button> : null}
+          <button onClick={this.submitApplication} className="save">Apply</button>
         </Modal>
         <div id="HzFiltersWrap">
           <header id="DKFilters" className="wide">
@@ -342,10 +342,13 @@ class JobSearchResults extends Component {
                           <div className="title">{selectedJob ? selectedJob.jtitle : ''}</div>
                           <div className="location">{`${selectedJob ? selectedJob.jcity : ''}, ${selectedJob ? selectedJob.jstate : ''}`}</div>
                         </div>
-                        <button onClick={this.toggleJobApplication} className="btn btn-primary">
-                          <i className="icon-bolt margRtSm" />
-                          Apply
-                        </button>
+                        {this.props.isAuth
+                          ? (
+                            <button onClick={this.toggleJobApplication} className="btn btn-primary">
+                              <i className="icon-bolt margRtSm" />
+                              Apply
+                            </button>
+                          ) : null}
                       </div>
                     </div>
                   </div>

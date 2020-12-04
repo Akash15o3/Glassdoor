@@ -146,10 +146,10 @@ class CompanyReviews extends Component {
     axios.post(url, { cname, cid, overallRating, rheadline, rdescription, rpros, rcons, radvice, rrecommended, routlook, rceoapprove, stname, stid })
       .then((response) => {
         if (response.data) {
-          const reviews = [...this.state.reviews, response.data];
-          this.props.updateReviews(reviews);
-          this.setState({ reviews, numPages: Math.ceil((reviews.length / this.itemsPerPage)) });
-          this.setPercentages(reviews);
+          // const reviews = [...this.state.reviews, response.data];
+          // this.props.updateReviews(reviews);
+          // this.setState({ reviews, numPages: Math.ceil((reviews.length / this.itemsPerPage)) });
+          // this.setPercentages(reviews);
           this.props.updateStudent({ streviews: [...this.props.streviews, response.data] });
           this.toggleAddReview();
         }

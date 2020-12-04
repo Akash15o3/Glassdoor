@@ -45,8 +45,9 @@ class CompanyPhotos extends Component {
       .then((res) => {
         // then print response status
         console.log(res.data);
-        this.setState({ photos: res.data.cphotos, upload: false, numPages: Math.ceil((res.data.cphotos.length / this.itemsPerPage)) });
-        this.props.updatePhotos(res.data.cphotos);
+        // this.setState({ photos: res.data.cphotos, upload: false, numPages: Math.ceil((res.data.cphotos.length / this.itemsPerPage)) });
+        this.setState({ upload: false });
+        // this.props.updatePhotos(res.data.cphotos);
         this.props.updateStudent({ cphotos: res.data.stphotos });
       });
   }
